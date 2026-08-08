@@ -39,9 +39,9 @@ export default function SubmitPage() {
           background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)',
           borderRadius: '24px', padding: '3rem 2rem',
         }}>
-          <CheckCircle2 size={48} style={{ color: '#6ee7b7', marginBottom: '1.5rem' }} />
-          <h1 style={{ fontSize: '1.75rem', fontWeight: 900, marginBottom: '0.75rem' }}>Tool Submitted!</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7 }}>
+          <CheckCircle2 size={36} style={{ color: '#6ee7b7', marginBottom: '1rem' }} />
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}>Tool Submitted!</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', lineHeight: 1.7 }}>
             Thank you for contributing to the directory. We&apos;ll review <strong>{form.tool_name}</strong> and add it within 24–48 hours.
           </p>
         </div>
@@ -53,11 +53,8 @@ export default function SubmitPage() {
     <div className="container-lg" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '0.75rem' }}>
-            <PlusCircle size={24} style={{ color: 'var(--accent-violet)' }} />
-            <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.03em' }}>Submit a Tool</h1>
-          </div>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+          <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '8px' }}>Submit a Tool</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
             Know an AI tool we&apos;re missing? Add it to the directory for the community.
           </p>
         </div>

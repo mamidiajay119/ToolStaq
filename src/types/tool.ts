@@ -26,6 +26,10 @@ export interface Tool {
   open_source: boolean;
   alternatives: string[];
   decision_summary: string;
+  focus_area?: string;
+  core_features_rich?: string;
+  technical_architecture?: string;
+  pricing_details?: string;
 }
 
 export interface ToolsData {

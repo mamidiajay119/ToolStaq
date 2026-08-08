@@ -7,13 +7,13 @@ import CategoryIcon from '@/components/ui/CategoryIcon';
 
 export default function Footer() {
   const meta = getMeta();
-  const categories = getAllCategories().slice(0, 12);
+  const categories = getAllCategories().slice(0, 5);
 
   return (
     <footer style={{
-      borderTop: '1px solid var(--border-subtle)',
+      borderTop: 'none',
       background: 'var(--bg-primary)',
-      marginTop: '5rem',
+      marginTop: '3.5rem',
     }}>
       <div className="container-xl" style={{ padding: '3.5rem 1.5rem 2rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
@@ -27,24 +27,13 @@ export default function Footer() {
               }}>
                 <Zap size={16} color="white" strokeWidth={2.5} />
               </div>
-              <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.03em' }}>
-                AI<span style={{ color: 'var(--accent-primary)' }}>Tools</span>
+              <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: '1.15rem', letterSpacing: '-0.03em', color: 'var(--text-primary)' }}>
+                toolstaq
               </span>
             </Link>
-            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', lineHeight: 1.7, maxWidth: '220px' }}>
-              The most comprehensive directory of AI tools. Discover, compare, and find the perfect AI solution for your workflow.
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.825rem', lineHeight: 1.6, maxWidth: '240px' }}>
+              Discover, compare, and integrate the best AI tools for your development and business workflows.
             </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '1.25rem' }}>
-              <div style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                background: 'var(--bg-secondary)', border: '1px solid var(--border-subtle)',
-                borderRadius: '8px', padding: '6px 12px',
-              }}>
-                <span style={{ fontSize: '1rem' }}>⚡</span>
-                <span style={{ color: 'var(--accent-primary)', fontWeight: 700, fontSize: '0.9rem' }}>{meta.total.toLocaleString()}</span>
-                <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem' }}>tools</span>
-              </div>
-            </div>
           </div>
 
           {/* Quick Links */}
@@ -54,9 +43,11 @@ export default function Footer() {
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {[
-                { label: 'Browse All Tools', href: '/tools' },
-                { label: 'Compare Tools', href: '/compare' },
-                { label: 'Submit a Tool', href: '/submit' },
+                { label: 'Tools', href: '/tools' },
+                { label: 'Categories', href: '/categories' },
+                { label: 'Compare', href: '/compare' },
+                { label: 'News', href: '/news' },
+                { label: 'Submit Tool', href: '/submit' },
               ].map((link) => (
                 <Link key={link.href} href={link.href} style={{
                   color: 'var(--text-muted)', fontSize: '0.875rem',
@@ -71,7 +62,7 @@ export default function Footer() {
           {/* Top Categories */}
           <div>
             <h4 style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '1rem' }}>
-              Top Categories
+              Popular
             </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
               {categories.map((cat) => (
@@ -116,7 +107,7 @@ export default function Footer() {
         </div>
 
         <div style={{
-          borderTop: '1px solid var(--border-subtle)',
+          borderTop: 'none',
           paddingTop: '1.5rem',
           display: 'flex',
           alignItems: 'center',
@@ -125,7 +116,7 @@ export default function Footer() {
           gap: '1rem',
         }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.825rem' }}>
-            © 2025 AITools Directory. Built to help you find the right AI.
+            © 2026 ToolStaq. Built to help you find the right AI.
           </p>
           <div style={{ display: 'flex', gap: '1rem' }}>
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)', fontSize: '0.825rem' }}>

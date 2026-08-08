@@ -27,7 +27,7 @@ export default function Header() {
         background: scrolled ? 'var(--bg-overlay)' : 'transparent',
         backdropFilter: scrolled ? 'blur(12px)' : 'none',
         WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: scrolled ? '1px solid var(--border-subtle)' : '1px solid transparent',
+        borderBottom: 'none',
       }}
     >
       <div className="container-xl" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px', gap: '1.5rem' }}>
@@ -41,8 +41,8 @@ export default function Header() {
           }}>
             <Zap size={16} color="white" strokeWidth={2.5} />
           </div>
-          <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: '1.15rem', letterSpacing: '-0.03em' }}>
-            AI<span style={{ color: 'var(--accent-primary)' }}>Tools</span>
+          <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.03em', color: 'var(--text-primary)' }}>
+            toolstaq
           </span>
         </Link>
 
@@ -50,9 +50,9 @@ export default function Header() {
         <nav className="center-nav hidden-mobile">
           <Link href="/tools" className="btn-ghost">Tools</Link>
           <Link href="/categories" className="btn-ghost">Categories</Link>
-          <Link href="/compare" className="btn-ghost" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <GitCompare size={14} /> Compare
-          </Link>
+          <Link href="/compare" className="btn-ghost">Compare</Link>
+          <Link href="/news" className="btn-ghost">News</Link>
+          <Link href="/submit" className="btn-ghost">Submit Tool</Link>
         </nav>
 
         {/* Right: Actions */}
@@ -60,9 +60,6 @@ export default function Header() {
           <ThemeToggle />
           <Link href="/#subscribe" className="btn-secondary" style={{ padding: '7px 16px', fontSize: '0.85rem' }}>
             <Mail size={14} style={{ marginRight: '4px' }} /> Subscribe
-          </Link>
-          <Link href="/submit" className="btn-primary" style={{ padding: '7px 16px', fontSize: '0.85rem' }}>
-            <PlusCircle size={14} /> Submit Tool
           </Link>
         </div>
 
@@ -89,9 +86,10 @@ export default function Header() {
         }}>
           <Link href="/tools" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Tools</Link>
           <Link href="/categories" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Categories</Link>
-          <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Compare Tools</Link>
+          <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Compare</Link>
+          <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>News</Link>
+          <Link href="/submit" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Submit Tool</Link>
           <Link href="/#subscribe" className="btn-secondary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', marginTop: '8px' }}>Subscribe</Link>
-          <Link href="/submit" className="btn-primary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Submit a Tool</Link>
         </div>
       )}
 

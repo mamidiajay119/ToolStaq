@@ -2,99 +2,29 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import type { Metadata } from 'next';
-import { Search, X, GitCompare, ChevronDown } from 'lucide-react';
+import { X } from 'lucide-react';
 import type { Tool } from '@/types/tool';
 import { getPricingLabel } from '@/lib/tools';
-
-function CompareCell({ value, isBoolean }: { value: string | boolean | number | null; isBoolean?: boolean }) {
-  if (isBoolean) {
-    return (
-      <div style={{ textAlign: 'center' }}>
-        {value ? <span style={{ color: '#6ee7b7', fontSize: '1.1rem' }}>✓</span> : <span style={{ color: '#fda4af', fontSize: '1.1rem' }}>✗</span>}
-      </div>
-    );
-  }
-  if (Array.isArray(value)) {
-    return <span style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>{(value as string[]).join(', ')}</span>;
-  }
-  return <span style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>{String(value ?? '—')}</span>;
-}
-
-interface CompareTableProps {
-  tools: Tool[];
-  onRemove: (slug: string) => void;
-}
+import ToolLogo from '@/components/tools/ToolLogo';
 
 const COMPARE_ROWS = [
-  { label: 'Category', key: 'primary_category' },
-  { label: 'Pricing Model', key: 'pricing_model' },
+  { label: 'Description',    key: 'title' },
+  { label: 'Category',       key: 'primary_category' },
+  { label: 'Pricing',        key: 'pricing_model' },
   { label: 'Starting Price', key: 'starting_price_usd' },
-  { label: 'Complexity', key: 'complexity_level' },
-  { label: 'Deployment', key: 'deployment' },
-  { label: 'Free Trial', key: 'free_trial', isBoolean: true },
-  { label: 'Has API', key: 'has_api', isBoolean: true },
-  { label: 'Open Source', key: 'open_source', isBoolean: true },
-  { label: 'Time to Value', key: 'time_to_value' },
+  { label: 'Complexity',     key: 'complexity_level' },
+  { label: 'Deployment',     key: 'deployment' },
+  { label: 'Free Trial',     key: 'free_trial',   isBoolean: true },
+  { label: 'Has API',        key: 'has_api',       isBoolean: true },
+  { label: 'Open Source',    key: 'open_source',   isBoolean: true },
+  { label: 'Time to Value',  key: 'time_to_value' },
 ];
 
-function CompareTable({ tools, onRemove }: CompareTableProps) {
+function BooleanCell({ value }: { value: boolean }) {
   return (
-    <div style={{ overflowX: 'auto' }}>
-      <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: 0, minWidth: '600px' }}>
-        <thead>
-          <tr>
-            <th style={{ width: '140px', padding: '0.75rem 1rem', textAlign: 'left', background: 'var(--bg-card)', borderBottom: '1px solid var(--border-subtle)', fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>
-              Feature
-            </th>
-            {tools.map((tool) => (
-              <th key={tool.slug} style={{ padding: '1rem', textAlign: 'center', background: 'var(--bg-card)', borderBottom: '1px solid var(--border-subtle)' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ fontSize: '1.5rem' }}>{tool.icon}</span>
-                  <span style={{ fontWeight: 800, fontSize: '0.9rem' }}>{tool.tool_name}</span>
-                  <button onClick={() => onRemove(tool.slug)} style={{
-                    background: 'rgba(244,63,94,0.1)', border: '1px solid rgba(244,63,94,0.2)',
-                    borderRadius: '6px', color: '#fda4af', cursor: 'pointer', padding: '2px 8px',
-                    fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '3px',
-                  }}>
-                    <X size={10} /> Remove
-                  </button>
-                </div>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {COMPARE_ROWS.map((row, i) => (
-            <tr key={row.key} style={{ background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.01)' }}>
-              <td style={{ padding: '0.75rem 1rem', fontSize: '0.825rem', color: 'var(--text-muted)', fontWeight: 600, borderBottom: '1px solid var(--border-subtle)', whiteSpace: 'nowrap' }}>
-                {row.label}
-              </td>
-              {tools.map((tool) => {
-                const val = row.key === 'starting_price_usd'
-                  ? getPricingLabel(tool)
-                  : (tool as any)[row.key];
-                return (
-                  <td key={tool.slug} style={{ padding: '0.75rem 1rem', textAlign: 'center', borderBottom: '1px solid var(--border-subtle)' }}>
-                    <CompareCell value={val} isBoolean={row.isBoolean} />
-                  </td>
-                );
-              })}
-            </tr>
-          ))}
-          <tr>
-            <td style={{ padding: '0.75rem 1rem', fontSize: '0.825rem', color: 'var(--text-muted)', fontWeight: 600 }}>Visit</td>
-            {tools.map((tool) => (
-              <td key={tool.slug} style={{ padding: '0.75rem 1rem', textAlign: 'center' }}>
-                <a href={`/go/${tool.slug}`} target="_blank" rel="noopener" className="btn-primary" style={{ fontSize: '0.8rem', padding: '6px 14px', display: 'inline-flex' }}>
-                  Visit →
-                </a>
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <span style={{ fontSize: '0.85rem', color: value ? '#6ee7b7' : 'var(--text-muted)', fontWeight: 500 }}>
+      {value ? 'Yes' : 'No'}
+    </span>
   );
 }
 
@@ -102,10 +32,11 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
   const searchParams = useSearchParams();
   const [selected, setSelected] = useState<string[]>([]);
   const [search, setSearch] = useState('');
+  const [focused, setFocused] = useState(false);
 
   useEffect(() => {
     const initialTool = searchParams.get('tool');
-    if (initialTool && tools.some(t => t.slug === initialTool) && !selected.includes(initialTool)) {
+    if (initialTool && tools.some(t => t.slug === initialTool)) {
       setSelected(prev => prev.includes(initialTool) ? prev : [...prev, initialTool]);
     }
   }, [searchParams, tools]);
@@ -124,80 +55,221 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
   const selectedTools = selected.map((s) => tools.find((t) => t.slug === s)!).filter(Boolean);
 
   const addTool = (slug: string) => {
-    if (selected.length >= 4) return;
-    setSelected([...selected, slug]);
+    if (selected.length >= 3) return;
+    setSelected(prev => [...prev, slug]);
     setSearch('');
+    setFocused(false);
   };
 
   const removeTool = (slug: string) => setSelected(selected.filter((s) => s !== slug));
 
   return (
-    <div className="container-lg" style={{ paddingTop: '2.5rem', paddingBottom: '4rem' }}>
-      <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '0.5rem' }}>
-          <GitCompare size={22} style={{ color: 'var(--accent-violet)' }} />
-          <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.03em' }}>Compare AI Tools</h1>
-        </div>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
-          Select up to 4 tools and compare them side-by-side
+    <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
+
+      {/* Page header */}
+      <div style={{ paddingBottom: '1.5rem', marginBottom: '2rem' }}>
+        <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>
+          Compare AI Tools
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+          Select up to 3 tools and compare them side-by-side
         </p>
       </div>
 
-      {/* Search to add tools */}
-      {selected.length < 4 && (
-        <div style={{ maxWidth: '500px', margin: '0 auto 2rem', position: 'relative' }}>
-          <Search size={15} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none', zIndex: 1 }} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search and add a tool to compare..."
-            className="search-input"
-            style={{ paddingLeft: '42px', paddingTop: '12px', paddingBottom: '12px', fontSize: '0.9rem' }}
-            id="compare-search"
-          />
-          {searchResults.length > 0 && (
-            <div style={{
-              position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 50,
-              background: 'var(--bg-card)', border: '1px solid var(--border-glass)',
-              borderRadius: '12px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
-            }}>
-              {searchResults.map((tool) => (
-                <button key={tool.slug} onClick={() => addTool(tool.slug)} style={{
-                  display: 'flex', alignItems: 'center', gap: '10px', width: '100%',
-                  padding: '10px 14px', background: 'none', border: 'none', cursor: 'pointer',
-                  borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-primary)',
-                  textAlign: 'left', transition: 'background 150ms ease',
+      {/* Two-panel layout */}
+      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+
+        {/* ── Left panel: selection ── */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'sticky', top: '80px' }}>
+
+          {/* Search box */}
+          {selected.length < 3 && (
+          <div style={{ position: 'relative' }}>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setTimeout(() => setFocused(false), 150)}
+              placeholder="Search tools…"
+              className="search-input"
+              style={{ fontSize: '0.85rem', padding: '9px 12px', width: '100%', boxSizing: 'border-box' }}
+              id="compare-search"
+            />
+            {(focused && searchResults.length > 0) && (
+              <div style={{
+                position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 50,
+                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                borderRadius: '10px', overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+              }}>
+                {searchResults.map((tool, i) => (
+                  <button
+                    key={tool.slug}
+                    onMouseDown={() => addTool(tool.slug)}
+                    style={{
+                      display: 'block', width: '100%', padding: '9px 12px',
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      borderBottom: i < searchResults.length - 1 ? '1px solid var(--border-subtle)' : 'none',
+                      textAlign: 'left', transition: 'background 120ms',
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-secondary)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'none'}
+                  >
+                    <div style={{ fontWeight: 600, fontSize: '0.825rem', color: 'var(--text-primary)' }}>{tool.tool_name}</div>
+                    <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '1px' }}>{tool.primary_category}</div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          )}
+
+          {/* Selected tool cards */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {selectedTools.length === 0 && (
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', padding: '0.5rem 0' }}>
+                No tools selected yet.
+              </p>
+            )}
+            {selectedTools.map((tool) => (
+              <div
+                key={tool.slug}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                  borderRadius: '10px', padding: '10px 12px',
                 }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(124,58,237,0.08)'}
-                  onMouseLeave={(e) => e.currentTarget.style.background = 'none'}
+              >
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: '0.825rem', color: 'var(--text-primary)' }}>{tool.tool_name}</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '1px' }}>{tool.primary_category}</div>
+                </div>
+                <button
+                  onClick={() => removeTool(tool.slug)}
+                  style={{
+                    background: 'none', border: 'none', cursor: 'pointer',
+                    color: 'var(--text-muted)', padding: '2px', borderRadius: '4px',
+                    display: 'flex', alignItems: 'center',
+                    transition: 'color 120ms',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#fda4af')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                  title="Remove"
                 >
-                  <span style={{ fontSize: '1.2rem' }}>{tool.icon}</span>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{tool.tool_name}</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{tool.primary_category}</div>
-                  </div>
+                  <X size={14} />
                 </button>
-              ))}
+              </div>
+            ))}
+          </div>
+
+          {selected.length < 3 && selected.length > 0 && (
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              {3 - selected.length} slot{3 - selected.length !== 1 ? 's' : ''} remaining
+            </p>
+          )}
+        </div>
+
+        {/* ── Right panel: comparison table ── */}
+        <div style={{
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: '14px',
+          overflow: 'hidden',
+        }}>
+          {selectedTools.length < 2 ? (
+            <div style={{ padding: '4rem 2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+              <p style={{ fontSize: '0.875rem' }}>
+                {selectedTools.length === 0
+                  ? 'Search and select at least 2 tools to start comparing.'
+                  : 'Add one more tool to start comparing.'}
+              </p>
+            </div>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                    <th style={{
+                      width: '18%', padding: '1rem 1.25rem', textAlign: 'left',
+                      fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500,
+                      textTransform: 'uppercase', letterSpacing: '0.06em',
+                    }}>
+                      Feature
+                    </th>
+                    {selectedTools.map((tool) => (
+                      <th key={tool.slug} style={{
+                        padding: '1rem 1.25rem', textAlign: 'left',
+                        borderLeft: '1px solid var(--border-subtle)',
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                          <ToolLogo url={tool.url} icon={tool.icon} favicon_url={tool.favicon_url} size={42} />
+                          <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                            {tool.tool_name}
+                          </div>
+                        </div>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {COMPARE_ROWS.map((row, i) => (
+                    <tr
+                      key={row.key}
+                      style={{ borderBottom: '1px solid var(--border-subtle)' }}
+                    >
+                      <td style={{
+                        padding: '0.875rem 1.25rem',
+                        fontSize: '0.8rem', color: 'var(--text-muted)',
+                        fontWeight: 500, whiteSpace: 'nowrap',
+                      }}>
+                        {row.label}
+                      </td>
+                      {selectedTools.map((tool) => {
+                        const val = row.key === 'starting_price_usd'
+                          ? getPricingLabel(tool)
+                          : (tool as any)[row.key];
+                        return (
+                          <td key={tool.slug} style={{
+                            padding: '0.875rem 1.25rem',
+                            borderLeft: '1px solid var(--border-subtle)',
+                            fontSize: '0.825rem', color: 'var(--text-secondary)',
+                          }}>
+                            {row.isBoolean
+                              ? <BooleanCell value={!!val} />
+                              : Array.isArray(val)
+                                ? (val as string[]).join(', ')
+                                : String(val ?? '—')}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                  {/* Visit row */}
+                  <tr>
+                    <td style={{ padding: '1rem 1.25rem', fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                      Visit
+                    </td>
+                    {selectedTools.map((tool) => (
+                      <td key={tool.slug} style={{ padding: '1rem 1.25rem', borderLeft: '1px solid var(--border-subtle)' }}>
+                        <a
+                          href={`/go/${tool.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-primary"
+                          style={{ fontSize: '0.775rem', padding: '6px 14px', display: 'inline-flex' }}
+                        >
+                          Visit →
+                        </a>
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
             </div>
           )}
         </div>
-      )}
 
-      {selected.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '4rem 2rem', color: 'var(--text-muted)' }}>
-          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚖️</div>
-          <p>Search and add at least 2 tools above to start comparing</p>
-        </div>
-      ) : selected.length === 1 ? (
-        <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-muted)' }}>
-          <p>Add at least one more tool to compare</p>
-        </div>
-      ) : (
-        <div className="glass-card" style={{ overflow: 'hidden' }}>
-          <CompareTable tools={selectedTools} onRemove={removeTool} />
-        </div>
-      )}
+      </div>
     </div>
   );
 }

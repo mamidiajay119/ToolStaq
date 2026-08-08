@@ -216,9 +216,11 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           )}
         </div>
 
-        <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-          <strong style={{ color: 'var(--text-primary)' }}>{filtered.length.toLocaleString()}</strong> tools
-        </span>
+        {(activeFilterCount > 0 || search.trim() !== '') && (
+          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+            <strong style={{ color: 'var(--text-primary)' }}>{filtered.length.toLocaleString()}</strong> tools found
+          </span>
+        )}
       </div>
 
       {/* Active Non-Category Filter Badges */}
@@ -279,9 +281,9 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           </div>
 
           {paginated.length < filtered.length && (
-            <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-              <button onClick={() => setPage((p) => p + 1)} className="btn-secondary" style={{ padding: '12px 32px' }}>
-                Load more ({filtered.length - paginated.length} remaining)
+            <div style={{ textAlign: 'center', marginTop: '2.5rem', marginBottom: '0.5rem' }}>
+              <button onClick={() => setPage((p) => p + 1)} className="btn-secondary" style={{ padding: '8px 24px', borderRadius: '12px' }}>
+                Load more
               </button>
             </div>
           )}

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { getAllCategories, getToolsByCategory, categoryFromSlug, slugifyCategory } from '@/lib/tools';
 import { CATEGORY_LONG_DESCRIPTIONS, CATEGORY_SHORT_DESCRIPTIONS } from '@/lib/category-content';
 import CategoryIcon from '@/components/ui/CategoryIcon';
-import ToolCard from '@/components/tools/ToolCard';
+import CategoryToolsClient from './CategoryToolsClient';
 
 export async function generateStaticParams() {
   const categories = getAllCategories();
@@ -54,7 +54,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       {/* Hero */}
       <div style={{
         background: 'var(--bg-primary)',
-        borderBottom: '1px solid var(--border-subtle)',
+        borderBottom: 'none',
         padding: '3rem 1.5rem',
       }}>
         <div className="container-xl">
@@ -77,11 +77,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
               <CategoryIcon category={cat} size={28} />
             </div>
             <div>
-              <h1 style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: '4px' }}>{cat}</h1>
+              <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>{cat}</h1>
               <span className="badge badge-violet">{tools.length} tools</span>
             </div>
           </div>
-          <div style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.95rem', width: '100%' }}>
+          <div style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.85rem', width: '100%' }}>
             {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
               CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
                 <p key={idx} style={{ marginBottom: '0.75rem' }}>{paragraph}</p>
@@ -93,7 +93,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
         </div>
       </div>
 
-      <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
+      <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '1.5rem' }}>
         
         {/* Horizontal Category Chips */}
         <div className="hide-scroll" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-subtle)' }}>
@@ -116,17 +116,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           ))}
         </div>
 
-        {/* Tool Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-          gap: '14px',
-          marginBottom: '4rem',
-        }}>
-          {tools.map((tool, i) => (
-            <ToolCard key={tool.slug} tool={tool} rank={i < 3 ? i + 1 : undefined} />
-          ))}
-        </div>
+        <CategoryToolsClient tools={tools} />
       </div>
     </>
   );

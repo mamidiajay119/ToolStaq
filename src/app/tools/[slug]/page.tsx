@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
-  ExternalLink, ArrowLeft, CheckCircle2, XCircle, Zap, Globe,
+  ExternalLink, ArrowLeft, Zap, Globe,
   Code2, Lock, Gift, RefreshCw, Users, ArrowRight, Shield
 } from 'lucide-react';
 import { getAllSlugs, getToolBySlug, getPricingLabel, slugifyCategory, getToolDescription, getAllTools } from '@/lib/tools';
@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${tool.tool_name} — ${tool.primary_category} Tool Review, Pricing & Alternatives`,
     description: desc.slice(0, 160),
     openGraph: {
-      title: `${tool.tool_name} | AI Tools Directory`,
+      title: `${tool.tool_name} | ToolStaq`,
       description: desc.slice(0, 160),
       url: `https://aitoolsdirectory.com/tools/${slug}`,
     },
@@ -114,11 +114,11 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 />
                 <div style={{ flex: 1, minWidth: '300px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
-                    <h1 style={{ fontSize: '2.2rem', fontWeight: 900, letterSpacing: '-0.03em', margin: 0 }}>{tool.tool_name}</h1>
+                    <h1 style={{ fontSize: '1.5rem', fontWeight: 600, letterSpacing: '-0.03em', margin: 0 }}>{tool.tool_name}</h1>
                     {tool.open_source && <Badge label="Open Source" variant="emerald" />}
                   </div>
                   {tool.title && (
-                    <h2 style={{ fontSize: '1.1rem', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: '1rem', marginTop: 0 }}>
+                    <h2 style={{ fontSize: '0.9rem', fontWeight: 400, color: 'var(--text-secondary)', marginBottom: '1rem', marginTop: 0 }}>
                       {tool.title}
                     </h2>
                   )}
@@ -130,11 +130,21 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     ))}
                   </div>
                   {/* CTA */}
-                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                    <a href={`/go/${tool.slug}`} className="btn-primary" target="_blank" rel="noopener noreferrer">
-                      <ExternalLink size={15} /> Visit {tool.tool_name}
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <a
+                      href={`/go/${tool.slug}`}
+                      className="btn-primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ padding: '7px 16px', fontSize: '0.825rem', gap: '6px' }}
+                    >
+                      <ExternalLink size={13} /> Visit {tool.tool_name}
                     </a>
-                    <Link href={`/compare?tool=${tool.slug}`} className="btn-secondary">
+                    <Link
+                      href={`/compare?tool=${tool.slug}`}
+                      className="btn-secondary"
+                      style={{ padding: '7px 16px', fontSize: '0.825rem' }}
+                    >
                       Compare Tools
                     </Link>
                   </div>
@@ -142,117 +152,163 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
               </div>
             </div>
 
-            {/* About */}
-            <div>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: 'var(--accent-cyan)' }}>✦</span> What is {tool.tool_name}?
-              </h2>
-              <div style={{
-                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                borderRadius: '14px', padding: '1.5rem',
-              }}>
+            {/* ── Unified Overview Card ── */}
+            <div style={{
+              background: 'var(--bg-card)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: '16px',
+              overflow: 'hidden',
+            }}>
+
+              {/* About */}
+              <div style={{ padding: '1.75rem 2rem' }}>
+                <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
+                  Overview
+                </p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.8, margin: 0 }}>
                   {getToolDescription(tool)}
                 </p>
               </div>
-            </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+              {/* Focus Area */}
+              {tool.focus_area && (
+                <>
+                  <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
+                  <div style={{ padding: '1.75rem 2rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                      Focus Area
+                    </p>
+                    <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+                      {tool.focus_area}
+                    </p>
+                  </div>
+                </>
+              )}
+
               {/* Core Features */}
-              {tool.core_features.length > 0 && (
-                <div>
-                  <h2 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: 'var(--accent-violet)' }}>✦</span> Core Features
-                  </h2>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px' }}>
-                    {tool.core_features.map((f, i) => (
-                      <div key={i} style={{
-                        display: 'flex', alignItems: 'flex-start', gap: '10px',
-                        background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                        borderRadius: '10px', padding: '0.8rem',
-                      }}>
-                        <CheckCircle2 size={15} style={{ color: '#6ee7b7', flexShrink: 0, marginTop: '1px' }} />
-                        <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{f}</span>
+              {(tool.core_features_rich || tool.core_features.length > 0) && (
+                <>
+                  <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
+                  <div style={{ padding: '1.75rem 2rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                      Core Features & Capabilities
+                    </p>
+                    {tool.core_features_rich ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                        {tool.core_features_rich.split('\n').filter(Boolean).map((f, i) => (
+                           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                             <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                             <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
+                           </div>
+                        ))}
                       </div>
-                    ))}
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                        {tool.core_features.map((f, i) => (
+                          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                            <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                            <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
+                </>
               )}
 
-              {/* Target Users (Best For Teams) */}
-              {tool.target_user_persona.length > 0 && (
-                <div>
-                  <h2 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#a78bfa' }}>✦</span> Best For Teams
-                  </h2>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                    {tool.target_user_persona.map((p) => (
-                      <span key={p} className="badge badge-slate" style={{ fontSize: '0.85rem', padding: '6px 12px' }}>{p}</span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {/* Best For */}
+              {/* Best For — merged use cases + personas */}
               {(() => {
                 const GENERIC = new Set(['Writing long-form SEO blog articles']);
                 const cleanBestFor = tool.best_for.filter((b) => !GENERIC.has(b));
-                return cleanBestFor.length > 0 && (
-                <div style={{
-                  background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                  borderRadius: '14px', padding: '1.5rem',
-                }}>
-                  <h2 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#6ee7b7' }}>✦</span> Best For
-                  </h2>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {cleanBestFor.map((b, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                        <span style={{ color: '#6ee7b7', fontSize: '1rem', marginTop: '-2px' }}>→</span>
-                        <span style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{b}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                const hasContent = cleanBestFor.length > 0 || tool.target_user_persona.length > 0;
+                return hasContent && (
+                  <>
+                    <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
+                    <div style={{ padding: '1.75rem 2rem' }}>
+                      <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                        Best For
+                      </p>
+                      {cleanBestFor.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: tool.target_user_persona.length > 0 ? '1rem' : 0 }}>
+                          {cleanBestFor.map((b, i) => (
+                            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                              <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                              <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{b}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {tool.target_user_persona.length > 0 && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                          {tool.target_user_persona.map((p) => (
+                            <span key={p} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}>{p}</span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </>
                 );
               })()}
 
-              {/* Not Suitable For */}
-              {tool.not_suitable_for.length > 0 && (
-                <div style={{
-                  background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                  borderRadius: '14px', padding: '1.5rem',
-                }}>
-                  <h2 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ color: '#fda4af' }}>✦</span> Not Suitable For
-                  </h2>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                    {tool.not_suitable_for.map((n, i) => (
-                      <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                        <XCircle size={16} style={{ color: '#fda4af', flexShrink: 0, marginTop: '2px' }} />
-                        <span style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{n}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
 
-            {/* Integrations */}
-            {tool.integrations.length > 0 && (
-              <div>
-                <h2 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <span style={{ color: '#67e8f9' }}>✦</span> Integrations
-                </h2>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {tool.integrations.map((int) => (
-                    <span key={int} className="badge badge-cyan" style={{ fontSize: '0.85rem', padding: '6px 12px' }}>{int}</span>
-                  ))}
-                </div>
-              </div>
-            )}
+              {/* Integrations */}
+              {tool.integrations.length > 0 && (
+                <>
+                  <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
+                  <div style={{ padding: '1.75rem 2rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                      Integrations
+                    </p>
+                    <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                      {tool.integrations.map((int) => (
+                        <span key={int} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}>{int}</span>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Technical Architecture */}
+              {tool.technical_architecture && (
+                <>
+                  <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
+                  <div style={{ padding: '1.75rem 2rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                      Architecture & Security
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      {tool.technical_architecture.split('\n').filter(Boolean).map((f, i) => (
+                         <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                           <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                           <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
+                         </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Pricing Details */}
+              {tool.pricing_details && (
+                <>
+                  <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
+                  <div style={{ padding: '1.75rem 2rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                      Pricing Details
+                    </p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      {tool.pricing_details.split('\n').filter(Boolean).map((f, i) => (
+                         <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                           <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                           <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
+                         </div>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
+            </div>
           </div>
 
           {/* ── Sidebar ── */}
@@ -273,8 +329,8 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                   { label: 'Open Source', value: tool.open_source ? 'Yes' : 'No' },
                 ].map(({ label, value }) => (
                   <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '8px', borderBottom: '1px solid var(--border-subtle)' }}>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{label}</span>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', textAlign: 'right' }}>{value}</span>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{label}</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'right' }}>{value}</span>
                   </div>
                 ))}
               </div>
