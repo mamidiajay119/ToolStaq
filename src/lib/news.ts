@@ -1,23 +1,20 @@
 import type { NewsArticle } from '../app/news/page';
 
-interface EventRegistryArticle {
-  uri: string;
+interface CurrentsArticle {
+  id: string;
   title: string;
-  body: string;
-  date: string;
-  time: string;
-  source: {
-    title: string;
-    uri: string;
-  };
+  description: string;
   url: string;
+  author: string;
   image?: string;
+  language: string;
+  category: string[];
+  published: string;
 }
 
-interface EventRegistryResponse {
-  articles?: {
-    results?: EventRegistryArticle[];
-  };
+interface CurrentsResponse {
+  status: string;
+  news?: CurrentsArticle[];
 }
 
 function getCategory(title: string, body: string): string {
@@ -83,88 +80,88 @@ function getCategory(title: string, body: string): string {
   return "AI News";
 }
 
-function slugify(text: string): string {
-  return text
+function slugify(title: string): string {
+  return title
     .toLowerCase()
-    .replace(/[^\w\s-]/g, "") // Remove non-word chars (except space and dash)
-    .replace(/[\s_]+/g, "-")  // Replace spaces/underscores with dashes
-    .replace(/^-+|-+$/g, ""); // Trim dashes from ends
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+function getDomainName(urlStr: string): string {
+  try {
+    const url = new URL(urlStr);
+    const domain = url.hostname.replace('www.', '');
+    // Capitalize first letter of domain
+    return domain.charAt(0).toUpperCase() + domain.slice(1);
+  } catch (e) {
+    return 'AI Source';
+  }
 }
 
 export async function fetchLatestAINews(count = 6): Promise<NewsArticle[]> {
-  const apiKey = process.env.NEWSAPI_AI_KEY;
+  const currentsKey = process.env.CURRENTS_API_KEY;
 
-  if (!apiKey) {
-    console.warn("NEWSAPI_AI_KEY environment variable is not configured. Returning fallback articles.");
+  if (!currentsKey) {
+    console.warn("CURRENTS_API_KEY is not configured. Returning empty list to invoke local fallback.");
     return [];
   }
 
   try {
-    const response = await fetch("https://eventregistry.org/api/v1/article/getArticles", {
-      method: "POST",
+    const url = `https://api.currentsapi.services/v1/search?keywords=artificial%20intelligence&language=en&limit=${count}`;
+    const response = await fetch(url, {
+      method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Authorization": currentsKey,
       },
-      body: JSON.stringify({
-        action: "getArticles",
-        keyword: "artificial intelligence",
-        lang: "eng",
-        articlesCount: count,
-        articlesSortBy: "date",
-        apiKey: apiKey,
-      }),
-      // Set cache options for stability in Next.js
       next: {
         revalidate: 604800, // Cache for 7 days (weekly)
       }
     });
 
     if (!response.ok) {
-      throw new Error(`Event Registry HTTP error! status: ${response.status}`);
+      throw new Error(`Currents API HTTP error! status: ${response.status}`);
     }
 
-    const data = (await response.json()) as EventRegistryResponse;
-    const results = data.articles?.results || [];
+    const data = (await response.json()) as CurrentsResponse;
+    const results = data.news || [];
 
     return results.map((article) => {
-      const words = article.body.split(/\s+/).length;
-      const readTime = Math.max(1, Math.ceil(words / 200)) + " min read";
+      // Estimate read time from description
+      const words = (article.description || "").split(/\s+/).length;
+      const readTime = Math.max(1, Math.ceil(words / 200) + 1) + " min read";
 
-      // Parse and format date to Match "July 18, 2026"
+      // Parse and format publication date
       let formattedDate = "Recently";
-      if (article.date) {
+      if (article.published) {
         try {
-          const dateObj = new Date(article.date);
+          const dateObj = new Date(article.published);
           formattedDate = dateObj.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",
             year: "numeric",
           });
         } catch (e) {
-          formattedDate = article.date;
+          formattedDate = article.published;
         }
       }
 
-      // Build clean excerpt
-      let excerpt = article.body;
-      if (excerpt.length > 160) {
-        excerpt = excerpt.slice(0, 160).trim() + "...";
-      }
+      const sourceName = getDomainName(article.url);
 
       return {
-        id: article.uri,
+        id: article.id,
         title: article.title,
-        excerpt: excerpt,
+        excerpt: article.description || "No summary available.",
         date: formattedDate,
         readTime: readTime,
-        category: getCategory(article.title, article.body),
-        source: article.source?.title || "AI Source",
+        category: getCategory(article.title, article.description || ""),
+        source: sourceName,
         slug: slugify(article.title),
-        url: article.url, // Link directly to original article
+        url: article.url,
       };
     });
   } catch (error) {
-    console.error("Error fetching AI news from Event Registry:", error);
-    return []; // Return empty list to prompt dynamic fallback
+    console.error("Error fetching AI news from Currents API:", error);
+    return []; // Return empty list to trigger local dynamic fallback
   }
 }
