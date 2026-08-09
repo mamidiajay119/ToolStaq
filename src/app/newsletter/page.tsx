@@ -83,15 +83,15 @@ export default function NewsletterPage() {
             </div>
             
             <h1 style={{
-              fontSize: '2rem',
-              fontWeight: 600,
+              fontSize: 'clamp(2rem, 5vw, 2.75rem)',
+              fontWeight: 400,
               color: 'var(--text-primary)',
-              lineHeight: 1.3,
+              lineHeight: 1.2,
               letterSpacing: '-0.02em',
               marginBottom: '12px',
             }}>
               Stay ahead on AI without the{' '}
-              <span className="gradient-text-orange" style={{ fontWeight: 700 }}>noise</span>
+              <span className="gradient-text-orange" style={{ fontWeight: 600 }}>noise</span>
             </h1>
             
             <p style={{
