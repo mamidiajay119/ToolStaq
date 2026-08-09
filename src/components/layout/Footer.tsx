@@ -117,7 +117,7 @@ export default function Footer() {
           gap: '1rem',
         }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.825rem' }}>
-            © 2026 ToolStaq. Built to help you find the right AI.
+            © 2026 ToolStaq. Built to help you find the right AI Tool.
           </p>
 
         </div>
