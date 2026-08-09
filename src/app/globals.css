@@ -47,13 +47,13 @@
   /* Backgrounds — pure Framer-style black */
   --bg-primary: #000000;
   --bg-secondary: #0A0A0A;
-  --bg-card: #0D0D0D;
-  --bg-card-hover: #141414;
+  --bg-card: #000000;
+  --bg-card-hover: #0D0D0D;
   --bg-overlay: rgba(0, 0, 0, 0.88);
 
-  /* Borders — slightly lighter so cards read against the pure black */
-  --border-subtle: #1F1F1F;
-  --border-glass: #222222;
+  /* Borders — visible against pure black */
+  --border-subtle: #252525;
+  --border-glass: #282828;
   --border-accent: #F97316;
 
   /* Text Colors */
@@ -75,8 +75,8 @@
   --accent-rose: #FB7185;
   --accent-slate: #94A3B8;
 
-  /* Shadows — subtle; Framer leans on borders not shadows */
-  --shadow-card: 0 0 0 1px #1F1F1F;
+  /* Shadows — Framer relies on borders, not shadows */
+  --shadow-card: 0 0 0 1px #252525;
   --shadow-hover: 0 4px 24px rgba(0, 0, 0, 0.8);
 }
 
