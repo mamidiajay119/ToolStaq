@@ -46,31 +46,15 @@ export async function subscribeToNewsletter(
 
   try {
     const audienceId = process.env.RESEND_AUDIENCE_ID;
-    if (!audienceId) {
-      console.warn("RESEND_AUDIENCE_ID is not set. Falling back to sending a transactional welcome email.");
-      
-      // Fallback: If no audience is configured, we send a welcome email instead of adding to a list.
-      await resend.emails.send({
-        from: "ToolStaq Newsletter <newsletter@toolstaq.com>",
-        to: email,
-        subject: "Welcome to ToolStaq Newsletter!",
-        html: "<p>Thank you for subscribing to ToolStaq updates! We will keep you updated on the latest AI tools and breakthroughs.</p>",
-      });
 
-      return {
-        success: true,
-        message: "Thank you for subscribing to ToolStaq! Check your inbox. ✉️",
-      };
-    }
-
-    // Standard behavior: add to audience contacts
+    // Standard behavior: add contact globally or to specific audience
     const response = await resend.contacts.create({
       email: email,
-      audienceId: audienceId,
+      ...(audienceId ? { audienceId } : {}),
     });
 
     if (response.error) {
-      // Check if user is already in the audience list
+      // Check if user is already in the contacts list
       if (response.error.message?.toLowerCase().includes("already exists")) {
         return {
           success: true,
@@ -79,8 +63,20 @@ export async function subscribeToNewsletter(
       }
       return {
         success: false,
-        error: response.error.message || "Failed to add subscriber to audience list.",
+        error: response.error.message || "Failed to add subscriber to contacts list.",
       };
+    }
+
+    // Optionally send a welcome email if they signed up successfully
+    try {
+      await resend.emails.send({
+        from: "ToolStaq Newsletter <newsletter@toolstaq.com>",
+        to: email,
+        subject: "Welcome to ToolStaq Newsletter!",
+        html: "<p>Thank you for subscribing to ToolStaq updates! We will keep you updated on the latest AI tools and breakthroughs.</p>",
+      });
+    } catch (emailErr) {
+      console.warn("Welcome email could not be sent (requires domain verification), but contact was successfully added:", emailErr);
     }
 
     return {
