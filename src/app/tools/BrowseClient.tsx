@@ -233,8 +233,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
       {recommendedTools.length > 0 && activeFilterCount === 0 && !search.trim() && (
         <div style={{ marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '8px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-primary)' }}>
-              <Sparkles size={14} />
+            <div style={{ color: 'var(--accent-primary)' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                 Top Picks
               </span>
