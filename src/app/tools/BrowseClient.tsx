@@ -265,6 +265,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
                   textDecoration: 'none',
                   width: '180px',
                   flexShrink: 0,
+                  position: 'relative',
                   transition: 'border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease',
                   boxShadow: 'var(--shadow-card)',
                 }}
@@ -296,6 +297,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
               border-color: var(--accent-primary) !important;
               box-shadow: var(--shadow-hover) !important;
               transform: translateY(-1px);
+              z-index: 10;
             }
           `}</style>
         </div>
