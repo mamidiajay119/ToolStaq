@@ -34,8 +34,13 @@ export function getMeta() {
 }
 
 export function getFeaturedTools(count = 8): Tool[] {
-  // Return tools that have the most data filled in (proxy for "quality")
-  return data.tools
+  // Sort tools to prioritize Recommended first, then New, then others with rich data
+  return [...data.tools]
+    .sort((a, b) => {
+      const scoreA = (a.is_recommended ? 2 : 0) + (a.is_new ? 1 : 0);
+      const scoreB = (b.is_recommended ? 2 : 0) + (b.is_new ? 1 : 0);
+      return scoreB - scoreA;
+    })
     .filter((t) => t.core_features.length > 0 && t.best_for.length > 0)
     .slice(0, count);
 }
