@@ -5,7 +5,7 @@ import {
   ExternalLink, ArrowLeft, Zap, Globe,
   Code2, Lock, Gift, RefreshCw, Users, ArrowRight, Shield
 } from 'lucide-react';
-import { getAllSlugs, getToolBySlug, getPricingLabel, slugifyCategory, getToolDescription, getAllTools, getInitialUpvotes } from '@/lib/tools';
+import { getAllSlugs, getToolBySlug, getPricingLabel, slugifyCategory, getToolDescription, getToolsByNames, getInitialUpvotes } from '@/lib/tools';
 import type { Tool } from '@/types/tool';
 import ToolLogo from '@/components/tools/ToolLogo';
 import ToolCard from '@/components/tools/ToolCard';
@@ -51,12 +51,9 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
   const categorySlug = slugifyCategory(tool.primary_category);
   const baseUpvotes = getInitialUpvotes(tool.slug, tool.is_recommended);
 
-  // Fetch full tool objects for alternatives
-  const allTools = await getAllTools();
-  const alternativeTools = tool.alternatives
-    .map(altName => allTools.find(t => t.tool_name === altName))
-    .filter((t): t is Tool => t !== undefined)
-    .slice(0, 3); // Limit to 3 alternative cards in sidebar
+  // Fetch alternative tools directly by name — no full-dataset scan needed
+  const altNames = (tool.alternatives || []).slice(0, 3);
+  const alternativeTools = await getToolsByNames(altNames);
 
   // JSON-LD structured data
   const jsonLd = {

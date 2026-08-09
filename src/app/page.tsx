@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Search, Sparkles, TrendingUp, Star } from 'lucide-react';
-import { getAllTools, getCategoryCounts, getMeta, getFeaturedTools, slugifyCategory } from '@/lib/tools';
+import { getAllTools, getMeta, getFeaturedTools, slugifyCategory } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import ToolCard from '@/components/tools/ToolCard';
 import type { Metadata } from 'next';
@@ -19,9 +19,21 @@ const TOP_CATEGORIES = [
 
 export default async function HomePage() {
   const meta = getMeta();
-  const categoryCounts = await getCategoryCounts();
-  const featuredTools = await getFeaturedTools(9);
-  const allTools = await getAllTools();
+
+  // Run all data fetches in parallel — not sequentially
+  const [allTools, featuredTools] = await Promise.all([
+    getAllTools(),
+    getFeaturedTools(9),
+  ]);
+
+  // Derive category counts from the already-fetched allTools (no extra DB call)
+  const categoryCounts: Record<string, number> = {};
+  allTools.forEach((t) => {
+    t.category.forEach((c) => {
+      categoryCounts[c] = (categoryCounts[c] || 0) + 1;
+    });
+  });
+
   const totalFree = allTools.filter(t => t.free_trial || t.pricing_model === 'freemium').length;
   const totalWithApi = allTools.filter(t => t.has_api).length;
 

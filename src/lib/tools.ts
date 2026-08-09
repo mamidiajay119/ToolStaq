@@ -58,7 +58,8 @@ function normalizeTool(t: any): Tool {
 }
 
 // Database-backed async functions for Server Components
-export async function getAllTools(): Promise<Tool[]> {
+// Cached to prevent redundant Supabase round-trips across the same request and between renders
+async function fetchAllToolsRaw(): Promise<Tool[]> {
   let allDbTools: any[] = [];
   let from = 0;
   const step = 1000;
@@ -91,6 +92,12 @@ export async function getAllTools(): Promise<Tool[]> {
   return allDbTools.map(normalizeTool);
 }
 
+// Plain export — getAllTools is only called from SSG pages (/, /tools, /categories)
+// which are statically pre-rendered at build time. No runtime caching needed.
+export async function getAllTools(): Promise<Tool[]> {
+  return fetchAllToolsRaw();
+}
+
 export async function getToolBySlug(slug: string): Promise<Tool | undefined> {
   const { data: dbTool, error } = await supabase
     .from('tools')
@@ -103,6 +110,22 @@ export async function getToolBySlug(slug: string): Promise<Tool | undefined> {
     return undefined;
   }
   return dbTool ? normalizeTool(dbTool) : undefined;
+}
+
+// Targeted lookup by tool_name — used for alternatives panel on detail pages.
+// Avoids fetching all 2,669 tools just to find 3 alternatives.
+export async function getToolsByNames(names: string[]): Promise<Tool[]> {
+  if (!names || names.length === 0) return [];
+  const { data, error } = await supabase
+    .from('tools')
+    .select('*')
+    .in('tool_name', names);
+
+  if (error) {
+    console.error('Error fetching tools by names from Supabase:', error.message);
+    return [];
+  }
+  return (data || []).map(normalizeTool);
 }
 
 export async function getToolsByCategory(category: string): Promise<Tool[]> {
