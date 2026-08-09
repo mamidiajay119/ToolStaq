@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Zap, Loader2 } from 'lucide-react';
+import { Zap, Loader2, CheckCircle2 } from 'lucide-react';
 import { getMeta, getAllCategories, slugifyCategory } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import { useState } from 'react';
@@ -119,53 +119,77 @@ export default function Footer() {
             <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1rem', lineHeight: 1.6 }}>
               Get the latest AI tools delivered to your inbox weekly.
             </p>
-            <form
-              onSubmit={handleSubscribe}
-              style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}
-            >
-              <input
-                type="email"
-                required
-                disabled={isLoading}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
-                className="search-input"
-                style={{ padding: '9px 14px', fontSize: '0.875rem', outline: 'none' }}
-                id="newsletter-email"
-              />
-              <button 
-                type="submit" 
-                disabled={isLoading}
-                className="btn-primary" 
-                style={{ 
-                  justifyContent: 'center', 
-                  padding: '9px 14px',
-                  opacity: isLoading ? 0.8 : 1,
-                  cursor: isLoading ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                }}
-              >
-                {isLoading ? (
-                  <>
-                    Subscribing <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
-                  </>
-                ) : (
-                  'Subscribe'
-                )}
-              </button>
-            </form>
-            {status && (
-              <p style={{ 
-                fontSize: '0.75rem', 
-                color: status.type === 'success' ? 'var(--accent-emerald)' : 'var(--accent-rose)', 
-                marginTop: '8px',
-                lineHeight: 1.4,
+            {status && status.type === 'success' ? (
+              <div style={{
+                padding: '1.25rem 1rem',
+                borderRadius: '12px',
+                background: 'rgba(16, 185, 129, 0.04)',
+                border: '1px solid rgba(16, 185, 129, 0.15)',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '8px',
               }}>
-                {status.message}
-              </p>
+                <CheckCircle2 size={20} style={{ color: 'var(--accent-emerald)' }} />
+                <h5 style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                  Subscribed!
+                </h5>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4, margin: 0 }}>
+                  {status.message}
+                </p>
+              </div>
+            ) : (
+              <>
+                <form
+                  onSubmit={handleSubscribe}
+                  style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}
+                >
+                  <input
+                    type="email"
+                    required
+                    disabled={isLoading}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    className="search-input"
+                    style={{ padding: '9px 14px', fontSize: '0.875rem', outline: 'none' }}
+                    id="newsletter-email"
+                  />
+                  <button 
+                    type="submit" 
+                    disabled={isLoading}
+                    className="btn-primary" 
+                    style={{ 
+                      justifyContent: 'center', 
+                      padding: '9px 14px',
+                      opacity: isLoading ? 0.8 : 1,
+                      cursor: isLoading ? 'not-allowed' : 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                    }}
+                  >
+                    {isLoading ? (
+                      <>
+                        Subscribing <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
+                      </>
+                    ) : (
+                      'Subscribe'
+                    )}
+                  </button>
+                </form>
+                {status && status.type === 'error' && (
+                  <p style={{ 
+                    fontSize: '0.75rem', 
+                    color: 'var(--accent-rose)', 
+                    marginTop: '8px',
+                    lineHeight: 1.4,
+                  }}>
+                    {status.message}
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -35,6 +35,45 @@ export default function NewsletterForm() {
     }
   };
 
+  // Redesigned: Professional Success Card Layout
+  if (status && status.type === 'success') {
+    return (
+      <div style={{
+        padding: '2rem 1.75rem',
+        borderRadius: '16px',
+        background: 'var(--bg-secondary)',
+        border: '1px solid rgba(16, 185, 129, 0.15)',
+        textAlign: 'center',
+        maxWidth: '420px',
+        margin: '0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '12px',
+        boxShadow: 'var(--shadow-card)',
+      }}>
+        <div style={{
+          width: '48px',
+          height: '48px',
+          borderRadius: '50%',
+          background: 'rgba(16, 185, 129, 0.08)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: '4px',
+        }}>
+          <CheckCircle2 size={24} style={{ color: 'var(--accent-emerald)' }} />
+        </div>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, letterSpacing: '-0.01em' }}>
+          Subscription Confirmed
+        </h3>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
+          {status.message}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div style={{ maxWidth: '420px', margin: '0 auto', width: '100%' }}>
       <form onSubmit={handleSubmit} style={{
@@ -92,21 +131,21 @@ export default function NewsletterForm() {
         </button>
       </form>
 
-      {status && (
+      {status && status.type === 'error' && (
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           gap: '8px',
           fontSize: '0.85rem',
-          color: status.type === 'success' ? 'var(--accent-emerald)' : 'var(--accent-rose)',
+          color: 'var(--accent-rose)',
           marginTop: '1rem',
           padding: '8px 12px',
           borderRadius: '8px',
-          background: status.type === 'success' ? 'rgba(16, 185, 129, 0.05)' : 'rgba(239, 68, 68, 0.05)',
-          border: `1px solid ${status.type === 'success' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)'}`,
+          background: 'rgba(239, 68, 68, 0.05)',
+          border: '1px solid rgba(239, 68, 68, 0.15)',
         }}>
-          {status.type === 'success' ? <CheckCircle2 size={14} /> : <AlertCircle size={14} />}
+          <AlertCircle size={14} />
           <span>{status.message}</span>
         </div>
       )}
