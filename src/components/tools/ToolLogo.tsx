@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { urlToFaviconSrc } from '@/lib/favicon';
+import { useState, useMemo } from 'react';
 
 interface ToolLogoProps {
   url: string;
@@ -11,6 +10,26 @@ interface ToolLogoProps {
   borderRadius?: number;
 }
 
+function getFaviconSources(url: string, favicon_url?: string): string[] {
+  const sources: string[] = [];
+  if (favicon_url) {
+    sources.push(favicon_url);
+  }
+  try {
+    const { hostname } = new URL(url);
+    const domain = hostname.replace(/^www\./, '');
+    if (domain) {
+      // 1. High-quality favicon.im CDN
+      sources.push(`https://a.favicon.im/${domain}?larger=true&throw-error-on-404=true`);
+      // 2. Google Favicon Service
+      sources.push(`https://www.google.com/s2/favicons?sz=128&domain=${domain}`);
+    }
+  } catch {
+    // Ignore URL parse errors
+  }
+  return sources;
+}
+
 export default function ToolLogo({
   url,
   icon,
@@ -18,11 +37,20 @@ export default function ToolLogo({
   size = 42,
   borderRadius = size >= 64 ? 16 : 10,
 }: ToolLogoProps) {
+  const sources = useMemo(() => getFaviconSources(url, favicon_url), [url, favicon_url]);
+  const [sourceIndex, setSourceIndex] = useState(0);
   const [failed, setFailed] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  // Use pre-scraped URL first, then Google favicon service as fallback
-  const src = favicon_url || urlToFaviconSrc(url);
+  const src = sources[sourceIndex];
+
+  const handleError = () => {
+    if (sourceIndex + 1 < sources.length) {
+      setSourceIndex(sourceIndex + 1);
+    } else {
+      setFailed(true);
+    }
+  };
 
   const containerStyle: React.CSSProperties = {
     width: `${size}px`,
@@ -70,7 +98,7 @@ export default function ToolLogo({
         width={size}
         height={size}
         onLoad={() => setLoaded(true)}
-        onError={() => setFailed(true)}
+        onError={handleError}
         style={{
           width: size >= 64 ? `${size - 12}px` : `${size - 8}px`,
           height: size >= 64 ? `${size - 12}px` : `${size - 8}px`,
