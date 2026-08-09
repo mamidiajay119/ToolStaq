@@ -83,11 +83,12 @@ export default function NewsletterPage() {
             </div>
             
             <h1 style={{
+              fontFamily: "'Roboto', sans-serif",
               fontSize: 'clamp(2rem, 5vw, 2.75rem)',
               fontWeight: 400,
               color: 'var(--text-primary)',
               lineHeight: 1.2,
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.01em',
               marginBottom: '12px',
             }}>
               Stay ahead on AI without the{' '}
