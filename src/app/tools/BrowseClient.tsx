@@ -236,7 +236,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-primary)' }}>
               <Sparkles size={14} />
               <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Recommended Right Now
+                Top Picks
               </span>
             </div>
             <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>

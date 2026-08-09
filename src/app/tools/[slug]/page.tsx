@@ -115,6 +115,38 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 <div style={{ flex: 1, minWidth: '300px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
                     <h1 style={{ fontSize: '1.5rem', fontWeight: 600, letterSpacing: '-0.03em', margin: 0 }}>{tool.tool_name}</h1>
+                    {tool.is_recommended && (
+                      <span style={{
+                        fontSize: '0.65rem',
+                        fontWeight: 700,
+                        color: 'var(--accent-emerald)',
+                        background: 'rgba(5, 150, 105, 0.08)',
+                        border: '1px solid rgba(5, 150, 105, 0.2)',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        lineHeight: 1.2,
+                      }}>
+                        Recommended
+                      </span>
+                    )}
+                    {tool.is_new && (
+                      <span style={{
+                        fontSize: '0.65rem',
+                        fontWeight: 700,
+                        color: 'var(--accent-primary)',
+                        background: 'rgba(249, 115, 22, 0.08)',
+                        border: '1px solid rgba(249, 115, 22, 0.2)',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.04em',
+                        lineHeight: 1.2,
+                      }}>
+                        New
+                      </span>
+                    )}
                     {tool.open_source && <Badge label="Open Source" variant="emerald" />}
                   </div>
                   {tool.title && (
