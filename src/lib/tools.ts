@@ -164,3 +164,26 @@ export function categoryFromSlug(slug: string): string {
     (c) => slugifyCategory(c) === slug
   ) || slug;
 }
+
+export function getInitialUpvotes(slug: string, isRecommended?: boolean): number {
+  if (slug === 'chatgpt') return 1876;
+  if (slug === 'claude') return 1642;
+  if (slug === 'cursor') return 1420;
+  if (slug === 'github-copilot') return 1285;
+  if (slug === 'perplexity') return 1195;
+
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    hash = slug.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  // Stable value between 40 and 840
+  const base = (Math.abs(hash) % 800) + 40;
+  
+  // Boost recommended tools
+  if (isRecommended) {
+    return base + 600;
+  }
+  
+  return base;
+}

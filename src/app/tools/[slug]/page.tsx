@@ -5,10 +5,11 @@ import {
   ExternalLink, ArrowLeft, Zap, Globe,
   Code2, Lock, Gift, RefreshCw, Users, ArrowRight, Shield
 } from 'lucide-react';
-import { getAllSlugs, getToolBySlug, getPricingLabel, slugifyCategory, getToolDescription, getAllTools } from '@/lib/tools';
+import { getAllSlugs, getToolBySlug, getPricingLabel, slugifyCategory, getToolDescription, getAllTools, getInitialUpvotes } from '@/lib/tools';
 import type { Tool } from '@/types/tool';
 import ToolLogo from '@/components/tools/ToolLogo';
 import ToolCard from '@/components/tools/ToolCard';
+import UpvoteButton from '@/components/tools/UpvoteButton';
 
 export async function generateStaticParams() {
   const slugs = getAllSlugs();
@@ -48,6 +49,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
 
   const pricingLabel = getPricingLabel(tool);
   const categorySlug = slugifyCategory(tool.primary_category);
+  const baseUpvotes = getInitialUpvotes(tool.slug, tool.is_recommended);
 
   // Fetch full tool objects for alternatives
   const allTools = getAllTools();
@@ -162,20 +164,47 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     ))}
                   </div>
                   {/* CTA */}
-                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', flexWrap: 'wrap', marginTop: '1.5rem' }}>
                     <a
                       href={`/go/${tool.slug}`}
                       className="btn-primary"
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={{ padding: '7px 16px', fontSize: '0.825rem', gap: '6px' }}
+                      style={{ padding: '7px 16px', fontSize: '0.825rem', gap: '6px', height: '36px', display: 'flex', alignItems: 'center' }}
                     >
                       <ExternalLink size={13} /> Visit {tool.tool_name}
                     </a>
+                    
+                    <UpvoteButton toolSlug={tool.slug} initialUpvotes={baseUpvotes} />
+                    
+                    {tool.is_recommended && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        padding: '6px 12px',
+                        borderRadius: '12px',
+                        border: '1px solid rgba(16, 185, 129, 0.2)',
+                        background: 'rgba(16, 185, 129, 0.04)',
+                        color: 'var(--accent-emerald)',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        height: '36px',
+                      }}>
+                        <span style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          background: '#10B981',
+                        }} />
+                        Top Pick
+                      </div>
+                    )}
+
                     <Link
                       href={`/compare?tool=${tool.slug}`}
                       className="btn-secondary"
-                      style={{ padding: '7px 16px', fontSize: '0.825rem' }}
+                      style={{ padding: '7px 16px', fontSize: '0.825rem', height: '36px', display: 'flex', alignItems: 'center' }}
                     >
                       Compare Tools
                     </Link>
