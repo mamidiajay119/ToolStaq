@@ -84,7 +84,7 @@ export default function NewsletterPage() {
             
             <h1 style={{
               fontFamily: "'Roboto', sans-serif",
-              fontSize: 'clamp(2rem, 5vw, 2.75rem)',
+              fontSize: 'clamp(2.25rem, 6vw, 3.25rem)',
               fontWeight: 400,
               color: 'var(--text-primary)',
               lineHeight: 1.2,
