@@ -1,4 +1,5 @@
 import type { NewsArticle } from '../app/news/page';
+import { supabase } from './supabase';
 
 interface CurrentsArticle {
   id: string;
@@ -100,6 +101,47 @@ function getDomainName(urlStr: string): string {
 }
 
 export async function fetchLatestAINews(count = 6): Promise<NewsArticle[]> {
+  // 1. Try loading news from Supabase first
+  try {
+    const { data, error } = await supabase
+      .from('news_articles')
+      .select('*')
+      .order('published_at', { ascending: false })
+      .limit(count);
+
+    if (error) throw error;
+
+    if (data && data.length > 0) {
+      return data.map((article) => {
+        // Estimate read time
+        const words = (article.description || "").split(/\s+/).length;
+        const readTime = Math.max(1, Math.ceil(words / 200) + 1) + " min read";
+
+        const dateObj = new Date(article.published_at);
+        const formattedDate = dateObj.toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        });
+
+        return {
+          id: String(article.id),
+          title: article.title,
+          excerpt: article.description,
+          date: formattedDate,
+          readTime,
+          category: getCategory(article.title, article.description),
+          source: article.source_name || 'AI Source',
+          slug: article.slug,
+          url: article.url || undefined,
+        };
+      });
+    }
+  } catch (e) {
+    console.error('Failed to load news from Supabase, falling back to Currents API:', e);
+  }
+
+  // 2. Fallback to Currents API
   const currentsKey = process.env.CURRENTS_API_KEY;
 
   if (!currentsKey) {

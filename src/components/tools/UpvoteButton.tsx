@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 interface UpvoteButtonProps {
   toolSlug: string;
-  initialUpvotes: number;
+  initialUpvotes: number; // Will start at 0
 }
 
 export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonProps) {
@@ -14,39 +15,76 @@ export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonP
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    try {
-      const upvotedTools = JSON.parse(localStorage.getItem('upvoted_tools') || '[]');
-      if (Array.isArray(upvotedTools) && upvotedTools.includes(toolSlug)) {
-        setHasVoted(true);
-        setUpvotesCount(initialUpvotes + 1);
-      }
-    } catch (e) {
-      console.error('Failed to parse upvoted tools from localStorage', e);
+    // Generate or fetch client browser fingerprint UUID
+    let fingerprint = localStorage.getItem('voting_fingerprint');
+    if (!fingerprint) {
+      fingerprint = 'fp_' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem('voting_fingerprint', fingerprint);
     }
-    setIsHydrated(true);
+
+    async function loadVotes() {
+      try {
+        // 1. Fetch total global votes for this tool
+        const { count, error } = await supabase
+          .from('tool_votes')
+          .select('*', { count: 'exact', head: true })
+          .eq('tool_slug', toolSlug);
+
+        if (!error && count !== null) {
+          setUpvotesCount(count);
+        }
+
+        // 2. Check if this browser has already voted
+        const { data, error: checkError } = await supabase
+          .from('tool_votes')
+          .select('id')
+          .eq('tool_slug', toolSlug)
+          .eq('fingerprint', fingerprint)
+          .maybeSingle();
+
+        if (!checkError && data) {
+          setHasVoted(true);
+        }
+      } catch (e) {
+        console.error('Failed to load live votes from Supabase:', e);
+      }
+      setIsHydrated(true);
+    }
+
+    loadVotes();
   }, [toolSlug, initialUpvotes]);
 
-  const handleUpvote = () => {
-    try {
-      const upvotedTools = JSON.parse(localStorage.getItem('upvoted_tools') || '[]');
-      let updatedList = [...upvotedTools];
+  const handleUpvote = async () => {
+    const fingerprint = localStorage.getItem('voting_fingerprint') || 'anonymous';
+    const originalHasVoted = hasVoted;
+    
+    // Optimistic UI updates
+    setHasVoted(!originalHasVoted);
+    setUpvotesCount(c => originalHasVoted ? Math.max(0, c - 1) : c + 1);
 
-      if (hasVoted) {
-        // Retract vote
-        updatedList = updatedList.filter((slug) => slug !== toolSlug);
-        setUpvotesCount((c) => Math.max(initialUpvotes, c - 1));
-        setHasVoted(false);
+    try {
+      if (originalHasVoted) {
+        // Retract vote in Supabase
+        const { error } = await supabase
+          .from('tool_votes')
+          .delete()
+          .eq('tool_slug', toolSlug)
+          .eq('fingerprint', fingerprint);
+
+        if (error) throw error;
       } else {
-        // Vote
-        if (!updatedList.includes(toolSlug)) {
-          updatedList.push(toolSlug);
-        }
-        setUpvotesCount((c) => c + 1);
-        setHasVoted(true);
+        // Cast vote in Supabase
+        const { error } = await supabase
+          .from('tool_votes')
+          .insert({ tool_slug: toolSlug, fingerprint });
+
+        if (error) throw error;
       }
-      localStorage.setItem('upvoted_tools', JSON.stringify(updatedList));
     } catch (e) {
-      console.error('Failed to save vote to localStorage', e);
+      console.error('Failed to update vote in Supabase:', e);
+      // Revert optimistic updates on error
+      setHasVoted(originalHasVoted);
+      setUpvotesCount(c => originalHasVoted ? c + 1 : Math.max(0, c - 1));
     }
   };
 

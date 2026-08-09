@@ -12,13 +12,13 @@ import ToolCard from '@/components/tools/ToolCard';
 import UpvoteButton from '@/components/tools/UpvoteButton';
 
 export async function generateStaticParams() {
-  const slugs = getAllSlugs();
+  const slugs = await getAllSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const tool = getToolBySlug(slug);
+  const tool = await getToolBySlug(slug);
   if (!tool) return { title: 'Tool Not Found' };
 
   const pricingLabel = getPricingLabel(tool);
@@ -44,7 +44,7 @@ function Badge({ label, variant = 'violet' }: { label: string; variant?: string 
 
 export default async function ToolPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const tool = getToolBySlug(slug);
+  const tool = await getToolBySlug(slug);
   if (!tool) notFound();
 
   const pricingLabel = getPricingLabel(tool);
@@ -52,7 +52,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
   const baseUpvotes = getInitialUpvotes(tool.slug, tool.is_recommended);
 
   // Fetch full tool objects for alternatives
-  const allTools = getAllTools();
+  const allTools = await getAllTools();
   const alternativeTools = tool.alternatives
     .map(altName => allTools.find(t => t.tool_name === altName))
     .filter((t): t is Tool => t !== undefined)

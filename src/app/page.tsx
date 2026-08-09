@@ -17,11 +17,11 @@ const TOP_CATEGORIES = [
   'AI Analytics', 'AI Productivity', 'AI Research',
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
   const meta = getMeta();
-  const categoryCounts = getCategoryCounts();
-  const featuredTools = getFeaturedTools(9);
-  const allTools = getAllTools();
+  const categoryCounts = await getCategoryCounts();
+  const featuredTools = await getFeaturedTools(9);
+  const allTools = await getAllTools();
   const totalFree = allTools.filter(t => t.free_trial || t.pricing_model === 'freemium').length;
   const totalWithApi = allTools.filter(t => t.has_api).length;
 

@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const cat = categoryFromSlug(slug);
   if (!cat) return { title: 'Category Not Found' };
-  const tools = getToolsByCategory(cat);
+  const tools = await getToolsByCategory(cat);
   return {
     title: `${cat} Tools — ${tools.length} AI Tools for ${cat.replace('AI ', '')}`,
     description: `Browse ${tools.length} ${cat} tools. Compare pricing, features, and find the best ${cat} tool for your workflow.`,
@@ -29,7 +29,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
   const cat = categoryFromSlug(slug);
   if (!cat) notFound();
 
-  const tools = getToolsByCategory(cat);
+  const tools = await getToolsByCategory(cat);
   const desc = CATEGORY_SHORT_DESCRIPTIONS[cat] || `Browse ${tools.length} AI tools in the ${cat} category.`;
   const allCategories = getAllCategories();
 

@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 import { getAllSlugs, getAllCategories, slugifyCategory } from '@/lib/tools';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = 'https://aitoolsdirectory.com';
   const now = new Date();
 
@@ -12,7 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/submit`, lastModified: now, changeFrequency: 'monthly', priority: 0.5 },
   ];
 
-  const toolRoutes: MetadataRoute.Sitemap = getAllSlugs().map((slug) => ({
+  const slugs = await getAllSlugs();
+  const toolRoutes: MetadataRoute.Sitemap = slugs.map((slug) => ({
     url: `${base}/tools/${slug}`,
     lastModified: now,
     changeFrequency: 'weekly' as const,

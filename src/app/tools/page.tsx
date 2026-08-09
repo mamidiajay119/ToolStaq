@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: 'Browse and filter top AI tools by category, pricing model, complexity, deployment type, free trial availability, and API access.',
 };
 
-export default function BrowsePage() {
-  const tools = getAllTools();
+export default async function BrowsePage() {
+  const tools = await getAllTools();
   const categories = getAllCategories();
 
   return (

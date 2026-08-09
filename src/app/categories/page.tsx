@@ -9,9 +9,9 @@ export const metadata: Metadata = {
   description: 'Browse all 27 categories of AI tools, from AI writing and coding to video generation and marketing.',
 };
 
-export default function CategoriesIndexPage() {
+export default async function CategoriesIndexPage() {
   const categories = getAllCategories();
-  const counts = getCategoryCounts();
+  const counts = await getCategoryCounts();
 
   return (
     <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>

@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   description: 'Compare AI tools side-by-side. Evaluate pricing, features, complexity, API availability, and more to find the best tool for your needs.',
 };
 
-export default function ComparePage() {
-  const tools = getAllTools();
+export default async function ComparePage() {
+  const tools = await getAllTools();
   return (
     <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading...</div>}>
       <CompareClient tools={tools} />
