@@ -113,7 +113,7 @@ export default async function NewsPage() {
           text-decoration: none;
         }
         .news-card:hover {
-          border-color: var(--accent-primary) !important;
+          border-color: rgba(249, 115, 22, 0.35) !important;
           transform: translateY(-2px);
           box-shadow: var(--shadow-hover);
         }
@@ -130,7 +130,7 @@ export default async function NewsPage() {
           transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
         }
         .featured-card:hover {
-          border-color: var(--accent-primary) !important;
+          border-color: rgba(249, 115, 22, 0.35) !important;
           transform: translateY(-2px);
           box-shadow: var(--shadow-hover);
         }
