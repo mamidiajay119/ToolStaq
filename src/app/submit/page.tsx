@@ -134,7 +134,7 @@ export default function SubmitPage() {
                 type="email"
                 value={form.email}
                 onChange={(e) => update('email', e.target.value)}
-                placeholder="notify@me.com"
+                placeholder="Enter your email address"
                 className="search-input"
                 style={{ padding: '10px 14px', fontSize: '0.9rem' }}
               />

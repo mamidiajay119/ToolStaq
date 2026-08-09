@@ -92,9 +92,10 @@ export default function Footer() {
               onSubmit={(e) => e.preventDefault()}
               style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}
             >
+
               <input
                 type="email"
-                placeholder="your@email.com"
+                placeholder="Enter your email address"
                 className="search-input"
                 style={{ padding: '9px 14px', fontSize: '0.875rem' }}
                 id="newsletter-email"
