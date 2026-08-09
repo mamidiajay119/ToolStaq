@@ -108,7 +108,8 @@ export async function fetchLatestAINews(count = 6): Promise<NewsArticle[]> {
   }
 
   try {
-    const url = `https://api.currentsapi.services/v1/search?keywords=artificial%20intelligence&language=en&limit=${count}`;
+    const searchQuery = encodeURIComponent('"artificial intelligence" OR "generative AI" OR "large language model" OR "AI tools" OR "LLM" OR "OpenAI" OR "Anthropic"');
+    const url = `https://api.currentsapi.services/v1/search?query=${searchQuery}&category=technology&language=en&limit=${count}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
