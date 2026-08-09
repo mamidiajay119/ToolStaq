@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { ChevronUp } from 'lucide-react';
 import type { Tool } from '@/types/tool';
 import { getPricingLabel } from '@/lib/tools';
 import ToolLogo from '@/components/tools/ToolLogo';
@@ -19,11 +18,10 @@ function getPricingClass(model: string, freeTrial: boolean): string {
 
 interface ToolCardProps {
   tool: Tool;
-  rank?: number;
   hideRecommendedBadge?: boolean;
 }
 
-export default function ToolCard({ tool, rank, hideRecommendedBadge = false }: ToolCardProps) {
+export default function ToolCard({ tool, hideRecommendedBadge = false }: ToolCardProps) {
   const pricingLabel = getPricingLabel(tool);
   const pricingClass = getPricingClass(tool.pricing_model, tool.free_trial);
 
@@ -111,13 +109,6 @@ export default function ToolCard({ tool, rank, hideRecommendedBadge = false }: T
               {tool.primary_category}
             </span>
           </div>
-          
-          {rank && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-secondary)' }}>
-              <ChevronUp size={14} />
-              <span style={{ fontSize: '0.75rem', fontWeight: 500 }}>{rank}</span>
-            </div>
-          )}
         </div>
 
       </div>

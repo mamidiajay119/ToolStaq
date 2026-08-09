@@ -358,7 +358,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
             marginBottom: '2rem',
           }}>
             {paginated.map((tool, i) => (
-              <ToolCard key={tool.slug} tool={tool} rank={i < 3 && page === 1 ? i + 1 : undefined} />
+              <ToolCard key={tool.slug} tool={tool} />
             ))}
           </div>
 
