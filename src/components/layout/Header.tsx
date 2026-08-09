@@ -51,7 +51,7 @@ export default function Header() {
           <Link href="/tools" className="btn-ghost">Tools</Link>
           <Link href="/categories" className="btn-ghost">Categories</Link>
           <Link href="/compare" className="btn-ghost">Compare</Link>
-          <Link href="/news" className="btn-ghost">News</Link>
+          <Link href="/news" className="btn-ghost">AI News</Link>
           <Link href="/submit" className="btn-ghost">Submit Tool</Link>
         </nav>
 
@@ -87,7 +87,7 @@ export default function Header() {
           <Link href="/tools" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Tools</Link>
           <Link href="/categories" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Categories</Link>
           <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Compare</Link>
-          <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>News</Link>
+          <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>AI News</Link>
           <Link href="/submit" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Submit Tool</Link>
           <Link href="/newsletter" className="btn-secondary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', marginTop: '8px' }}>Subscribe</Link>
         </div>
