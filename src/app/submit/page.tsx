@@ -53,7 +53,7 @@ export default function SubmitPage() {
     <div className="container-lg" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '8px' }}>Submit a Tool</h1>
+          <h1 style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '8px' }}>Submit a Tool</h1>
           <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
             Know an AI tool we&apos;re missing? Add it to the directory for the community.
           </p>
