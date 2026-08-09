@@ -2,9 +2,11 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Search, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, X, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 import ToolCard from '@/components/tools/ToolCard';
 import type { Tool } from '@/types/tool';
+import Link from 'next/link';
+import ToolLogo from '@/components/tools/ToolLogo';
 
 const PRICING_MODELS = ['freemium', 'subscription', 'usage-based', 'one-time', 'custom pricing'];
 const COMPLEXITY_LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
@@ -82,6 +84,10 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
   const [openSourceOnly, setOpenSourceOnly] = useState(false);
   const [page, setPage] = useState(1);
   const PER_PAGE = 24;
+
+  const recommendedTools = useMemo(() => {
+    return tools.filter((t) => t.is_recommended);
+  }, [tools]);
 
   const filtered = useMemo(() => {
     let result = tools;
@@ -222,6 +228,76 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           </span>
         )}
       </div>
+
+      {/* Recommended Right Now Section */}
+      {recommendedTools.length > 0 && activeFilterCount === 0 && !search.trim() && (
+        <div style={{ marginBottom: '2.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent-primary)' }}>
+              <Sparkles size={14} />
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Recommended Right Now
+              </span>
+            </div>
+            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              Handpicked top-tier AI tools
+            </span>
+          </div>
+
+          <div className="hide-scroll" style={{ 
+            display: 'flex', 
+            gap: '12px', 
+            overflowX: 'auto', 
+            paddingBottom: '8px',
+            margin: '0 -1.5rem',
+            padding: '0 1.5rem 8px',
+          }}>
+            {recommendedTools.map((tool) => (
+              <Link
+                key={tool.slug}
+                href={`/tools/${tool.slug}`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--border-subtle)',
+                  borderRadius: '12px',
+                  padding: '8px 16px',
+                  textDecoration: 'none',
+                  flexShrink: 0,
+                  transition: 'border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease',
+                  boxShadow: 'var(--shadow-card)',
+                }}
+                className="recommended-capsule"
+              >
+                <ToolLogo
+                  url={tool.url}
+                  icon={tool.icon}
+                  favicon_url={tool.favicon_url}
+                  size={24}
+                />
+                <span style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  whiteSpace: 'nowrap',
+                }}>
+                  {tool.tool_name}
+                </span>
+              </Link>
+            ))}
+          </div>
+          
+          <style>{`
+            .recommended-capsule:hover {
+              border-color: var(--accent-primary) !important;
+              box-shadow: var(--shadow-hover) !important;
+              transform: translateY(-1px);
+            }
+          `}</style>
+        </div>
+      )}
 
       {/* Active Non-Category Filter Badges */}
       {activeNonCategoryCount > 0 && (

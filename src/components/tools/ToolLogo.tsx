@@ -7,7 +7,7 @@ interface ToolLogoProps {
   url: string;
   icon: string;             // emoji fallback
   favicon_url?: string;     // pre-scraped URL from data pipeline
-  size?: 42 | 64 | 80;
+  size?: number;
   borderRadius?: number;
 }
 
