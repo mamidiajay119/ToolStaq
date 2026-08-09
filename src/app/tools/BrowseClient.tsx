@@ -249,8 +249,6 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
             gap: '12px', 
             overflowX: 'auto', 
             paddingBottom: '8px',
-            margin: '0 -1.5rem',
-            padding: '0 1.5rem 8px',
           }}>
             {recommendedTools.map((tool) => (
               <Link
