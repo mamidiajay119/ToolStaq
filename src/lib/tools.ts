@@ -59,16 +59,36 @@ function normalizeTool(t: any): Tool {
 
 // Database-backed async functions for Server Components
 export async function getAllTools(): Promise<Tool[]> {
-  const { data: dbTools, error } = await supabase
-    .from('tools')
-    .select('*')
-    .order('tool_name', { ascending: true });
+  let allDbTools: any[] = [];
+  let from = 0;
+  const step = 1000;
+  let hasMore = true;
 
-  if (error) {
-    console.error('Error fetching tools from Supabase:', error.message);
-    return [];
+  while (hasMore) {
+    const { data: chunk, error } = await supabase
+      .from('tools')
+      .select('*')
+      .order('tool_name', { ascending: true })
+      .range(from, from + step - 1);
+
+    if (error) {
+      console.error('Error fetching tools chunk from Supabase:', error.message);
+      return [];
+    }
+
+    if (!chunk || chunk.length === 0) {
+      hasMore = false;
+    } else {
+      allDbTools = [...allDbTools, ...chunk];
+      if (chunk.length < step) {
+        hasMore = false;
+      } else {
+        from += step;
+      }
+    }
   }
-  return (dbTools || []).map(normalizeTool);
+
+  return allDbTools.map(normalizeTool);
 }
 
 export async function getToolBySlug(slug: string): Promise<Tool | undefined> {

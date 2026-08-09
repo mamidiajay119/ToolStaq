@@ -239,8 +239,7 @@ export default async function HomePage() {
               position: 'relative',
               overflow: 'hidden',
             }}>
-              <Star size={28} style={{ color: 'var(--accent-primary)', marginBottom: '1rem' }} />
-              <h2 style={{ fontSize: '1.4rem', fontWeight: 600, marginBottom: '0.75rem' }}>
+              <h2 style={{ fontSize: '1.4rem', fontWeight: 600, marginBottom: '0.75rem', marginTop: '1rem' }}>
                 Know a Tool We&apos;re Missing?
               </h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.5rem', maxWidth: '480px', margin: '0 auto 1.5rem' }}>
