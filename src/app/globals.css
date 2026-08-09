@@ -44,29 +44,29 @@
 
 /* ─── Dark Mode Tokens ─────────────────────────────────────────────── */
 [data-theme='dark'] {
-  /* Backgrounds */
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #171717;
-  --bg-card: #0F0F0F;
-  --bg-card-hover: #1A1A1A;
-  --bg-overlay: rgba(10, 10, 10, 0.85);
+  /* Backgrounds — pure Framer-style black */
+  --bg-primary: #000000;
+  --bg-secondary: #0A0A0A;
+  --bg-card: #0D0D0D;
+  --bg-card-hover: #141414;
+  --bg-overlay: rgba(0, 0, 0, 0.88);
 
-  /* Borders */
-  --border-subtle: #262626;
-  --border-glass: #262626;
+  /* Borders — slightly lighter so cards read against the pure black */
+  --border-subtle: #1F1F1F;
+  --border-glass: #222222;
   --border-accent: #F97316;
 
   /* Text Colors */
-  --text-primary: #F9FAFB;
-  --text-secondary: #A1A1AA;
-  --text-muted: #52525B;
+  --text-primary: #EDEDED;
+  --text-secondary: #8C8C8C;
+  --text-muted: #4A4A4A;
   --hero-text-primary: #FFFFFF;
-  --hero-text-secondary: rgba(255, 255, 255, 0.8);
+  --hero-text-secondary: rgba(255, 255, 255, 0.75);
 
   /* Accent Colors */
   --accent-primary: #F97316;
   --accent-hover: #EA580C;
-  --accent-subtle: #431407;
+  --accent-subtle: #2C1000;
 
   /* Specific Semantic Colors */
   --accent-cyan: #22D3EE;
@@ -75,9 +75,9 @@
   --accent-rose: #FB7185;
   --accent-slate: #94A3B8;
 
-  /* Shadows */
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.4);
-  --shadow-hover: 0 4px 12px rgba(0,0,0,0.6);
+  /* Shadows — subtle; Framer leans on borders not shadows */
+  --shadow-card: 0 0 0 1px #1F1F1F;
+  --shadow-hover: 0 4px 24px rgba(0, 0, 0, 0.8);
 }
 
 /* ─── Reset & Base ───────────────────────────────────────────────────── */
