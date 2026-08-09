@@ -41,13 +41,50 @@ export default function ToolCard({ tool, rank }: ToolCardProps) {
             />
           </div>
           <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <h3 style={{
-              fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)',
-              whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-              margin: 0, lineHeight: 1.2,
-            }}>
-              {tool.tool_name}
-            </h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', width: '100%' }}>
+              <h3 style={{
+                fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)',
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+                margin: 0, lineHeight: 1.2,
+                maxWidth: '100%',
+              }}>
+                {tool.tool_name}
+              </h3>
+              {tool.is_recommended && (
+                <span style={{
+                  fontSize: '0.6rem',
+                  fontWeight: 700,
+                  color: 'var(--accent-emerald)',
+                  background: 'rgba(5, 150, 105, 0.08)',
+                  border: '1px solid rgba(5, 150, 105, 0.2)',
+                  padding: '1px 5px',
+                  borderRadius: '4px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  flexShrink: 0,
+                  lineHeight: 1,
+                }}>
+                  Recommended
+                </span>
+              )}
+              {tool.is_new && (
+                <span style={{
+                  fontSize: '0.6rem',
+                  fontWeight: 700,
+                  color: 'var(--accent-primary)',
+                  background: 'rgba(249, 115, 22, 0.08)',
+                  border: '1px solid rgba(249, 115, 22, 0.2)',
+                  padding: '1px 5px',
+                  borderRadius: '4px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em',
+                  flexShrink: 0,
+                  lineHeight: 1,
+                }}>
+                  New
+                </span>
+              )}
+            </div>
             {tool.title && (
               <p style={{
                 fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4,

@@ -30,6 +30,8 @@ export interface Tool {
   core_features_rich?: string;
   technical_architecture?: string;
   pricing_details?: string;
+  is_recommended?: boolean;
+  is_new?: boolean;
 }
 
 export interface ToolsData {
