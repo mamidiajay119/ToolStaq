@@ -1,13 +1,44 @@
 'use client';
 
 import Link from 'next/link';
-import { Zap } from 'lucide-react';
+import { Zap, Loader2 } from 'lucide-react';
 import { getMeta, getAllCategories, slugifyCategory } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
+import { useState } from 'react';
+import { subscribeToNewsletter } from '@/app/actions/subscribe';
 
 export default function Footer() {
   const meta = getMeta();
   const categories = getAllCategories().slice(0, 5);
+
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsLoading(true);
+    setStatus(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('email', email);
+      const result = await subscribeToNewsletter(null, formData);
+
+      if (result.success) {
+        setStatus({ type: 'success', message: result.message || 'Subscribed!' });
+        setEmail('');
+      } else {
+        setStatus({ type: 'error', message: result.error || 'Failed to subscribe.' });
+      }
+    } catch (err) {
+      setStatus({ type: 'error', message: 'An unexpected error occurred. Please try again.' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <footer style={{
@@ -89,21 +120,53 @@ export default function Footer() {
               Get the latest AI tools delivered to your inbox weekly.
             </p>
             <form
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubscribe}
               style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}
             >
-
               <input
                 type="email"
+                required
+                disabled={isLoading}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 className="search-input"
-                style={{ padding: '9px 14px', fontSize: '0.875rem' }}
+                style={{ padding: '9px 14px', fontSize: '0.875rem', outline: 'none' }}
                 id="newsletter-email"
               />
-              <button type="submit" className="btn-primary" style={{ justifyContent: 'center', padding: '9px 14px' }}>
-                Subscribe
+              <button 
+                type="submit" 
+                disabled={isLoading}
+                className="btn-primary" 
+                style={{ 
+                  justifyContent: 'center', 
+                  padding: '9px 14px',
+                  opacity: isLoading ? 0.8 : 1,
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                }}
+              >
+                {isLoading ? (
+                  <>
+                    Subscribing <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
+                  </>
+                ) : (
+                  'Subscribe'
+                )}
               </button>
             </form>
+            {status && (
+              <p style={{ 
+                fontSize: '0.75rem', 
+                color: status.type === 'success' ? 'var(--accent-emerald)' : 'var(--accent-rose)', 
+                marginTop: '8px',
+                lineHeight: 1.4,
+              }}>
+                {status.message}
+              </p>
+            )}
           </div>
         </div>
 
