@@ -199,11 +199,11 @@ export default function Footer() {
           paddingTop: '1.5rem',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           flexWrap: 'wrap',
           gap: '1rem',
         }}>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.825rem' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.825rem', textAlign: 'center' }}>
             © 2026 ToolStaq. Built to help you find the right AI Tool.
           </p>
 
