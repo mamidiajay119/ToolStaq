@@ -50,7 +50,7 @@ export default function SubmitPage() {
   }
 
   return (
-    <div className="container-lg" style={{ paddingTop: '3rem', paddingBottom: '5rem' }}>
+    <div className="container-lg" style={{ paddingTop: '6rem', paddingBottom: '5rem' }}>
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <h1 style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 400, letterSpacing: '-0.03em', marginBottom: '8px' }}>Submit a Tool</h1>
