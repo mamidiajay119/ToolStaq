@@ -20,9 +20,10 @@ function getPricingClass(model: string, freeTrial: boolean): string {
 interface ToolCardProps {
   tool: Tool;
   rank?: number;
+  hideRecommendedBadge?: boolean;
 }
 
-export default function ToolCard({ tool, rank }: ToolCardProps) {
+export default function ToolCard({ tool, rank, hideRecommendedBadge = false }: ToolCardProps) {
   const pricingLabel = getPricingLabel(tool);
   const pricingClass = getPricingClass(tool.pricing_model, tool.free_trial);
 
@@ -50,7 +51,7 @@ export default function ToolCard({ tool, rank }: ToolCardProps) {
               }}>
                 {tool.tool_name}
               </h3>
-              {tool.is_recommended && (
+              {tool.is_recommended && !hideRecommendedBadge && (
                 <span style={{
                   fontSize: '0.6rem',
                   fontWeight: 700,

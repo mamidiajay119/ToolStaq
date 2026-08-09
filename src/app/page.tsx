@@ -222,7 +222,7 @@ export default async function HomePage() {
 
             <div className="trending-grid">
               {featuredTools.map((tool, i) => (
-                <ToolCard key={tool.slug} tool={tool} rank={i + 1} />
+                <ToolCard key={tool.slug} tool={tool} rank={i + 1} hideRecommendedBadge={true} />
               ))}
             </div>
           </section>
