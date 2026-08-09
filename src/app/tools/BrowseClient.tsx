@@ -248,7 +248,10 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
             display: 'flex', 
             gap: '12px', 
             overflowX: 'auto', 
-            paddingBottom: '8px',
+            paddingTop: '6px',
+            paddingBottom: '12px',
+            marginTop: '-6px',
+            marginBottom: '-6px',
           }}>
             {recommendedTools.map((tool) => (
               <Link
