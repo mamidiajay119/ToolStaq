@@ -51,9 +51,9 @@
   --bg-card-hover: #0D0D0D;
   --bg-overlay: rgba(0, 0, 0, 0.88);
 
-  /* Borders — visible against pure black */
-  --border-subtle: #303030;
-  --border-glass: #333333;
+  /* Borders — Framer-style barely-there hairlines */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-glass: rgba(255, 255, 255, 0.09);
   --border-accent: #F97316;
 
   /* Text Colors */
@@ -76,7 +76,7 @@
   --accent-slate: #94A3B8;
 
   /* Shadows — Framer relies on borders, not shadows */
-  --shadow-card: 0 0 0 1px #303030;
+  --shadow-card: 0 0 0 1px rgba(255, 255, 255, 0.07);
   --shadow-hover: 0 4px 24px rgba(0, 0, 0, 0.8);
 }
 
