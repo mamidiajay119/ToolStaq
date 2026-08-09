@@ -261,8 +261,9 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
                   background: 'var(--bg-card)',
                   border: '1px solid var(--border-subtle)',
                   borderRadius: '12px',
-                  padding: '8px 16px',
+                  padding: '8px 14px',
                   textDecoration: 'none',
+                  width: '180px',
                   flexShrink: 0,
                   transition: 'border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease',
                   boxShadow: 'var(--shadow-card)',
@@ -280,6 +281,9 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
                   fontWeight: 600,
                   color: 'var(--text-primary)',
                   whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  flex: 1,
                 }}>
                   {tool.tool_name}
                 </span>
