@@ -1,20 +1,44 @@
-import toolsData from '../../public/data/tools.json';
-import type { Tool, ToolsData } from '@/types/tool';
+import type { Tool } from '@/types/tool';
 import { supabase } from './supabase';
 
-const data = toolsData as ToolsData;
+export const STATIC_CATEGORIES = [
+  "AI Analytics",
+  "AI Audio",
+  "AI Automation",
+  "AI Chat",
+  "AI Coding",
+  "AI Customer Support",
+  "AI Data Extraction",
+  "AI Design",
+  "AI Education",
+  "AI Finance",
+  "AI HR",
+  "AI Healthcare",
+  "AI Image",
+  "AI Legal",
+  "AI Marketing",
+  "AI Presentation",
+  "AI Productivity",
+  "AI Research",
+  "AI Sales",
+  "AI Security",
+  "AI Social Media",
+  "AI Translation",
+  "AI Video",
+  "AI Writing"
+];
 
 // Keep static metadata synchronous for client layouts (Footer, etc.)
 export function getMeta() {
-  return data.meta;
+  return {
+    total: 2669,
+    categories: 24,
+    generated: '2026-08-09T18:00:00Z'
+  };
 }
 
 export function getAllCategories(): string[] {
-  return Object.keys(data.category_counts).sort((a, b) => data.category_counts[b] - data.category_counts[a]);
-}
-
-export function getCategoryCountsSync(): Record<string, number> {
-  return data.category_counts;
+  return STATIC_CATEGORIES;
 }
 
 // Helper to defensively normalize all array fields to empty arrays to prevent crashes in client code
@@ -42,7 +66,7 @@ export async function getAllTools(): Promise<Tool[]> {
 
   if (error) {
     console.error('Error fetching tools from Supabase:', error.message);
-    return data.tools.map(normalizeTool); // Graceful static fallback
+    return [];
   }
   return (dbTools || []).map(normalizeTool);
 }
@@ -56,8 +80,7 @@ export async function getToolBySlug(slug: string): Promise<Tool | undefined> {
 
   if (error) {
     console.error(`Error fetching tool by slug ${slug} from Supabase:`, error.message);
-    const fallback = data.tools.find((t) => t.slug === slug);
-    return fallback ? normalizeTool(fallback) : undefined; // Graceful static fallback
+    return undefined;
   }
   return dbTool ? normalizeTool(dbTool) : undefined;
 }
@@ -70,9 +93,7 @@ export async function getToolsByCategory(category: string): Promise<Tool[]> {
 
   if (error) {
     console.error(`Error fetching tools by category ${category} from Supabase:`, error.message);
-    return data.tools
-      .filter((t) => t.category.some((c) => c.toLowerCase() === category.toLowerCase()))
-      .map(normalizeTool);
+    return [];
   }
   return (dbTools || []).map(normalizeTool);
 }
@@ -100,7 +121,7 @@ export async function getAllSlugs(): Promise<string[]> {
 
   if (error) {
     console.error('Error fetching slugs from Supabase:', error.message);
-    return data.tools.map((t) => t.slug);
+    return [];
   }
   return slugs.map((s) => s.slug);
 }
@@ -115,16 +136,7 @@ export async function getFeaturedTools(count = 8): Promise<Tool[]> {
 
   if (error) {
     console.error('Error fetching featured tools from Supabase:', error.message);
-    // Static fallback
-    return [...data.tools]
-      .sort((a, b) => {
-        const scoreA = (a.is_recommended ? 2 : 0) + (a.is_new ? 1 : 0);
-        const scoreB = (b.is_recommended ? 2 : 0) + (b.is_new ? 1 : 0);
-        return scoreB - scoreA;
-      })
-      .filter((t) => t.core_features.length > 0 && t.best_for.length > 0)
-      .slice(0, count)
-      .map(normalizeTool);
+    return [];
   }
   return (dbTools || []).map(normalizeTool);
 }
@@ -133,7 +145,6 @@ export async function searchTools(query: string): Promise<Tool[]> {
   if (!query.trim()) return getAllTools();
   const q = query.toLowerCase();
   
-  // Local filter over the full DB list (preserves complex fields search)
   const allTools = await getAllTools();
   return allTools.filter(
     (t) =>

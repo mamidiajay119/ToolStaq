@@ -130,12 +130,22 @@ async function triggerBackgroundSync() {
         image_url: article.image || null
       }));
 
+      // Filter out duplicate slugs from the proposed upsert array to prevent Postgres constraint errors
+      const uniqueArticles = [];
+      const seenSlugs = new Set();
+      for (const article of articles) {
+        if (article.slug && !seenSlugs.has(article.slug)) {
+          seenSlugs.add(article.slug);
+          uniqueArticles.push(article);
+        }
+      }
+
       const client = getServiceRoleClient();
       
       // Upsert latest articles (on Conflict of slug, it updates)
       const { error: upsertError } = await client
         .from('news_articles')
-        .upsert(articles, { onConflict: 'slug' });
+        .upsert(uniqueArticles, { onConflict: 'slug' });
 
       if (upsertError) throw upsertError;
 
