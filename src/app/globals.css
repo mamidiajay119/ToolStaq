@@ -52,8 +52,8 @@
   --bg-overlay: rgba(0, 0, 0, 0.88);
 
   /* Borders — visible against pure black */
-  --border-subtle: #252525;
-  --border-glass: #282828;
+  --border-subtle: #303030;
+  --border-glass: #333333;
   --border-accent: #F97316;
 
   /* Text Colors */
@@ -76,7 +76,7 @@
   --accent-slate: #94A3B8;
 
   /* Shadows — Framer relies on borders, not shadows */
-  --shadow-card: 0 0 0 1px #252525;
+  --shadow-card: 0 0 0 1px #303030;
   --shadow-hover: 0 4px 24px rgba(0, 0, 0, 0.8);
 }
 
