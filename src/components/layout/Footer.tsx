@@ -118,14 +118,7 @@ export default function Footer() {
           <p style={{ color: 'var(--text-muted)', fontSize: '0.825rem' }}>
             © 2026 ToolStaq. Built to help you find the right AI.
           </p>
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)', fontSize: '0.825rem' }}>
-              Twitter / X
-            </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-muted)', fontSize: '0.825rem' }}>
-              GitHub
-            </a>
-          </div>
+
         </div>
       </div>
     </footer>
