@@ -142,14 +142,26 @@ export default async function NewsPage() {
           }
         }
         .news-grid {
-          display: grid;
-          gap: 24px;
-          grid-template-columns: 1fr;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
           margin-bottom: 5rem;
         }
         @media (min-width: 768px) {
-          .news-grid {
-            grid-template-columns: repeat(2, 1fr);
+          .news-card {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+          }
+          .news-card-content {
+            flex: 1;
+            min-width: 0;
+          }
+          .news-card-meta {
+            flex-direction: column !important;
+            align-items: flex-end;
+            gap: 6px !important;
           }
         }
       `}</style>
@@ -254,46 +266,47 @@ export default async function NewsPage() {
               rel={article.url ? "noopener noreferrer" : undefined}
               className="news-card"
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span className="badge badge-slate" style={{ fontSize: '0.65rem', padding: '2px 8px', borderRadius: '6px' }}>
-                  {article.category}
-                </span>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                  {article.source}
-                </span>
+              <div className="news-card-content" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span className="badge badge-slate" style={{ fontSize: '0.65rem', padding: '2px 8px', borderRadius: '6px' }}>
+                    {article.category}
+                  </span>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                    {article.source}
+                  </span>
+                </div>
+                
+                <h3 style={{
+                  fontSize: '1.15rem',
+                  fontWeight: 600,
+                  color: 'var(--text-primary)',
+                  lineHeight: 1.4,
+                  margin: 0,
+                }}>
+                  {article.title}
+                </h3>
+                
+                <p style={{
+                  fontSize: '0.825rem',
+                  color: 'var(--text-secondary)',
+                  lineHeight: 1.5,
+                  margin: 0,
+                  maxWidth: '720px',
+                }}>
+                  {article.excerpt}
+                </p>
               </div>
-              
-              <h3 style={{
-                fontSize: '1.15rem',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                lineHeight: 1.4,
-                margin: 0,
-              }}>
-                {article.title}
-              </h3>
-              
-              <p style={{
-                fontSize: '0.825rem',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.5,
-                margin: 0,
-              }}>
-                {article.excerpt}
-              </p>
 
-              <div style={{
+              <div className="news-card-meta" style={{
                 display: 'flex',
-                alignItems: 'center',
                 gap: '16px',
-                marginTop: 'auto',
                 fontSize: '0.725rem',
                 color: 'var(--text-muted)',
               }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
                   <Calendar size={12} /> {article.date}
                 </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
                   <Clock size={12} /> {article.readTime}
                 </span>
               </div>
