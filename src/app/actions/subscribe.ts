@@ -81,7 +81,7 @@ export async function subscribeToNewsletter(
 
     return {
       success: true,
-      message: "Thank you for subscribing to ToolStaq updates!",
+      message: "Thanks for subscribing! Check your inbox to confirm.",
     };
   } catch (err: any) {
     console.error("Resend subscription error:", err);
