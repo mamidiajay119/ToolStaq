@@ -195,7 +195,7 @@ export default async function NewsPage() {
               </div>
               <h2 style={{
                 fontSize: '1.5rem',
-                fontWeight: 700,
+                fontWeight: 600,
                 color: 'var(--text-primary)',
                 lineHeight: 1.3,
                 margin: 0,
@@ -278,7 +278,7 @@ export default async function NewsPage() {
                 
                 <h3 style={{
                   fontSize: '1.15rem',
-                  fontWeight: 600,
+                  fontWeight: 500,
                   color: 'var(--text-primary)',
                   lineHeight: 1.4,
                   margin: 0,
