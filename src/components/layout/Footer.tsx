@@ -2,13 +2,12 @@
 
 import Link from 'next/link';
 import { Zap, Loader2, CheckCircle2 } from 'lucide-react';
-import { getMeta, getAllCategories, slugifyCategory } from '@/lib/tools';
+import { getAllCategories, slugifyCategory } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import { useState } from 'react';
 import { subscribeToNewsletter } from '@/app/actions/subscribe';
 
 export default function Footer() {
-  const meta = getMeta();
   const categories = getAllCategories().slice(0, 5);
 
   const [email, setEmail] = useState('');

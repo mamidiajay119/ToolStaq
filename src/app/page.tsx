@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Search, Sparkles, TrendingUp, Star } from 'lucide-react';
-import { getAllTools, getMeta, getFeaturedTools, slugifyCategory } from '@/lib/tools';
+import { getAllTools, getFeaturedTools, slugifyCategory } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import ToolCard from '@/components/tools/ToolCard';
 import type { Metadata } from 'next';
@@ -18,8 +18,6 @@ const TOP_CATEGORIES = [
 ];
 
 export default async function HomePage() {
-  const meta = getMeta();
-
   // Run all data fetches in parallel — not sequentially
   const [allTools, featuredTools] = await Promise.all([
     getAllTools(),
@@ -34,12 +32,14 @@ export default async function HomePage() {
     });
   });
 
+  const totalTools = allTools.length;
+  const totalCategories = Object.keys(categoryCounts).length;
   const totalFree = allTools.filter(t => t.free_trial || t.pricing_model === 'freemium').length;
   const totalWithApi = allTools.filter(t => t.has_api).length;
 
   const dynamicStats = [
-    { label: 'AI Tools', value: `${meta.total.toLocaleString()}+`, icon: '⚡', color: '#a78bfa' },
-    { label: 'Categories', value: meta.categories.toString(), icon: '📂', color: '#67e8f9' },
+    { label: 'AI Tools', value: `${totalTools.toLocaleString()}+`, icon: '⚡', color: '#a78bfa' },
+    { label: 'Categories', value: totalCategories.toString(), icon: '📂', color: '#67e8f9' },
     { label: 'Free / Freemium', value: `${totalFree.toLocaleString()}+`, icon: '🆓', color: '#6ee7b7' },
     { label: 'With APIs', value: `${totalWithApi.toLocaleString()}+`, icon: '🔌', color: '#fcd34d' },
   ];
@@ -109,8 +109,8 @@ export default async function HomePage() {
             </h1>
 
             <p className="hero-subheading">
-              Explore a curated index of <strong style={{ color: 'var(--text-primary)' }}>{meta.total.toLocaleString()}+ AI tools</strong> across{' '}
-              <strong style={{ color: 'var(--text-primary)' }}>{meta.categories} categories</strong>. Filter by pricing, complexity, and deployment to optimize your workflow.
+              Explore a curated index of <strong style={{ color: 'var(--text-primary)' }}>{totalTools.toLocaleString()}+ AI tools</strong> across{' '}
+              <strong style={{ color: 'var(--text-primary)' }}>{totalCategories} categories</strong>. Filter by pricing, complexity, and deployment to optimize your workflow.
             </p>
 
             {/* CTA Buttons */}
@@ -160,7 +160,7 @@ export default async function HomePage() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '4px' }}>Browse by Category</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{meta.categories} categories covering every AI use case</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{totalCategories} categories covering every AI use case</p>
               </div>
               <Link href="/tools" className="btn-ghost" style={{ color: 'var(--accent-violet)', fontSize: '0.825rem' }}>
                 View all <ArrowRight size={14} />
