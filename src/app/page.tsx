@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Search, Sparkles, TrendingUp, Star } from 'lucide-react';
-import { getAllTools, getFeaturedTools, slugifyCategory } from '@/lib/tools';
+import { getAllTools, getFeaturedTools, slugifyCategory, getAllCategories } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import ToolCard from '@/components/tools/ToolCard';
 import type { Metadata } from 'next';
@@ -33,7 +33,7 @@ export default async function HomePage() {
   });
 
   const totalTools = allTools.length;
-  const totalCategories = Object.keys(categoryCounts).length;
+  const totalCategories = getAllCategories().length;
   const totalFree = allTools.filter(t => t.free_trial || t.pricing_model === 'freemium').length;
   const totalWithApi = allTools.filter(t => t.has_api).length;
 
