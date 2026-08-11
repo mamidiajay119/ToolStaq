@@ -388,9 +388,18 @@ img { max-width: 100%; height: auto; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 5rem 1.5rem 4rem;
+  padding: 5rem 1.5rem 6rem;
   overflow: hidden;
   background-color: var(--bg-primary);
+}
+
+/* Light mode curved hero banner */
+html:not([data-theme='dark']) .hero-section {
+  background: linear-gradient(180deg, #FFFFFF 0%, #F3F4F6 100%);
+  border-bottom-left-radius: 50% 40px;
+  border-bottom-right-radius: 50% 40px;
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 /* Floating Aurora Glows */
