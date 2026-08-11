@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Calendar, Clock, ArrowUpRight, Newspaper } from 'lucide-react';
+import { Calendar, Clock } from 'lucide-react';
 import { fetchLatestAINews } from '@/lib/news';
 import NewsletterForm from '@/components/news/NewsletterForm';
 
@@ -95,8 +95,6 @@ export default async function NewsPage() {
     newsArticles = STATIC_NEWS_ARTICLES;
   }
 
-  const [featured, ...recent] = newsArticles;
-
   return (
     <>
       <style>{`
@@ -176,89 +174,9 @@ export default async function NewsPage() {
           </p>
         </div>
 
-        {/* Featured Article */}
-        {featured && (
-          <a 
-            href={featured.url || `/news/${featured.slug}`} 
-            target={featured.url ? "_blank" : undefined}
-            rel={featured.url ? "noopener noreferrer" : undefined}
-            className="featured-card"
-          >
-            <div style={{ flex: 1.2, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span className="badge badge-slate" style={{ fontSize: '0.7rem', padding: '2px 8px', borderRadius: '6px' }}>
-                  {featured.category}
-                </span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  {featured.source}
-                </span>
-              </div>
-              <h2 style={{
-                fontSize: '1.5rem',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                lineHeight: 1.3,
-                margin: 0,
-              }}>
-                {featured.title}
-              </h2>
-              <p style={{
-                fontSize: '0.875rem',
-                color: 'var(--text-secondary)',
-                lineHeight: 1.6,
-                margin: 0,
-              }}>
-                {featured.excerpt}
-              </p>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                marginTop: 'auto',
-                fontSize: '0.75rem',
-                color: 'var(--text-muted)',
-              }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Calendar size={13} /> {featured.date}
-                </span>
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <Clock size={13} /> {featured.readTime}
-                </span>
-              </div>
-            </div>
-            <div style={{
-              flex: 0.8,
-              minHeight: '180px',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%)',
-              border: '1px dashed var(--border-subtle)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
-              <div style={{ position: 'absolute', opacity: 0.25, transform: 'scale(1.5)' }}>
-                <Newspaper size={80} color="var(--accent-primary)" />
-              </div>
-              <span style={{
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                color: 'var(--text-primary)',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '4px',
-                zIndex: 1,
-              }}>
-                Read Full Story <ArrowUpRight size={14} />
-              </span>
-            </div>
-          </a>
-        )}
-
         {/* Recent News Grid */}
         <div className="news-grid">
-          {recent.map((article) => (
+          {newsArticles.map((article) => (
             <a 
               key={article.id} 
               href={article.url || `/news/${article.slug}`} 
