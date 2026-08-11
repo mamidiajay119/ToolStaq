@@ -40,9 +40,8 @@ export default function Footer() {
   };
 
   return (
-    <footer style={{
+    <footer className="site-footer" style={{
       borderTop: 'none',
-      background: 'var(--bg-primary)',
       marginTop: '3.5rem',
     }}>
       <div className="container-xl" style={{ padding: '3.5rem 1.5rem 2rem' }}>

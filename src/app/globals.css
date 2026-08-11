@@ -460,3 +460,53 @@ html:not([data-theme='dark']) .hero-section::before {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
+
+/* ─── Footer Wave Styles ────────────────────────────────────────────── */
+.site-footer {
+  background-color: var(--bg-primary);
+  transition: background var(--transition-base);
+}
+
+/* Light mode footer wave background */
+html:not([data-theme='dark']) .site-footer {
+  background-color: #00565a;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDMwMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGRlZnM+CiAgICA8IS0tIFNoYWRvdyBGaWx0ZXIgLS0+CiAgICA8ZmlsdGVyIGlkPSJzaGFkb3ciIHg9Ii01JSIgeT0iLTIwJSIgd2lkdGg9IjExMCUiIGhlaWdodD0iMTQwJSI+CiAgICAgIDxmZURyb3BTaGFkb3cgZHg9IjAiIGR5PSI0IiBzdGREZXZpYXRpb249IjYiIGZsb29kLWNvbG9yPSIjMDAwIiBmbG9vZC1vcGFjaXR5PSIwLjE1Ii8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CgogIDwhLS0gVG9wIEJhc2UgKExpZ2h0ZXN0IEN5YW4vVGVhbCkgLS0+CiAgPHJlY3Qgd2lkdGg9IjE0NDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjMDBlNWU4IiAvPgoKICA8IS0tIFdhdmUgTGF5ZXIgMSAoTWVkaXVtIExpZ2h0IEN5YW4pIC0tPgogIDxwYXRoIGQ9Ik0gMCw4MCBDIDI0MCw0MCA0ODAsMTIwIDcyMCw4MCBDIDk2MCw0MCAxMjAwLDEwMCAxNDQwLDYwIEwgMTQ0MCwzMDAgTCAwLDMwMCBaIiBmaWxsPSIjMDBjYmQwIiBmaWx0ZXI9InVybCgjc2hhZG93KSIgLz4KCiAgPCEtLSBXYXZlIExheWVyIDIgKE1lZGl1bSBDeWFuL1RlYWwpIC0tPgogIDxwYXRoIGQ9Ik0gMCwxNDAgQyAzMDAsMTgwIDUwMCwxMDAgODAwLDE1MCBDIDExMDAsMjAwIDEyNTAsMTEwIDE0NDAsMTMwIEwgMTQ0MCwzMDAgTCAwLDMwMCBaIiBmaWxsPSIjMDBhMGE1IiBmaWx0ZXI9InVybCgjc2hhZG93KSIgLz4KCiAgPCEtLSBXYXZlIExheWVyIDMgKE1lZGl1bSBEYXJrIFRlYWwpIC0tPgogIDxwYXRoIGQ9Ik0gMCwyMDAgQyAyMDAsMTYwIDQ1MCwyMzAgNzAwLDE5MCBDIDk1MCwxNTAgMTIwMCwyNDAgMTQ0MCwyMTAgTCAxNDQwLDMwMCBMIDAsMzAwIFoiIGZpbGw9IiMwMDc5N2UiIGZpbHRlcj0idXJsKCNzaGFkb3cpIiAvPgoKICA8IS0tIFdhdmUgTGF5ZXIgNCAoRGFya2VzdCBUZWFsIGF0IHRoZSBib3R0b20pIC0tPgogIDxwYXRoIGQ9Ik0gMCwyNTAgQyAzNTAsMjIwIDcwMCwyODAgMTA1MCwyNDAgQyAxMjUwLDIyMCAxMzUwLDI2MCAxNDQwLDI1MCBMIDE0NDAsMzAwIEwgMCwzMDAgWiIgZmlsbD0iIzAwNTY1YSIgZmlsdGVyPSJ1cmwoI3NoYWRvdykiIC8+Cjwvc3ZnPg==");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Light mode text color overrides for footer visibility */
+html:not([data-theme='dark']) .site-footer span,
+html:not([data-theme='dark']) .site-footer p,
+html:not([data-theme='dark']) .site-footer h4 {
+  color: #FFFFFF !important;
+}
+
+html:not([data-theme='dark']) .site-footer a {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+html:not([data-theme='dark']) .site-footer a:hover {
+  color: #FFFFFF !important;
+}
+
+/* Search input adjustments in light mode footer */
+html:not([data-theme='dark']) .site-footer input.search-input {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+html:not([data-theme='dark']) .site-footer input.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+html:not([data-theme='dark']) .site-footer button.btn-primary {
+  background-color: #FFFFFF !important;
+  color: #00565a !important;
+  border-color: #FFFFFF !important;
+}
+
+html:not([data-theme='dark']) .site-footer button.btn-primary:hover {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
