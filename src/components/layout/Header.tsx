@@ -41,7 +41,7 @@ export default function Header() {
           }}>
             <Zap size={16} color="white" strokeWidth={2.5} />
           </div>
-          <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: '1.2rem', letterSpacing: '-0.03em', color: 'var(--text-primary)' }}>
+          <span style={{ fontFamily: "'Roboto', sans-serif", fontWeight: 500, fontSize: '1.2rem', letterSpacing: '-0.01em', color: 'var(--text-primary)' }}>
             toolstaq
           </span>
         </Link>
