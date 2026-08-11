@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, CheckCircle2, PlusCircle } from 'lucide-react';
+import { Send, CheckCircle2, PlusCircle, AlertCircle } from 'lucide-react';
+import { submitTool } from '@/app/actions/submit-tool';
 
 const CATEGORIES = [
   'AI Writing', 'AI Coding', 'AI Design', 'AI Video', 'AI Audio',
@@ -16,6 +17,7 @@ const CATEGORIES = [
 export default function SubmitPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     tool_name: '', url: '', category: '', description: '', email: '',
   });
@@ -23,10 +25,20 @@ export default function SubmitPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate submission (replace with real API call)
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+    setError(null);
+    try {
+      const result = await submitTool(form);
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setError(result.error || "An error occurred while submitting.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -60,6 +72,23 @@ export default function SubmitPage() {
         </div>
 
         <div className="glass-card" style={{ padding: '2rem' }}>
+          {error && (
+            <div style={{
+              background: 'rgba(239, 68, 68, 0.08)',
+              border: '1px solid rgba(239, 68, 68, 0.25)',
+              borderRadius: '12px',
+              padding: '1rem',
+              marginBottom: '1.25rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: '#f87171',
+              fontSize: '0.85rem',
+            }}>
+              <AlertCircle size={18} style={{ flexShrink: 0 }} />
+              <span>{error}</span>
+            </div>
+          )}
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div>
               <label htmlFor="tool-name" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>
