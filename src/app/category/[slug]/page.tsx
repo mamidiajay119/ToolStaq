@@ -52,9 +52,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       `}</style>
 
       {/* Hero */}
-      <div className="inner-hero" style={{ padding: '3.5rem 1.5rem 4.5rem', marginBottom: '2.5rem', display: 'block' }}>
+      <div className="inner-hero" style={{ padding: '3.5rem 1.5rem 4.5rem', marginBottom: '2.5rem', display: 'block', textAlign: 'left' }}>
         <div className="container-xl">
-          <nav style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center' }}>
+          <nav style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'flex-start' }}>
             <Link href="/" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Home</Link>
             <span>/</span>
             <Link href="/categories" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Categories</Link>
@@ -62,23 +62,24 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             <span style={{ color: '#FFFFFF' }}>{cat}</span>
           </nav>
           
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
             <div style={{
               width: '60px', height: '60px', borderRadius: '18px',
               background: 'rgba(255, 255, 255, 0.15)',
               border: '1px solid rgba(255, 255, 255, 0.25)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: '#FFFFFF',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+              flexShrink: 0
             }}>
               <CategoryIcon category={cat} size={30} />
             </div>
-            <div>
-              <h1 style={{ fontSize: '2rem', fontWeight: 500, letterSpacing: '-0.03em', marginBottom: '6px', color: '#FFFFFF' }}>{cat}</h1>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start' }}>
+              <h1 style={{ fontSize: '2rem', fontWeight: 400, letterSpacing: '-0.03em', margin: 0, color: '#FFFFFF', lineHeight: 1.1 }}>{cat}</h1>
               <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', borderColor: 'rgba(255, 255, 255, 0.25)' }}>{tools.length} tools</span>
             </div>
           </div>
-          <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
+          <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', maxWidth: '800px', margin: '0', textAlign: 'left' }}>
             {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
               CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
                 <p key={idx} style={{ marginBottom: '0.75rem' }}>{paragraph}</p>
