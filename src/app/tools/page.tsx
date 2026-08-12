@@ -13,18 +13,16 @@ export default async function BrowsePage() {
   const categories = getAllCategories();
 
   return (
-    <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '1.5rem' }}>
-      <div style={{ paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>
-          AI Tools
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-          Explore hand-curated AI tools for your workflow.
-        </p>
+    <>
+      <div className="inner-hero">
+        <h1>AI Tools</h1>
+        <p>Explore hand-curated AI tools for your workflow.</p>
       </div>
-      <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading tools...</div>}>
-        <BrowseToolsClient tools={tools} allCategories={categories} />
-      </Suspense>
-    </div>
+      <div className="container-xl" style={{ paddingBottom: '1.5rem' }}>
+        <Suspense fallback={<div style={{ padding: '4rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading tools...</div>}>
+          <BrowseToolsClient tools={tools} allCategories={categories} />
+        </Suspense>
+      </div>
+    </>
   );
 }

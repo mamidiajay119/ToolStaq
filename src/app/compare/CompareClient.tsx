@@ -64,17 +64,13 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
   const removeTool = (slug: string) => setSelected(selected.filter((s) => s !== slug));
 
   return (
-    <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '3rem' }}>
-
-      {/* Page header */}
-      <div style={{ paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>
-          Compare AI Tools
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-          Select up to 3 tools and compare them side-by-side
-        </p>
+    <>
+      <div className="inner-hero">
+        <h1>Compare AI Tools</h1>
+        <p>Select up to 3 tools and compare them side-by-side</p>
       </div>
+
+      <div className="container-xl" style={{ paddingBottom: '3rem' }}>
 
       {/* Two-panel layout */}
       <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.5rem', alignItems: 'start' }}>
@@ -271,5 +267,6 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
 
       </div>
     </div>
+  </>
   );
 }

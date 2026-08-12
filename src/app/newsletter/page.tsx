@@ -60,51 +60,51 @@ export default function NewsletterPage() {
         }
       `}</style>
 
-      <div className="container-lg" style={{ paddingTop: '4rem', paddingBottom: '7rem' }}>
-        <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-          
-          {/* Hero Header */}
-          <div className="newsletter-hero">
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '6px',
-              padding: '6px 12px',
-              borderRadius: '99px',
-              background: 'var(--bg-secondary)',
-              border: '1px solid var(--border-subtle)',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              marginBottom: '1.25rem',
-            }}>
-              <Sparkles size={12} color="var(--accent-primary)" />
-              <span>THE WEEKLY BRIEFING</span>
-            </div>
-            
-            <h1 style={{
-              fontFamily: "'Geist', 'Inter', system-ui, sans-serif",
-              fontSize: 'clamp(2.25rem, 6vw, 3.25rem)',
-              fontWeight: 300,
-              color: 'var(--text-primary)',
-              lineHeight: 1.2,
-              letterSpacing: '-0.02em',
-              marginBottom: '12px',
-            }}>
-              Stay ahead on AI without the{' '}
-              <span className="gradient-text-orange" style={{ fontWeight: 500 }}>noise</span>
-            </h1>
-            
-            <p style={{
-              fontSize: '0.95rem',
-              color: 'var(--text-secondary)',
-              lineHeight: 1.6,
-              margin: '0 auto',
-              maxWidth: '520px',
-            }}>
-              Get a weekly curated briefing of the most important AI tools, releases, and news sent straight to your inbox.
-            </p>
+      <div className="inner-hero" style={{ padding: '4rem 1.5rem 4.5rem', marginBottom: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div className="newsletter-hero" style={{ margin: 0 }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '6px 12px',
+            borderRadius: '99px',
+            background: 'rgba(255, 255, 255, 0.15)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            color: '#FFFFFF',
+            marginBottom: '1.25rem',
+          }}>
+            <Sparkles size={12} color="#FFFFFF" />
+            <span>THE WEEKLY BRIEFING</span>
           </div>
+          
+          <h1 style={{
+            fontSize: 'clamp(2rem, 5vw, 2.75rem)',
+            fontWeight: 500,
+            color: '#FFFFFF',
+            lineHeight: 1.2,
+            letterSpacing: '-0.02em',
+            marginBottom: '12px',
+          }}>
+            Stay ahead on AI without the noise
+          </h1>
+          
+          <p style={{
+            fontSize: '0.95rem',
+            color: 'rgba(255, 255, 255, 0.9)',
+            lineHeight: 1.6,
+            margin: '0 auto',
+            maxWidth: '520px',
+            textShadow: '0 1px 2px rgba(0, 0, 0, 0.15)'
+          }}>
+            Get a weekly curated briefing of the most important AI tools, releases, and news sent straight to your inbox.
+          </p>
+        </div>
+      </div>
+
+      <div className="container-lg" style={{ paddingBottom: '7rem' }}>
+        <div style={{ maxWidth: '640px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
 
           {/* Core Sign-Up Form Box */}
           <div className="glass-card" style={{

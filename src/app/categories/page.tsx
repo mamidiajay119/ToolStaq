@@ -14,15 +14,12 @@ export default async function CategoriesIndexPage() {
   const counts = await getCategoryCounts();
 
   return (
-    <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
-      <div style={{ paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>
-          AI Categories
-        </h1>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-          Find the perfect AI tool for your specific workflow.
-        </p>
+    <>
+      <div className="inner-hero">
+        <h1>AI Categories</h1>
+        <p>Find the perfect AI tool for your specific workflow.</p>
       </div>
+      <div className="container-xl" style={{ paddingBottom: '4rem' }}>
 
       <div className="category-grid">
         {categories.map((cat) => {
@@ -82,6 +79,7 @@ export default async function CategoriesIndexPage() {
           box-shadow: var(--shadow-hover);
         }
       `}</style>
-    </div>
+      </div>
+    </>
   );
 }

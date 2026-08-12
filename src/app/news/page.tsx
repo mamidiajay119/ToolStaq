@@ -164,15 +164,12 @@ export default async function NewsPage() {
         }
       `}</style>
 
-      <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '1.5rem' }}>
-        
-        {/* Header */}
-        <div style={{ paddingBottom: '1.5rem', marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>AI News</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-            Latest breakthroughs, model releases, and engineering trends.
-          </p>
-        </div>
+      <div className="inner-hero">
+        <h1>AI News</h1>
+        <p>Latest breakthroughs, model releases, and engineering trends.</p>
+      </div>
+
+      <div className="container-xl" style={{ paddingBottom: '1.5rem' }}>
 
         {/* Recent News Grid */}
         <div className="news-grid">

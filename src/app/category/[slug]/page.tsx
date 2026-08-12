@@ -52,42 +52,39 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       `}</style>
 
       {/* Hero */}
-      <div style={{
-        background: 'var(--bg-primary)',
-        borderBottom: 'none',
-        padding: '3rem 1.5rem',
-      }}>
+      <div className="inner-hero" style={{ padding: '3.5rem 1.5rem 4.5rem', marginBottom: '2.5rem', display: 'block' }}>
         <div className="container-xl">
-          <nav style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
+          <nav style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center' }}>
+            <Link href="/" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Home</Link>
             <span>/</span>
-            <Link href="/categories" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Categories</Link>
+            <Link href="/categories" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Categories</Link>
             <span>/</span>
-            <span style={{ color: 'var(--text-secondary)' }}>{cat}</span>
+            <span style={{ color: '#FFFFFF' }}>{cat}</span>
           </nav>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', textAlign: 'center' }}>
             <div style={{
-              width: '56px', height: '56px', borderRadius: '16px',
-              background: 'var(--bg-secondary)',
-              border: '1px solid var(--border-subtle)',
+              width: '60px', height: '60px', borderRadius: '18px',
+              background: 'rgba(255, 255, 255, 0.15)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'var(--text-primary)'
+              color: '#FFFFFF',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
             }}>
-              <CategoryIcon category={cat} size={28} />
+              <CategoryIcon category={cat} size={30} />
             </div>
             <div>
-              <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>{cat}</h1>
-              <span className="badge badge-violet">{tools.length} tools</span>
+              <h1 style={{ fontSize: '2rem', fontWeight: 500, letterSpacing: '-0.03em', marginBottom: '6px', color: '#FFFFFF' }}>{cat}</h1>
+              <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', borderColor: 'rgba(255, 255, 255, 0.25)' }}>{tools.length} tools</span>
             </div>
           </div>
-          <div style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.85rem', width: '100%' }}>
+          <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
             {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
               CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
                 <p key={idx} style={{ marginBottom: '0.75rem' }}>{paragraph}</p>
               ))
             ) : (
-              <p>{desc}</p>
+              <p style={{ margin: 0 }}>{desc}</p>
             )}
           </div>
         </div>
