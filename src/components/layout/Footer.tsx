@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Zap, Loader2, CheckCircle2 } from 'lucide-react';
+import { Zap, Loader2, CheckCircle2, Mail } from 'lucide-react';
 import { getAllCategories, slugifyCategory } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import { useState } from 'react';
@@ -173,7 +173,9 @@ export default function Footer() {
                         Subscribing <Loader2 size={14} style={{ animation: 'spin 1s linear infinite' }} />
                       </>
                     ) : (
-                      'Subscribe'
+                      <>
+                        <Mail size={14} /> Subscribe
+                      </>
                     )}
                   </button>
                 </form>

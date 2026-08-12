@@ -501,15 +501,6 @@ html:not([data-theme='dark']) .site-footer input.search-input::placeholder {
   color: rgba(255, 255, 255, 0.6) !important;
 }
 
-html:not([data-theme='dark']) .site-footer button.btn-primary {
-  background-color: #FFFFFF !important;
-  color: #149CC8 !important;
-  border-color: #FFFFFF !important;
-}
-
-html:not([data-theme='dark']) .site-footer button.btn-primary:hover {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-}
 
 /* ─── Hero section element light mode overrides ───────────────────── */
 html:not([data-theme='dark']) .hero-section .hero-heading {

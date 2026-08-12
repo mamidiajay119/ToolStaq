@@ -58,7 +58,7 @@ export default function Header() {
         {/* Right: Actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="hidden-mobile">
           <ThemeToggle />
-          <Link href="/newsletter" className="btn-secondary" style={{ padding: '7px 16px', fontSize: '0.85rem' }}>
+          <Link href="/newsletter" className="btn-primary" style={{ padding: '7px 16px', fontSize: '0.85rem' }}>
             <Mail size={14} style={{ marginRight: '4px' }} /> Subscribe
           </Link>
         </div>
@@ -89,7 +89,9 @@ export default function Header() {
           <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>AI News</Link>
           <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Compare</Link>
           <Link href="/submit" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Submit Tool</Link>
-          <Link href="/newsletter" className="btn-secondary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', marginTop: '8px' }}>Subscribe</Link>
+          <Link href="/newsletter" className="btn-primary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', marginTop: '8px', gap: '8px' }}>
+            <Mail size={14} /> Subscribe
+          </Link>
         </div>
       )}
 
