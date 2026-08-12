@@ -156,7 +156,7 @@ export default async function HomePage() {
 
         <div className="container-xl">
           {/* ── Category Grid ── */}
-          <section style={{ marginBottom: '7.5rem' }}>
+          <section style={{ paddingTop: '3.5rem', marginBottom: '7.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '4px' }}>Browse by Category</h2>
