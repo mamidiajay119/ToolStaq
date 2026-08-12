@@ -241,11 +241,8 @@ export default async function HomePage() {
 
           {/* ── CTA Banner ── */}
           <section style={{ marginBottom: '7.5rem' }}>
-            <div style={{
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border-subtle)',
+            <div className="submit-cta-card" style={{
               borderRadius: '16px',
-              boxShadow: 'var(--shadow-card)',
               padding: '3rem 2rem',
               textAlign: 'center',
               position: 'relative',
