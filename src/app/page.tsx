@@ -116,10 +116,10 @@ export default async function HomePage() {
             {/* CTA Buttons */}
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2.5rem' }}>
               <Link href="/tools" className="btn-primary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
-                <Search size={15} /> browse
+                <Search size={15} /> Browse
               </Link>
-              <Link href="/compare" className="btn-secondary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
-                compare <ArrowRight size={15} />
+              <Link href="/news" className="btn-secondary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
+                Read <ArrowRight size={15} />
               </Link>
             </div>
 
