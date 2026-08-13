@@ -114,7 +114,7 @@ export default function SubmitPage() {
         }} className="hero-stats-row">
           {[
             { number: '24-48h', label: 'Review SLA' },
-            { number: '8,400+', label: 'Weekly Reach' },
+            { number: 'Active', label: 'SEO Backlink' },
             { number: '100% Free', label: 'Forever' },
           ].map((stat) => (
             <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
