@@ -34,6 +34,23 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
   const [search, setSearch] = useState('');
   const [focused, setFocused] = useState(false);
 
+  const presets = useMemo(() => {
+    const pairs = [
+      { name1: 'ChatGPT', name2: 'Claude', label: 'ChatGPT vs Claude' },
+      { name1: 'Cursor', name2: 'VS Code', label: 'Cursor vs VS Code' },
+      { name1: 'v0', name2: 'Bolt.new', label: 'v0 vs Bolt.new' },
+    ];
+    
+    return pairs.map(p => {
+      const t1 = tools.find(t => t.tool_name.toLowerCase().includes(p.name1.toLowerCase()) || t.slug.includes(p.name1.toLowerCase()));
+      const t2 = tools.find(t => t.tool_name.toLowerCase().includes(p.name2.toLowerCase()) || t.slug.includes(p.name2.toLowerCase()) || (p.name2 === 'VS Code' && t.slug.includes('vs-code')));
+      if (t1 && t2) {
+        return { label: p.label, slugs: [t1.slug, t2.slug] };
+      }
+      return null;
+    }).filter(Boolean) as { label: string; slugs: string[] }[];
+  }, [tools]);
+
   useEffect(() => {
     const initialTool = searchParams.get('tool');
     if (initialTool && tools.some(t => t.slug === initialTool)) {
@@ -65,9 +82,88 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
 
   return (
     <>
-      <div className="inner-hero">
-        <h1>Compare AI Tools</h1>
-        <p>Select up to 3 tools and compare them side-by-side</p>
+      <style>{`
+        .hero-tag-btn:hover {
+          background: rgba(255, 255, 255, 0.22) !important;
+        }
+        [data-theme='dark'] .hero-tag-btn {
+          background: rgba(255, 255, 255, 0.05) !important;
+          border-color: rgba(255, 255, 255, 0.08) !important;
+          color: var(--text-secondary) !important;
+        }
+        [data-theme='dark'] .hero-tag-btn:hover {
+          background: rgba(255, 255, 255, 0.08) !important;
+          color: var(--text-primary) !important;
+        }
+        [data-theme='dark'] .hero-stats-row {
+          border-top-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:first-child {
+          color: var(--text-primary) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:last-child {
+          color: var(--text-secondary) !important;
+        }
+      `}</style>
+
+      <div className="inner-hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Compare AI Tools</h1>
+        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Select up to 3 tools and compare them side-by-side</p>
+
+        {/* Preset Capsules */}
+        {presets.length > 0 && (
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginTop: '1.5rem', marginBottom: '1.75rem' }}>
+            <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>Popular:</span>
+            {presets.map((preset) => (
+              <button
+                key={preset.label}
+                onClick={() => setSelected(preset.slugs)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.12)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  borderRadius: '99px',
+                  padding: '3px 10px',
+                  fontSize: '0.72rem',
+                  color: '#FFFFFF',
+                  cursor: 'pointer',
+                  transition: 'background 150ms ease',
+                }}
+                className="hero-tag-btn"
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Platform Stats Row */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '3rem',
+          flexWrap: 'wrap',
+          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          paddingTop: '1.75rem',
+          maxWidth: '580px',
+          width: '100%',
+          margin: '0.5rem auto 0',
+        }} className="hero-stats-row">
+          {[
+            { number: '10,000+', label: 'Specs Analyzed' },
+            { number: '3 Max', label: 'Side-by-Side' },
+            { number: '100%', label: 'Unbiased Data' },
+          ].map((stat) => (
+            <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+                {stat.number}
+              </span>
+              <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '3px' }}>
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="container-xl" style={{ paddingBottom: '3rem' }}>

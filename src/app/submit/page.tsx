@@ -63,9 +63,70 @@ export default function SubmitPage() {
 
   return (
     <>
-      <div className="inner-hero">
-        <h1>Submit a Tool</h1>
-        <p>Know an AI tool we&apos;re missing? Add it to the directory for the community.</p>
+      <style>{`
+        [data-theme='dark'] .hero-stats-row {
+          border-top-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:first-child {
+          color: var(--text-primary) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:last-child {
+          color: var(--text-secondary) !important;
+        }
+      `}</style>
+
+      <div className="inner-hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Submit a Tool</h1>
+        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Know an AI tool we&apos;re missing? Add it to the directory for the community.</p>
+
+        {/* Benefits Capsules */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '1.25rem', marginBottom: '1.75rem' }}>
+          {['Boost SEO', 'Early Adopters', 'Product Feedback'].map((benefit) => (
+            <span
+              key={benefit}
+              style={{
+                background: 'rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: '99px',
+                padding: '4px 12px',
+                fontSize: '0.72rem',
+                color: '#FFFFFF',
+                fontWeight: 500,
+              }}
+            >
+              {benefit}
+            </span>
+          ))}
+        </div>
+
+        {/* Platform Stats Row */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '3rem',
+          flexWrap: 'wrap',
+          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          paddingTop: '1.75rem',
+          maxWidth: '580px',
+          width: '100%',
+          margin: '0.5rem auto 0',
+        }} className="hero-stats-row">
+          {[
+            { number: '24-48h', label: 'Review SLA' },
+            { number: '8,400+', label: 'Weekly Reach' },
+            { number: '100% Free', label: 'Forever' },
+          ].map((stat) => (
+            <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+                {stat.number}
+              </span>
+              <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '3px' }}>
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="container-lg" style={{ paddingBottom: '5rem' }}>
