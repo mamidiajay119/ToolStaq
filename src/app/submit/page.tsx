@@ -217,11 +217,12 @@ export default function SubmitPage() {
 
             <div>
               <label htmlFor="submitter-email" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                Your Email (optional)
+                Your Email *
               </label>
               <input
                 id="submitter-email"
                 type="email"
+                required
                 value={form.email}
                 onChange={(e) => update('email', e.target.value)}
                 placeholder="Enter your email address"

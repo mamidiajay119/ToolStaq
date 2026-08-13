@@ -13,12 +13,12 @@ export async function submitTool(formData: {
   url: string;
   category: string;
   description: string;
-  email?: string;
+  email: string;
 }): Promise<SubmissionResult> {
   const { tool_name, url, category, description, email } = formData;
 
-  if (!tool_name || !url || !category) {
-    return { success: false, error: "Tool Name, Website URL, and Category are required." };
+  if (!tool_name || !url || !category || !email) {
+    return { success: false, error: "Tool Name, Website URL, Category, and Email are required." };
   }
 
   // Basic URL validation
@@ -28,12 +28,10 @@ export async function submitTool(formData: {
     return { success: false, error: "Please enter a valid website URL." };
   }
 
-  // Basic email validation if provided
-  if (email && email.trim() !== "") {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return { success: false, error: "Please enter a valid email address." };
-    }
+  // Mandatory email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email.trim())) {
+    return { success: false, error: "Please enter a valid email address." };
   }
 
   try {
