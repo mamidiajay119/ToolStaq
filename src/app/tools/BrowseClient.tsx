@@ -261,7 +261,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           {[
             { number: '2,729+', label: 'AI Tools Index' },
             { number: '24', label: 'Categories' },
-            { number: '100%', label: 'Daily Verified' },
+            { number: '100%', label: 'Verified' },
           ].map((stat) => (
             <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
