@@ -49,6 +49,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <style>{`
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        @media (min-width: 800px) {
+          .category-desc-text {
+            column-count: 2 !important;
+            column-gap: 3.5rem !important;
+          }
+        }
       `}</style>
 
       {/* Hero */}
@@ -82,11 +88,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
 
-          {/* Description stacked below, but wide and spacious */}
-          <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', maxWidth: '1100px', margin: '0', textAlign: 'left' }}>
+          {/* Description stacked below, but flowing in columns to reduce height */}
+          <div className="category-desc-text" style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', maxWidth: '1200px', margin: '0', textAlign: 'left' }}>
             {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
               CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
-                <p key={idx} style={{ marginBottom: '0.75rem' }}>{paragraph}</p>
+                <p key={idx} style={{ margin: 0, marginBottom: '0.75rem', breakInside: 'avoid-column' }}>{paragraph}</p>
               ))
             ) : (
               <p style={{ margin: 0 }}>{desc}</p>
