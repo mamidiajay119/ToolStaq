@@ -86,10 +86,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
           <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', width: '100%', maxWidth: 'none', margin: '0', textAlign: 'left' }}>
             {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
               CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
-                <p key={idx} style={{ margin: 0, marginBottom: '0.75rem' }}>{paragraph}</p>
+                <p key={idx} style={{ margin: 0, marginBottom: '0.75rem', maxWidth: 'none' }}>{paragraph}</p>
               ))
             ) : (
-              <p style={{ margin: 0 }}>{desc}</p>
+              <p style={{ margin: 0, maxWidth: 'none' }}>{desc}</p>
             )}
           </div>
         </div>

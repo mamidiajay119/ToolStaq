@@ -87,7 +87,7 @@ const STATIC_NEWS_ARTICLES: NewsArticle[] = [
 
 export default async function NewsPage() {
   // Fetch latest automated news
-  let newsArticles = await fetchLatestAINews(6);
+  let newsArticles = await fetchLatestAINews(40);
 
   // If fetching fails or API is not set, fallback to static curated articles
   if (!newsArticles || newsArticles.length === 0) {

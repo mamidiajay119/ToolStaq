@@ -98,7 +98,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
           {/* ── Main Content ── */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Hero */}
-            <div className="submit-cta-card" style={{
+            <div className="tool-hero-card" style={{
               borderRadius: '16px',
               padding: '2.5rem',
               position: 'relative',

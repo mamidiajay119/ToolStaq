@@ -11,17 +11,20 @@ interface NewsClientProps {
 
 export default function NewsClient({ newsArticles }: NewsClientProps) {
   const [search, setSearch] = useState('');
+  const [visibleCount, setVisibleCount] = useState(6);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
     if (!q) return newsArticles;
-    return newsArticles.filter(art => 
-      art.title.toLowerCase().includes(q) || 
-      art.excerpt.toLowerCase().includes(q) || 
-      art.category.toLowerCase().includes(q) || 
+    return newsArticles.filter(art =>
+      art.title.toLowerCase().includes(q) ||
+      art.excerpt.toLowerCase().includes(q) ||
+      art.category.toLowerCase().includes(q) ||
       art.source.toLowerCase().includes(q)
     );
   }, [search, newsArticles]);
+
+  const slicedArticles = useMemo(() => filtered.slice(0, visibleCount), [filtered, visibleCount]);
 
   return (
     <>
@@ -106,13 +109,25 @@ export default function NewsClient({ newsArticles }: NewsClientProps) {
             gap: 6px !important;
           }
         }
+        .newsletter-card {
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-subtle);
+          border-radius: 16px;
+          padding: 3rem 2rem;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+        [data-theme='dark'] .newsletter-card {
+          background: #000000 !important;
+        }
       `}</style>
 
       {/* Expanded Inner Hero Banner */}
       <div className="inner-hero" style={{ padding: '4.5rem 1.5rem 5.5rem', marginBottom: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>AI News</h1>
         <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Latest breakthroughs, model releases, and engineering trends.</p>
-        
+
         {/* Search box inside Hero */}
         <div style={{ position: 'relative', maxWidth: '580px', width: '100%', margin: '1.75rem auto 1rem' }}>
           <Search size={16} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.7)', pointerEvents: 'none' }} />
@@ -208,10 +223,10 @@ export default function NewsClient({ newsArticles }: NewsClientProps) {
           </div>
         ) : (
           <div className="news-grid">
-            {filtered.map((article) => (
-              <a 
-                key={article.id} 
-                href={article.url || `/news/${article.slug}`} 
+            {slicedArticles.map((article) => (
+              <a
+                key={article.id}
+                href={article.url || `/news/${article.slug}`}
                 target={article.url ? "_blank" : undefined}
                 rel={article.url ? "noopener noreferrer" : undefined}
                 className="news-card"
@@ -225,7 +240,7 @@ export default function NewsClient({ newsArticles }: NewsClientProps) {
                       {article.source}
                     </span>
                   </div>
-                  
+
                   <h3 style={{
                     fontSize: '1.15rem',
                     fontWeight: 400,
@@ -235,7 +250,7 @@ export default function NewsClient({ newsArticles }: NewsClientProps) {
                   }}>
                     {article.title}
                   </h3>
-                  
+
                   <p style={{
                     fontSize: '0.825rem',
                     color: 'var(--text-secondary)',
@@ -265,17 +280,29 @@ export default function NewsClient({ newsArticles }: NewsClientProps) {
           </div>
         )}
 
+        {/* Load More Button */}
+        {filtered.length > visibleCount && (
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem', marginBottom: '4rem' }}>
+            <button
+              onClick={() => setVisibleCount(prev => prev + 6)}
+              className="btn-secondary"
+              style={{
+                padding: '10px 24px',
+                borderRadius: '12px',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 150ms ease',
+              }}
+            >
+              Load More
+            </button>
+          </div>
+        )}
+
         {/* Newsletter Section */}
         <section style={{ marginTop: '2rem' }}>
-          <div style={{
-            background: 'var(--bg-secondary)',
-            border: '1px solid var(--border-subtle)',
-            borderRadius: '16px',
-            padding: '3rem 2rem',
-            textAlign: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-          }}>
+          <div className="newsletter-card">
             <div style={{
               position: 'absolute',
               top: '-50px',
@@ -296,14 +323,14 @@ export default function NewsClient({ newsArticles }: NewsClientProps) {
               filter: 'blur(30px)',
               pointerEvents: 'none',
             }} />
-            
+
             <h2 style={{ fontSize: '1.4rem', fontWeight: 400, marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>
               Subscribe to AI Updates
             </h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.75rem', maxWidth: '460px', margin: '0 auto 1.75rem', lineHeight: 1.5 }}>
               Get a weekly summary of the most important AI tool launches and news stories sent straight to your inbox.
             </p>
-            
+
             <NewsletterForm />
           </div>
         </section>
