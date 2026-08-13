@@ -60,7 +60,7 @@ export default function NewsletterPage() {
         }
       `}</style>
 
-      <div className="inner-hero" style={{ padding: '4rem 1.5rem 4.5rem', marginBottom: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <div className="inner-hero" style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <div className="newsletter-hero" style={{ margin: 0 }}>
           <div style={{
             display: 'inline-flex',

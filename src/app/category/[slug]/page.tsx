@@ -52,7 +52,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       `}</style>
 
       {/* Hero */}
-      <div className="inner-hero" style={{ padding: '3.5rem 1.5rem 4.5rem', marginBottom: '2.5rem', display: 'block', textAlign: 'left' }}>
+      <div className="inner-hero" style={{ marginBottom: '2.5rem', display: 'block', textAlign: 'left' }}>
         <div className="container-xl">
           <nav style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'flex-start' }}>
             <Link href="/" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Home</Link>
