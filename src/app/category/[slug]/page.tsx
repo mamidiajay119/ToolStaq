@@ -52,63 +52,47 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       `}</style>
 
       {/* Hero */}
-      <div className="inner-hero" style={{ marginBottom: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-        <div className="container-xl" style={{ width: '100%' }}>
-          <div className="category-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', alignItems: 'center' }}>
-            
-            {/* Left Column: Breadcrumbs + Title info */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
-              {/* Breadcrumbs */}
-              <nav style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.7)', display: 'flex', gap: '6px', alignItems: 'center' }}>
-                <Link href="/" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Home</Link>
-                <span>/</span>
-                <Link href="/categories" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Categories</Link>
-                <span>/</span>
-                <span style={{ color: '#FFFFFF' }}>{cat}</span>
-              </nav>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
-                <div style={{
-                  width: '60px', height: '60px', borderRadius: '18px',
-                  background: 'rgba(255, 255, 255, 0.15)',
-                  border: '1px solid rgba(255, 255, 255, 0.25)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#FFFFFF',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-                  flexShrink: 0
-                }}>
-                  <CategoryIcon category={cat} size={30} />
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start' }}>
-                  <h1 style={{ fontSize: '2.25rem', fontWeight: 400, letterSpacing: '-0.03em', margin: 0, color: '#FFFFFF', lineHeight: 1.1 }}>{cat}</h1>
-                  <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', borderColor: 'rgba(255, 255, 255, 0.25)' }}>{tools.length} tools</span>
-                </div>
-              </div>
+      <div className="inner-hero" style={{ marginBottom: '2.5rem', display: 'block', textAlign: 'left' }}>
+        <div className="container-xl">
+          {/* Breadcrumbs */}
+          <nav style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'flex-start' }}>
+            <Link href="/" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Home</Link>
+            <span>/</span>
+            <Link href="/categories" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Categories</Link>
+            <span>/</span>
+            <span style={{ color: '#FFFFFF' }}>{cat}</span>
+          </nav>
+          
+          {/* Header Row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
+            <div style={{
+              width: '60px', height: '60px', borderRadius: '18px',
+              background: 'rgba(255, 255, 255, 0.15)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#FFFFFF',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+              flexShrink: 0
+            }}>
+              <CategoryIcon category={cat} size={30} />
             </div>
-
-            {/* Right Column: Description */}
-            <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', textAlign: 'left' }}>
-              {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
-                CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
-                  <p key={idx} style={{ margin: 0, marginBottom: '0.75rem' }}>{paragraph}</p>
-                ))
-              ) : (
-                <p style={{ margin: 0 }}>{desc}</p>
-              )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start' }}>
+              <h1 style={{ fontSize: '2.25rem', fontWeight: 400, letterSpacing: '-0.03em', margin: 0, color: '#FFFFFF', lineHeight: 1.1 }}>{cat}</h1>
+              <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', borderColor: 'rgba(255, 255, 255, 0.25)' }}>{tools.length} tools</span>
             </div>
+          </div>
 
+          {/* Description stacked below, but wide and spacious */}
+          <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', maxWidth: '1100px', margin: '0', textAlign: 'left' }}>
+            {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
+              CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
+                <p key={idx} style={{ marginBottom: '0.75rem' }}>{paragraph}</p>
+              ))
+            ) : (
+              <p style={{ margin: 0 }}>{desc}</p>
+            )}
           </div>
         </div>
-
-        {/* CSS Grid responsive override */}
-        <style>{`
-          @media (min-width: 900px) {
-            .category-hero-grid {
-              grid-template-columns: 320px 1fr !important;
-              gap: 3.5rem !important;
-            }
-          }
-        `}</style>
       </div>
 
       <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '1.5rem' }}>
