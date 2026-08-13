@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ArrowRight, Search, Sparkles, TrendingUp, Star } from 'lucide-react';
-import { getAllTools, getMeta, getFeaturedTools, slugifyCategory } from '@/lib/tools';
+import { getAllTools, getFeaturedTools, slugifyCategory, getAllCategories } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import ToolCard from '@/components/tools/ToolCard';
 import type { Metadata } from 'next';
@@ -18,8 +18,6 @@ const TOP_CATEGORIES = [
 ];
 
 export default async function HomePage() {
-  const meta = getMeta();
-
   // Run all data fetches in parallel — not sequentially
   const [allTools, featuredTools] = await Promise.all([
     getAllTools(),
@@ -34,12 +32,14 @@ export default async function HomePage() {
     });
   });
 
+  const totalTools = allTools.length;
+  const totalCategories = getAllCategories().length;
   const totalFree = allTools.filter(t => t.free_trial || t.pricing_model === 'freemium').length;
   const totalWithApi = allTools.filter(t => t.has_api).length;
 
   const dynamicStats = [
-    { label: 'AI Tools', value: `${meta.total.toLocaleString()}+`, icon: '⚡', color: '#a78bfa' },
-    { label: 'Categories', value: meta.categories.toString(), icon: '📂', color: '#67e8f9' },
+    { label: 'AI Tools', value: `${totalTools.toLocaleString()}+`, icon: '⚡', color: '#a78bfa' },
+    { label: 'Categories', value: totalCategories.toString(), icon: '📂', color: '#67e8f9' },
     { label: 'Free / Freemium', value: `${totalFree.toLocaleString()}+`, icon: '🆓', color: '#6ee7b7' },
     { label: 'With APIs', value: `${totalWithApi.toLocaleString()}+`, icon: '🔌', color: '#fcd34d' },
   ];
@@ -109,17 +109,17 @@ export default async function HomePage() {
             </h1>
 
             <p className="hero-subheading">
-              Explore a curated index of <strong style={{ color: 'var(--text-primary)' }}>{meta.total.toLocaleString()}+ AI tools</strong> across{' '}
-              <strong style={{ color: 'var(--text-primary)' }}>{meta.categories} categories</strong>. Filter by pricing, complexity, and deployment to optimize your workflow.
+              Explore a curated index of <strong style={{ color: 'var(--text-primary)' }}>{totalTools.toLocaleString()}+ AI tools</strong> across{' '}
+              <strong style={{ color: 'var(--text-primary)' }}>{totalCategories} categories</strong>. Filter by pricing, complexity, and deployment to optimize your workflow.
             </p>
 
             {/* CTA Buttons */}
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2.5rem' }}>
               <Link href="/tools" className="btn-primary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
-                <Search size={15} /> browse
+                <Search size={15} /> Browse
               </Link>
-              <Link href="/compare" className="btn-secondary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
-                compare <ArrowRight size={15} />
+              <Link href="/news" className="btn-secondary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
+                Read <ArrowRight size={15} />
               </Link>
             </div>
 
@@ -156,11 +156,11 @@ export default async function HomePage() {
 
         <div className="container-xl">
           {/* ── Category Grid ── */}
-          <section style={{ marginBottom: '7.5rem' }}>
+          <section style={{ paddingTop: '3.5rem', marginBottom: '7.5rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
               <div>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '4px' }}>Browse by Category</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{meta.categories} categories covering every AI use case</p>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{totalCategories} categories covering every AI use case</p>
               </div>
               <Link href="/tools" className="btn-ghost" style={{ color: 'var(--accent-violet)', fontSize: '0.825rem' }}>
                 View all <ArrowRight size={14} />
@@ -241,11 +241,8 @@ export default async function HomePage() {
 
           {/* ── CTA Banner ── */}
           <section style={{ marginBottom: '7.5rem' }}>
-            <div style={{
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border-subtle)',
+            <div className="submit-cta-card" style={{
               borderRadius: '16px',
-              boxShadow: 'var(--shadow-card)',
               padding: '3rem 2rem',
               textAlign: 'center',
               position: 'relative',

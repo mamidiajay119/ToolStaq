@@ -98,11 +98,11 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
           {/* ── Main Content ── */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             {/* Hero */}
-            <div style={{
-              background: 'var(--bg-card)',
-              border: '1px solid var(--border-subtle)',
+            <div className="tool-hero-card" style={{
               borderRadius: '16px',
               padding: '2.5rem',
+              position: 'relative',
+              overflow: 'hidden',
             }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', flexWrap: 'wrap' }}>
                 <ToolLogo
@@ -220,7 +220,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
 
               {/* About */}
               <div style={{ padding: '1.75rem 2rem' }}>
-                <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
+                <p style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '0.75rem' }}>
                   Overview
                 </p>
                 <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.8, margin: 0 }}>
@@ -233,7 +233,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 <>
                   <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
                   <div style={{ padding: '1.75rem 2rem' }}>
-                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
                       Focus Area
                     </p>
                     <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
@@ -248,7 +248,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 <>
                   <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
                   <div style={{ padding: '1.75rem 2rem' }}>
-                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
                       Core Features & Capabilities
                     </p>
                     {tool.core_features_rich ? (
@@ -283,7 +283,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                   <>
                     <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
                     <div style={{ padding: '1.75rem 2rem' }}>
-                      <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                      <p style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
                         Best For
                       </p>
                       {cleanBestFor.length > 0 && (
@@ -314,7 +314,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 <>
                   <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
                   <div style={{ padding: '1.75rem 2rem' }}>
-                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
                       Integrations
                     </p>
                     <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
@@ -331,7 +331,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 <>
                   <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
                   <div style={{ padding: '1.75rem 2rem' }}>
-                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
                       Architecture & Security
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -351,7 +351,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 <>
                   <div style={{ height: '1px', background: 'var(--border-subtle)' }} />
                   <div style={{ padding: '1.75rem 2rem' }}>
-                    <p style={{ fontSize: '1.25rem', fontWeight: 600, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+                    <p style={{ fontSize: '1.25rem', fontWeight: 400, color: 'var(--text-primary)', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
                       Pricing Details
                     </p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -373,7 +373,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '80px' }}>
             {/* Quick Info */}
             <div className="glass-card" style={{ padding: '1.5rem', borderRadius: '16px' }}>
-              <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>
+              <h3 style={{ fontSize: '0.9rem', fontWeight: 400, color: 'var(--text-primary)', marginBottom: '1.25rem' }}>
                 Quick Info
               </h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -388,7 +388,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                 ].map(({ label, value }) => (
                   <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '8px', borderBottom: '1px solid var(--border-subtle)' }}>
                     <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{label}</span>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'right' }}>{value}</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 400, color: 'var(--text-primary)', textAlign: 'right' }}>{value}</span>
                   </div>
                 ))}
               </div>
@@ -397,7 +397,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
             {/* Alternatives */}
             {alternativeTools.length > 0 && (
               <div>
-                <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '1rem', paddingLeft: '4px' }}>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 400, color: 'var(--text-primary)', marginBottom: '1rem', paddingLeft: '4px' }}>
                   Alternatives to {tool.tool_name}
                 </h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Send, CheckCircle2, PlusCircle } from 'lucide-react';
+import { Send, CheckCircle2, PlusCircle, AlertCircle } from 'lucide-react';
+import { submitTool } from '@/app/actions/submit-tool';
 
 const CATEGORIES = [
   'AI Writing', 'AI Coding', 'AI Design', 'AI Video', 'AI Audio',
@@ -16,6 +17,7 @@ const CATEGORIES = [
 export default function SubmitPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     tool_name: '', url: '', category: '', description: '', email: '',
   });
@@ -23,10 +25,20 @@ export default function SubmitPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate submission (replace with real API call)
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+    setError(null);
+    try {
+      const result = await submitTool(form);
+      if (result.success) {
+        setSubmitted(true);
+      } else {
+        setError(result.error || "An error occurred while submitting.");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const update = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -50,16 +62,94 @@ export default function SubmitPage() {
   }
 
   return (
-    <div className="container-lg" style={{ paddingTop: '6rem', paddingBottom: '5rem' }}>
-      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: 'clamp(1.75rem, 5vw, 2.25rem)', fontWeight: 400, letterSpacing: '-0.03em', marginBottom: '8px' }}>Submit a Tool</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
-            Know an AI tool we&apos;re missing? Add it to the directory for the community.
-          </p>
+    <>
+      <style>{`
+        [data-theme='dark'] .hero-stats-row {
+          border-top-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:first-child {
+          color: var(--text-primary) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:last-child {
+          color: var(--text-secondary) !important;
+        }
+      `}</style>
+
+      <div className="inner-hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Submit a Tool</h1>
+        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Know an AI tool we&apos;re missing? Add it to the directory for the community.</p>
+
+        {/* Benefits Capsules */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '1.25rem', marginBottom: '1.75rem' }}>
+          {['Boost SEO', 'Early Adopters', 'Product Feedback'].map((benefit) => (
+            <span
+              key={benefit}
+              style={{
+                background: 'rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: '99px',
+                padding: '4px 12px',
+                fontSize: '0.72rem',
+                color: '#FFFFFF',
+                fontWeight: 500,
+              }}
+            >
+              {benefit}
+            </span>
+          ))}
         </div>
 
+        {/* Platform Stats Row */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '3rem',
+          flexWrap: 'wrap',
+          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          paddingTop: '1.75rem',
+          maxWidth: '580px',
+          width: '100%',
+          margin: '0.5rem auto 0',
+        }} className="hero-stats-row">
+          {[
+            { number: '24-48h', label: 'Review SLA' },
+            { number: 'Active', label: 'SEO Backlink' },
+            { number: '100% Free', label: 'Forever' },
+          ].map((stat) => (
+            <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+                {stat.number}
+              </span>
+              <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '3px' }}>
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="container-lg" style={{ paddingBottom: '5rem' }}>
+        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
+
         <div className="glass-card" style={{ padding: '2rem' }}>
+          {error && (
+            <div style={{
+              background: 'rgba(239, 68, 68, 0.08)',
+              border: '1px solid rgba(239, 68, 68, 0.25)',
+              borderRadius: '12px',
+              padding: '1rem',
+              marginBottom: '1.25rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              color: '#f87171',
+              fontSize: '0.85rem',
+            }}>
+              <AlertCircle size={18} style={{ flexShrink: 0 }} />
+              <span>{error}</span>
+            </div>
+          )}
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
             <div>
               <label htmlFor="tool-name" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>
@@ -127,11 +217,12 @@ export default function SubmitPage() {
 
             <div>
               <label htmlFor="submitter-email" style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                Your Email (optional)
+                Your Email *
               </label>
               <input
                 id="submitter-email"
                 type="email"
+                required
                 value={form.email}
                 onChange={(e) => update('email', e.target.value)}
                 placeholder="Enter your email address"
@@ -163,6 +254,7 @@ export default function SubmitPage() {
         </div>
       </div>
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-    </div>
+      </div>
+    </>
   );
 }

@@ -52,42 +52,44 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       `}</style>
 
       {/* Hero */}
-      <div style={{
-        background: 'var(--bg-primary)',
-        borderBottom: 'none',
-        padding: '3rem 1.5rem',
-      }}>
+      <div className="inner-hero" style={{ marginBottom: '2.5rem', display: 'block', textAlign: 'left' }}>
         <div className="container-xl">
-          <nav style={{ fontSize: '0.825rem', color: 'var(--text-muted)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center' }}>
-            <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
+          {/* Breadcrumbs */}
+          <nav style={{ fontSize: '0.825rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1.5rem', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'flex-start' }}>
+            <Link href="/" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Home</Link>
             <span>/</span>
-            <Link href="/categories" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Categories</Link>
+            <Link href="/categories" style={{ color: 'rgba(255, 255, 255, 0.7)', textDecoration: 'none' }}>Categories</Link>
             <span>/</span>
-            <span style={{ color: 'var(--text-secondary)' }}>{cat}</span>
+            <span style={{ color: '#FFFFFF' }}>{cat}</span>
           </nav>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
+          {/* Header Row */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem' }}>
             <div style={{
-              width: '56px', height: '56px', borderRadius: '16px',
-              background: 'var(--bg-secondary)',
-              border: '1px solid var(--border-subtle)',
+              width: '60px', height: '60px', borderRadius: '18px',
+              background: 'rgba(255, 255, 255, 0.15)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: 'var(--text-primary)'
+              color: '#FFFFFF',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+              flexShrink: 0
             }}>
-              <CategoryIcon category={cat} size={28} />
+              <CategoryIcon category={cat} size={30} />
             </div>
-            <div>
-              <h1 style={{ fontSize: '1.25rem', fontWeight: 600, letterSpacing: '-0.03em', marginBottom: '4px' }}>{cat}</h1>
-              <span className="badge badge-violet">{tools.length} tools</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start' }}>
+              <h1 style={{ fontSize: '2.25rem', fontWeight: 400, letterSpacing: '-0.03em', margin: 0, color: '#FFFFFF', lineHeight: 1.1 }}>{cat}</h1>
+              <span className="badge" style={{ background: 'rgba(255, 255, 255, 0.15)', color: '#FFFFFF', borderColor: 'rgba(255, 255, 255, 0.25)' }}>{tools.length} tools</span>
             </div>
           </div>
-          <div style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.85rem', width: '100%' }}>
+
+          {/* Description stacked below, taking 100% width to expand horizontally and reduce vertical row height */}
+          <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', width: '100%', maxWidth: 'none', margin: '0', textAlign: 'left' }}>
             {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
               CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
-                <p key={idx} style={{ marginBottom: '0.75rem' }}>{paragraph}</p>
+                <p key={idx} style={{ margin: 0, marginBottom: '0.75rem', maxWidth: 'none' }}>{paragraph}</p>
               ))
             ) : (
-              <p>{desc}</p>
+              <p style={{ margin: 0, maxWidth: 'none' }}>{desc}</p>
             )}
           </div>
         </div>

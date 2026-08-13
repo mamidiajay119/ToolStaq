@@ -138,39 +138,158 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
   };
 
   return (
-    <div style={{ minHeight: '80vh', padding: '1rem 0 4rem' }}>
+    <>
       <style>{`
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .hero-search-input::placeholder {
+          color: rgba(255, 255, 255, 0.7) !important;
+        }
+        .hero-search-input:focus {
+          background: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.4) !important;
+        }
+        .hero-tag-btn:hover {
+          background: rgba(255, 255, 255, 0.22) !important;
+        }
+        [data-theme='dark'] .hero-search-input {
+          background: rgba(255, 255, 255, 0.04) !important;
+          border-color: rgba(255, 255, 255, 0.1) !important;
+          color: var(--text-primary) !important;
+        }
+        [data-theme='dark'] .hero-search-input::placeholder {
+          color: var(--text-muted) !important;
+        }
+        [data-theme='dark'] .hero-search-input:focus {
+          background: rgba(255, 255, 255, 0.07) !important;
+          border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+        [data-theme='dark'] .hero-tag-btn {
+          background: rgba(255, 255, 255, 0.05) !important;
+          border-color: rgba(255, 255, 255, 0.08) !important;
+          color: var(--text-secondary) !important;
+        }
+        [data-theme='dark'] .hero-tag-btn:hover {
+          background: rgba(255, 255, 255, 0.08) !important;
+          color: var(--text-primary) !important;
+        }
+        [data-theme='dark'] .hero-stats-row {
+          border-top-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:first-child {
+          color: var(--text-primary) !important;
+        }
+        [data-theme='dark'] .hero-stats-row span:last-child {
+          color: var(--text-secondary) !important;
+        }
       `}</style>
 
-      {/* Top Search & Categories */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '1.5rem' }}>
+      {/* Expanded Inner Hero Banner */}
+      <div className="inner-hero" style={{ padding: '4.5rem 1.5rem 5.5rem', marginBottom: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>AI Tools</h1>
+        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Explore hand-curated AI tools for your workflow.</p>
         
-        {/* Search */}
-        <div style={{ position: 'relative', maxWidth: '600px', width: '100%' }}>
-          <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+        {/* Search box inside Hero */}
+        <div style={{ position: 'relative', maxWidth: '580px', width: '100%', margin: '1.75rem auto 1rem' }}>
+          <Search size={16} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.7)', pointerEvents: 'none' }} />
           <input
             type="text"
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            placeholder="Search tools, categories, use cases..."
-            className="search-input"
-            style={{ paddingLeft: '36px', paddingRight: search ? '36px' : '16px', paddingTop: '8px', paddingBottom: '8px', fontSize: '0.9rem' }}
+            placeholder="Search 2,729+ tools, categories, use cases..."
+            className="hero-search-input"
+            style={{
+              width: '100%',
+              paddingLeft: '44px',
+              paddingRight: search ? '40px' : '16px',
+              paddingTop: '12px',
+              paddingBottom: '12px',
+              fontSize: '0.95rem',
+              borderRadius: '14px',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              background: 'rgba(255, 255, 255, 0.1)',
+              color: '#FFFFFF',
+              outline: 'none',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+              transition: 'all 150ms ease',
+            }}
           />
           {search && (
-            <button onClick={() => { setSearch(''); setPage(1); }} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
-              <X size={14} />
+            <button onClick={() => { setSearch(''); setPage(1); }} style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)' }}>
+              <X size={15} />
             </button>
           )}
         </div>
 
-        {/* Category Chips Row */}
-        <div className="hide-scroll" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '4px' }}>
+        {/* Trending tags */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '2rem' }}>
+          <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>Trending:</span>
+          {['Voice Cloning', 'SEO Writing', 'Code Assistant', 'Video Creator'].map((tag) => (
+            <button
+              key={tag}
+              onClick={() => { setSearch(tag); setPage(1); }}
+              style={{
+                background: 'rgba(255, 255, 255, 0.12)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: '99px',
+                padding: '3px 10px',
+                fontSize: '0.72rem',
+                color: '#FFFFFF',
+                cursor: 'pointer',
+                transition: 'background 150ms ease',
+              }}
+              className="hero-tag-btn"
+            >
+              {tag}
+            </button>
+          ))}
+        </div>
+
+        {/* Platform Stats Row */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '3rem',
+          flexWrap: 'wrap',
+          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          paddingTop: '1.75rem',
+          maxWidth: '580px',
+          width: '100%',
+          margin: '0.5rem auto 0',
+        }} className="hero-stats-row">
+          {[
+            { number: '2,729+', label: 'AI Tools Index' },
+            { number: '24', label: 'Categories' },
+            { number: '100%', label: 'Verified' },
+          ].map((stat) => (
+            <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+                {stat.number}
+              </span>
+              <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '3px' }}>
+                {stat.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="container-xl" style={{ paddingBottom: '4rem' }}>
+
+        {/* Category Chips Row (Horizontal Scrollable) */}
+        <div className="hide-scroll" style={{ 
+          display: 'flex', 
+          gap: '10px', 
+          overflowX: 'auto', 
+          paddingBottom: '1.5rem', 
+          marginBottom: '1.5rem', 
+          borderBottom: '1px solid var(--border-subtle)' 
+        }}>
           <button
             onClick={() => { setSelectedCategories([]); setPage(1); }}
             className={selectedCategories.length === 0 ? "btn-primary" : "btn-secondary"}
-            style={{ padding: '4px 12px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+            style={{ padding: '6px 16px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
           >
             All Categories
           </button>
@@ -179,55 +298,57 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
               key={cat}
               onClick={() => toggleArr(selectedCategories, cat, setSelectedCategories)}
               className={selectedCategories.includes(cat) ? "btn-primary" : "btn-secondary"}
-              style={{ padding: '4px 12px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+              style={{ padding: '6px 16px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
             >
               {cat.replace('AI ', '')}
             </button>
           ))}
         </div>
-      </div>
 
-      {/* Dropdowns Row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '12px' }}>
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          
-          <FilterDropdown title="Pricing" badgeCount={selectedPricing.length}>
-            {PRICING_MODELS.map((m) => (
-              <CheckItem key={m} label={m.charAt(0).toUpperCase() + m.slice(1)} checked={selectedPricing.includes(m)} onChange={() => toggleArr(selectedPricing, m, setSelectedPricing)} />
-            ))}
-          </FilterDropdown>
+        {/* Filters Bar */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1.25rem' }}>
+          {/* Dropdowns Filters */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <FilterDropdown title="Pricing" badgeCount={selectedPricing.length}>
+              {PRICING_MODELS.map((m) => (
+                <CheckItem key={m} label={m.charAt(0).toUpperCase() + m.slice(1)} checked={selectedPricing.includes(m)} onChange={() => toggleArr(selectedPricing, m, setSelectedPricing)} />
+              ))}
+            </FilterDropdown>
 
-          <FilterDropdown title="Complexity" badgeCount={selectedComplexity.length}>
-            {COMPLEXITY_LEVELS.map((l) => (
-              <CheckItem key={l} label={l} checked={selectedComplexity.includes(l)} onChange={() => toggleArr(selectedComplexity, l, setSelectedComplexity)} />
-            ))}
-          </FilterDropdown>
+            <FilterDropdown title="Complexity" badgeCount={selectedComplexity.length}>
+              {COMPLEXITY_LEVELS.map((l) => (
+                <CheckItem key={l} label={l} checked={selectedComplexity.includes(l)} onChange={() => toggleArr(selectedComplexity, l, setSelectedComplexity)} />
+              ))}
+            </FilterDropdown>
 
-          <FilterDropdown title="Deployment" badgeCount={selectedDeployment.length}>
-            {DEPLOYMENT_OPTIONS.map((d) => (
-              <CheckItem key={d} label={d} checked={selectedDeployment.includes(d)} onChange={() => toggleArr(selectedDeployment, d, setSelectedDeployment)} />
-            ))}
-          </FilterDropdown>
+            <FilterDropdown title="Deployment" badgeCount={selectedDeployment.length}>
+              {DEPLOYMENT_OPTIONS.map((d) => (
+                <CheckItem key={d} label={d} checked={selectedDeployment.includes(d)} onChange={() => toggleArr(selectedDeployment, d, setSelectedDeployment)} />
+              ))}
+            </FilterDropdown>
 
-          <FilterDropdown title="Features" badgeCount={(freeTrialOnly ? 1 : 0) + (apiOnly ? 1 : 0) + (openSourceOnly ? 1 : 0)}>
-            <CheckItem label="Free Trial Available" checked={freeTrialOnly} onChange={(v) => { setFreeTrialOnly(v); setPage(1); }} />
-            <CheckItem label="Has API" checked={apiOnly} onChange={(v) => { setApiOnly(v); setPage(1); }} />
-            <CheckItem label="Open Source" checked={openSourceOnly} onChange={(v) => { setOpenSourceOnly(v); setPage(1); }} />
-          </FilterDropdown>
+            <FilterDropdown title="Features" badgeCount={(freeTrialOnly ? 1 : 0) + (apiOnly ? 1 : 0) + (openSourceOnly ? 1 : 0)}>
+              <CheckItem label="Free Trial Available" checked={freeTrialOnly} onChange={(v) => { setFreeTrialOnly(v); setPage(1); }} />
+              <CheckItem label="Has API" checked={apiOnly} onChange={(v) => { setApiOnly(v); setPage(1); }} />
+              <CheckItem label="Open Source" checked={openSourceOnly} onChange={(v) => { setOpenSourceOnly(v); setPage(1); }} />
+            </FilterDropdown>
 
-          {activeFilterCount > 0 && (
-            <button onClick={clearAll} className="btn-ghost" style={{ fontSize: '0.85rem' }}>
-              Clear all filters
-            </button>
-          )}
+            {activeFilterCount > 0 && (
+              <button onClick={clearAll} className="btn-ghost" style={{ fontSize: '0.85rem' }}>
+                Clear all
+              </button>
+            )}
+          </div>
         </div>
 
+        {/* Tools count display if filtered */}
         {(activeFilterCount > 0 || search.trim() !== '') && (
-          <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
-            <strong style={{ color: 'var(--text-primary)' }}>{filtered.length.toLocaleString()}</strong> tools found
-          </span>
+          <div style={{ marginBottom: '1.5rem', marginTop: '-1rem' }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+              <strong style={{ color: 'var(--text-primary)' }}>{filtered.length.toLocaleString()}</strong> tools found
+            </span>
+          </div>
         )}
-      </div>
 
       {/* Recommended Right Now Section */}
       {recommendedTools.length > 0 && activeFilterCount === 0 && !search.trim() && (
@@ -371,6 +492,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           )}
         </>
       )}
-    </div>
+      </div>
+    </>
   );
 }
