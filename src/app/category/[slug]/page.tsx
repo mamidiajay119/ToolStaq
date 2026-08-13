@@ -49,14 +49,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <style>{`
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        @media (min-width: 900px) {
-          .category-hero-body {
-            display: grid !important;
-            grid-template-columns: 2fr 1fr !important;
-            gap: 4rem !important;
-            align-items: start !important;
-          }
-        }
       `}</style>
 
       {/* Hero */}
@@ -90,49 +82,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             </div>
           </div>
 
-          {/* Description + Stats Grid Row */}
-          <div className="category-hero-body" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', marginTop: '1.5rem' }}>
-            
-            {/* Description Paragraph */}
-            <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', textAlign: 'left' }}>
-              {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
-                CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
-                  <p key={idx} style={{ margin: 0, marginBottom: '0.75rem' }}>{paragraph}</p>
-                ))
-              ) : (
-                <p style={{ margin: 0 }}>{desc}</p>
-              )}
-            </div>
-
-            {/* Category Insights side widget */}
-            <div style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              borderRadius: '16px',
-              padding: '1.25rem 1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              color: '#FFFFFF',
-              maxHeight: 'fit-content'
-            }}>
-              <span style={{ fontSize: '0.72rem', color: 'rgba(255, 255, 255, 0.6)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>
-                Category Insights
-              </span>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px' }}>
-                <span style={{ color: 'rgba(255,255,255,0.7)' }}>Total Index:</span>
-                <span style={{ fontWeight: 600 }}>{tools.length} tools</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px' }}>
-                <span style={{ color: 'rgba(255,255,255,0.7)' }}>Status:</span>
-                <span style={{ fontWeight: 600, color: '#34d399' }}>100% Verified</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: 'rgba(255,255,255,0.7)' }}>Update Cycle:</span>
-                <span style={{ fontWeight: 600 }}>Daily Sync</span>
-              </div>
-            </div>
-
+          {/* Description stacked below, taking 100% width to expand horizontally and reduce vertical row height */}
+          <div style={{ color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.7, fontSize: '0.9rem', width: '100%', maxWidth: 'none', margin: '0', textAlign: 'left' }}>
+            {CATEGORY_LONG_DESCRIPTIONS[cat] ? (
+              CATEGORY_LONG_DESCRIPTIONS[cat].split('\n\n').map((paragraph, idx) => (
+                <p key={idx} style={{ margin: 0, marginBottom: '0.75rem' }}>{paragraph}</p>
+              ))
+            ) : (
+              <p style={{ margin: 0 }}>{desc}</p>
+            )}
           </div>
         </div>
       </div>
