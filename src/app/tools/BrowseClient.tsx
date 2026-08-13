@@ -144,11 +144,38 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
 
-      {/* Top Search & Categories */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', marginBottom: '1.5rem' }}>
-        
+      {/* Category Chips Row (Horizontal Scrollable) */}
+      <div className="hide-scroll" style={{ 
+        display: 'flex', 
+        gap: '10px', 
+        overflowX: 'auto', 
+        paddingBottom: '1.5rem', 
+        marginBottom: '1.5rem', 
+        borderBottom: '1px solid var(--border-subtle)' 
+      }}>
+        <button
+          onClick={() => { setSelectedCategories([]); setPage(1); }}
+          className={selectedCategories.length === 0 ? "btn-primary" : "btn-secondary"}
+          style={{ padding: '6px 16px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+        >
+          All Categories
+        </button>
+        {allCategories.map(cat => (
+          <button
+            key={cat}
+            onClick={() => toggleArr(selectedCategories, cat, setSelectedCategories)}
+            className={selectedCategories.includes(cat) ? "btn-primary" : "btn-secondary"}
+            style={{ padding: '6px 16px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+          >
+            {cat.replace('AI ', '')}
+          </button>
+        ))}
+      </div>
+
+      {/* Search and Filters Bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1.25rem' }}>
         {/* Search */}
-        <div style={{ position: 'relative', maxWidth: '600px', width: '100%' }}>
+        <div style={{ position: 'relative', maxWidth: '400px', width: '100%' }}>
           <Search size={14} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
           <input
             type="text"
@@ -165,32 +192,8 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           )}
         </div>
 
-        {/* Category Chips Row */}
-        <div className="hide-scroll" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '4px' }}>
-          <button
-            onClick={() => { setSelectedCategories([]); setPage(1); }}
-            className={selectedCategories.length === 0 ? "btn-primary" : "btn-secondary"}
-            style={{ padding: '4px 12px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
-          >
-            All Categories
-          </button>
-          {allCategories.map(cat => (
-            <button
-              key={cat}
-              onClick={() => toggleArr(selectedCategories, cat, setSelectedCategories)}
-              className={selectedCategories.includes(cat) ? "btn-primary" : "btn-secondary"}
-              style={{ padding: '4px 12px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
-            >
-              {cat.replace('AI ', '')}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Dropdowns Row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '12px' }}>
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          
+        {/* Dropdowns Filters */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           <FilterDropdown title="Pricing" badgeCount={selectedPricing.length}>
             {PRICING_MODELS.map((m) => (
               <CheckItem key={m} label={m.charAt(0).toUpperCase() + m.slice(1)} checked={selectedPricing.includes(m)} onChange={() => toggleArr(selectedPricing, m, setSelectedPricing)} />
@@ -217,17 +220,20 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
 
           {activeFilterCount > 0 && (
             <button onClick={clearAll} className="btn-ghost" style={{ fontSize: '0.85rem' }}>
-              Clear all filters
+              Clear all
             </button>
           )}
         </div>
+      </div>
 
-        {(activeFilterCount > 0 || search.trim() !== '') && (
+      {/* Tools count display if filtered */}
+      {(activeFilterCount > 0 || search.trim() !== '') && (
+        <div style={{ marginBottom: '1.5rem', marginTop: '-1rem' }}>
           <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
             <strong style={{ color: 'var(--text-primary)' }}>{filtered.length.toLocaleString()}</strong> tools found
           </span>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Recommended Right Now Section */}
       {recommendedTools.length > 0 && activeFilterCount === 0 && !search.trim() && (
