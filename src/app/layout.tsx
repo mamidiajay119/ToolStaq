@@ -6,8 +6,8 @@ import { getMeta } from '@/lib/tools';
 
 export const metadata: Metadata = {
   title: {
-    default: 'ToolStaq — Find the Best AI Tools',
-    template: '%s | ToolStaq',
+    default: 'toolstaq — Find the Best AI Tools',
+    template: '%s | toolstaq',
   },
   description:
     'The most comprehensive AI tools directory. Discover, compare, and filter AI tools by category, pricing, complexity and more.',
@@ -15,20 +15,28 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://aitoolsdirectory.com'),
   openGraph: {
     type: 'website',
-    siteName: 'ToolStaq',
-    title: 'ToolStaq — Find the Best AI Tools',
+    siteName: 'toolstaq',
+    title: 'toolstaq — Find the Best AI Tools',
     description: 'Find the perfect AI tool for your workflow. Browse top tools across multiple categories.',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ToolStaq',
+    title: 'toolstaq',
     description: 'Discover the best AI tools across multiple categories.',
   },
   robots: {
     index: true,
     follow: true,
     googleBot: { index: true, follow: true },
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '32x32' },
+    ],
+    apple: '/favicon.svg',
+    shortcut: '/favicon.svg',
   },
 };
 

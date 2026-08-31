@@ -58,7 +58,7 @@ export async function subscribeToNewsletter(
       if (response.error.message?.toLowerCase().includes("already exists")) {
         return {
           success: true,
-          message: "You're already subscribed to ToolStaq updates! Thank you! ❤️",
+          message: "You're already subscribed to toolstaq updates! Thank you! ❤️",
         };
       }
       return {
@@ -70,10 +70,10 @@ export async function subscribeToNewsletter(
     // Optionally send a welcome email if they signed up successfully
     try {
       await resend.emails.send({
-        from: "ToolStaq Newsletter <newsletter@toolstaq.com>",
+        from: "toolstaq Newsletter <newsletter@toolstaq.com>",
         to: email,
-        subject: "Welcome to ToolStaq Newsletter!",
-        html: "<p>Thank you for subscribing to ToolStaq updates! We will keep you updated on the latest AI tools and breakthroughs.</p>",
+        subject: "Welcome to toolstaq Newsletter!",
+        html: "<p>Thank you for subscribing to toolstaq updates! We will keep you updated on the latest AI tools and breakthroughs.</p>",
       });
     } catch (emailErr) {
       console.warn("Welcome email could not be sent (requires domain verification), but contact was successfully added:", emailErr);

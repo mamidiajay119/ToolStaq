@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Search, X, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 import ToolCard from '@/components/tools/ToolCard';
@@ -120,6 +121,13 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
   }, [tools, search, selectedCategories, selectedPricing, selectedComplexity, selectedDeployment, freeTrialOnly, apiOnly, openSourceOnly]);
 
   const paginated = useMemo(() => filtered.slice(0, page * PER_PAGE), [filtered, page]);
+
+  // Changes only when the filtered set changes (not on load-more).
+  // Using this as a key on the motion container re-mounts it, replaying the stagger.
+  const animationKey = useMemo(
+    () => `${filtered.length}-${filtered[0]?.slug ?? ''}`,
+    [filtered]
+  );
 
   const activeFilterCount = selectedCategories.length + selectedPricing.length + selectedComplexity.length +
     selectedDeployment.length + (freeTrialOnly ? 1 : 0) + (apiOnly ? 1 : 0) + (openSourceOnly ? 1 : 0);
@@ -450,7 +458,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           display: flex;
           align-items: center;
           gap: 12px;
-          background: var(--bg-card);
+          background: var(--bg-secondary);
           border: var(--border-width, 1px) solid var(--border-subtle);
           border-radius: 14px;
           padding: 9px 16px;
@@ -460,6 +468,10 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           flex-shrink: 0;
           transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
           box-shadow: var(--shadow-card);
+        }
+        [data-theme='dark'] .top-picks-marquee-capsule {
+          background: rgba(255, 255, 255, 0.03) !important;
+          border-color: rgba(255, 255, 255, 0.08) !important;
         }
         .top-picks-marquee-capsule:hover {
           border-color: var(--accent-primary) !important;
@@ -514,16 +526,42 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
         </div>
       ) : (
         <>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-            gap: '14px',
-            marginBottom: '2rem',
-          }}>
+          <motion.div
+            key={animationKey}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+              gap: '14px',
+              marginBottom: '2rem',
+            }}
+            initial="hidden"
+            animate="show"
+            variants={{
+              hidden: {},
+              show: { transition: { staggerChildren: 0.045, delayChildren: 0 } },
+            }}
+          >
             {paginated.map((tool, i) => (
-              <ToolCard key={tool.slug} tool={tool} />
+              <motion.div
+                key={tool.slug}
+                variants={{
+                  hidden: { opacity: 0, y: 18, scale: 0.97 },
+                  show: {
+                    opacity: 1, y: 0, scale: 1,
+                    // Cap stagger so the 25th+ card doesn't wait forever
+                    transition: {
+                      duration: 0.38,
+                      ease: [0.22, 1, 0.36, 1],
+                      delay: Math.min(i, 12) * 0.045,
+                    },
+                  },
+                }}
+                whileHover={{ y: -3, transition: { duration: 0.15 } }}
+              >
+                <ToolCard tool={tool} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {paginated.length < filtered.length && (
             <div style={{ textAlign: 'center', marginTop: '2.5rem', marginBottom: '0.5rem' }}>

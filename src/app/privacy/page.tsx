@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { Lock, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — ToolStaq',
-  description: 'Learn how ToolStaq protects, manages, and respects your personal data and privacy settings.',
+  title: 'Privacy Policy — toolstaq',
+  description: 'Learn how toolstaq protects, manages, and respects your personal data and privacy settings.',
 };
 
 export default function PrivacyPage() {
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
         <span className="policy-date">Last Updated: August 13, 2026</span>
 
         <p>
-          At ToolStaq (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), we are committed to protecting your privacy. This Privacy Policy details the types of information we collect, how we use it, and the security measures we take to protect your data when you visit and interact with our AI directory.
+          At toolstaq (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), we are committed to protecting your privacy. This Privacy Policy details the types of information we collect, how we use it, and the security measures we take to protect your data when you visit and interact with our AI directory.
         </p>
 
         <h2>1. Information We Collect</h2>
@@ -104,12 +104,12 @@ export default function PrivacyPage() {
           We do not sell, trade, rent, or lease your email address or usage data to third-party marketing companies. 
         </p>
         <p>
-          We may share anonymous data with trusted service providers who help us host our database (such as Supabase, Vercel, or database servers) or manage email delivery (such as Resend or other email dispatch APIs). These providers are legally bound to protect your data and only use it to execute services for ToolStaq.
+          We may share anonymous data with trusted service providers who help us host our database (such as Supabase, Vercel, or database servers) or manage email delivery (such as Resend or other email dispatch APIs). These providers are legally bound to protect your data and only use it to execute services for toolstaq.
         </p>
 
         <h2>4. Cookies &amp; Theme Storage</h2>
         <p>
-          ToolStaq uses standard browser features (such as `localStorage` and basic cookies) to store your preferred site configuration, specifically your theme preference (keeping Light mode or Dark mode active as you navigate between pages). For detailed information, please review our dedicated <Link href="/cookie-policy" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>Cookie Policy</Link>.
+          toolstaq uses standard browser features (such as `localStorage` and basic cookies) to store your preferred site configuration, specifically your theme preference (keeping Light mode or Dark mode active as you navigate between pages). For detailed information, please review our dedicated <Link href="/cookie-policy" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>Cookie Policy</Link>.
         </p>
 
         <h2>5. Your Rights (GDPR &amp; CCPA Compliance)</h2>

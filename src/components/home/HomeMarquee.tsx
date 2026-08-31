@@ -26,7 +26,7 @@ export default function HomeMarquee({ tools }: HomeMarqueeProps) {
       borderTop: 'var(--border-width, 1px) solid var(--border-subtle)',
       borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)',
       padding: '1.25rem 0',
-      background: 'var(--bg-secondary)',
+      background: 'var(--bg-primary)',
       width: '100%',
     }}>
       <style>{`
@@ -47,7 +47,7 @@ export default function HomeMarquee({ tools }: HomeMarqueeProps) {
           display: flex;
           align-items: center;
           gap: 12px;
-          background: var(--bg-card);
+          background: var(--bg-secondary);
           border: var(--border-width, 1px) solid var(--border-subtle);
           border-radius: 14px;
           padding: 9px 16px;
@@ -57,6 +57,10 @@ export default function HomeMarquee({ tools }: HomeMarqueeProps) {
           flex-shrink: 0;
           transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
           box-shadow: var(--shadow-card);
+        }
+        [data-theme='dark'] .home-marquee-capsule {
+          background: rgba(255, 255, 255, 0.03) !important;
+          border-color: rgba(255, 255, 255, 0.08) !important;
         }
         .home-marquee-capsule:hover {
           border-color: var(--accent-primary) !important;

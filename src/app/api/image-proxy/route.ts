@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const response = await fetch(parsed.toString(), {
       headers: {
         // Appear as a normal browser request to bypass hotlink protection
-        'User-Agent': 'Mozilla/5.0 (compatible; ToolStaq/1.0; +https://toolstaq.com)',
+        'User-Agent': 'Mozilla/5.0 (compatible; toolstaq/1.0; +https://toolstaq.com)',
         'Accept': 'image/webp,image/avif,image/*,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
         // No Referer — avoids same-site hotlink checks
