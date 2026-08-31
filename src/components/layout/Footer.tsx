@@ -6,7 +6,7 @@ import { getAllCategories, slugifyCategory } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 
 export default function Footer() {
-  const categories = getAllCategories().slice(0, 5);
+  const categories = ['AI Productivity', 'AI Design', 'AI Marketing', 'AI Writing', 'AI Coding'];
 
   return (
     <footer className="site-footer" style={{

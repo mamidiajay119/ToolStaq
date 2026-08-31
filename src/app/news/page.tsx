@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { fetchLatestAINews } from '@/lib/news';
+import { fetchLatestAINews, fetchTopThisWeek } from '@/lib/news';
 import NewsClient from './NewsClient';
 
 export const metadata: Metadata = {
@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   description: 'Stay ahead of the curve with the latest news, releases, and trends in Artificial Intelligence. Curated by ToolStaq.',
 };
 
-// Cache the page for 7 days (weekly revalidation)
-export const revalidate = 604800;
+// ISR: re-render after 24h. /api/cron/refresh-news calls revalidatePath('/news') at midnight UTC.
+export const revalidate = 86400;
 
 export interface NewsArticle {
   id: string;
@@ -20,6 +20,8 @@ export interface NewsArticle {
   source: string;
   slug: string;
   url?: string;
+  image_url?: string;
+  view_count: number;
 }
 
 const STATIC_NEWS_ARTICLES: NewsArticle[] = [
@@ -31,17 +33,19 @@ const STATIC_NEWS_ARTICLES: NewsArticle[] = [
     readTime: '5 min read',
     category: 'Frontier Models',
     source: 'TechCrunch',
-    slug: 'openai-announces-gpt-5'
+    slug: 'openai-announces-gpt-5',
+    view_count: 0,
   },
   {
     id: '2',
     title: 'Claude 3.8 Sonnet Sets New Benchmark for Multi-Modal Agents',
-    excerpt: 'Anthropic’s latest release demonstrates massive gains in interactive browser use, tool execution, and visual document analysis, outperforming competitors in desktop-agent tasks.',
+    excerpt: 'Anthropic\'s latest release demonstrates massive gains in interactive browser use, tool execution, and visual document analysis.',
     date: 'July 15, 2026',
     readTime: '4 min read',
     category: 'AI Agents',
     source: 'Anthropic Blog',
-    slug: 'claude-3-8-sonnet-benchmark'
+    slug: 'claude-3-8-sonnet-benchmark',
+    view_count: 0,
   },
   {
     id: '3',
@@ -51,7 +55,8 @@ const STATIC_NEWS_ARTICLES: NewsArticle[] = [
     readTime: '6 min read',
     category: 'Open Source',
     source: 'Meta AI',
-    slug: 'meta-releases-llama-4'
+    slug: 'meta-releases-llama-4',
+    view_count: 0,
   },
   {
     id: '4',
@@ -61,7 +66,8 @@ const STATIC_NEWS_ARTICLES: NewsArticle[] = [
     readTime: '3 min read',
     category: 'Web Dev',
     source: 'Vercel',
-    slug: 'nextjs-16-vercel-ai-sdk'
+    slug: 'nextjs-16-vercel-ai-sdk',
+    view_count: 0,
   },
   {
     id: '5',
@@ -69,9 +75,10 @@ const STATIC_NEWS_ARTICLES: NewsArticle[] = [
     excerpt: 'A comprehensive market report reveals that over 80% of Fortune 500 companies have integrated AI assistants into their primary software engineering workflows.',
     date: 'July 05, 2026',
     readTime: '4 min read',
-    category: 'Industry Trends',
+    category: 'AI News',
     source: 'Gartner',
-    slug: 'ai-coding-tools-enterprise-adoption'
+    slug: 'ai-coding-tools-enterprise-adoption',
+    view_count: 0,
   },
   {
     id: '6',
@@ -81,18 +88,19 @@ const STATIC_NEWS_ARTICLES: NewsArticle[] = [
     readTime: '5 min read',
     category: 'Regulation',
     source: 'EU Commission',
-    slug: 'eu-ai-act-developers-compliance'
-  }
+    slug: 'eu-ai-act-developers-compliance',
+    view_count: 0,
+  },
 ];
 
 export default async function NewsPage() {
-  // Fetch latest automated news
-  let newsArticles = await fetchLatestAINews(40);
+  const [newsArticles, topArticles] = await Promise.all([
+    fetchLatestAINews(40),
+    fetchTopThisWeek(3),
+  ]);
 
-  // If fetching fails or API is not set, fallback to static curated articles
-  if (!newsArticles || newsArticles.length === 0) {
-    newsArticles = STATIC_NEWS_ARTICLES;
-  }
+  const finalArticles = newsArticles.length > 0 ? newsArticles : STATIC_NEWS_ARTICLES;
+  const finalTop = topArticles.length > 0 ? topArticles : STATIC_NEWS_ARTICLES.slice(0, 3);
 
-  return <NewsClient newsArticles={newsArticles} />;
+  return <NewsClient newsArticles={finalArticles} topArticles={finalTop} />;
 }

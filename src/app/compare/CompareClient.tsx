@@ -120,7 +120,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
                 onClick={() => setSelected(preset.slugs)}
                 style={{
                   background: 'rgba(255, 255, 255, 0.12)',
-                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.18)',
                   borderRadius: '99px',
                   padding: '3px 10px',
                   fontSize: '0.72rem',
@@ -143,16 +143,16 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
           justifyContent: 'center',
           gap: '3rem',
           flexWrap: 'wrap',
-          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          borderTop: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.15)',
           paddingTop: '1.75rem',
           maxWidth: '580px',
           width: '100%',
           margin: '0.5rem auto 0',
         }} className="hero-stats-row">
           {[
-            { number: '10,000+', label: 'Specs Analyzed' },
+            { number: '2,729+', label: 'Tools Supported' },
             { number: '3 Max', label: 'Side-by-Side' },
-            { number: '100%', label: 'Unbiased Data' },
+            { number: 'Full Matrix', label: 'Feature Comparison' },
           ].map((stat) => (
             <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
@@ -191,7 +191,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
             {(focused && searchResults.length > 0) && (
               <div style={{
                 position: 'absolute', top: 'calc(100% + 4px)', left: 0, right: 0, zIndex: 50,
-                background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                background: 'var(--bg-card)', border: 'var(--border-width, 1px) solid var(--border-subtle)',
                 borderRadius: '10px', overflow: 'hidden', boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
               }}>
                 {searchResults.map((tool, i) => (
@@ -201,7 +201,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
                     style={{
                       display: 'block', width: '100%', padding: '9px 12px',
                       background: 'none', border: 'none', cursor: 'pointer',
-                      borderBottom: i < searchResults.length - 1 ? '1px solid var(--border-subtle)' : 'none',
+                      borderBottom: i < searchResults.length - 1 ? 'var(--border-width, 1px) solid var(--border-subtle)' : 'none',
                       textAlign: 'left', transition: 'background 120ms',
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.background = 'var(--bg-secondary)'}
@@ -228,7 +228,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
                 key={tool.slug}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                  background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+                  background: 'var(--bg-card)', border: 'var(--border-width, 1px) solid var(--border-subtle)',
                   borderRadius: '10px', padding: '10px 12px',
                 }}
               >
@@ -264,7 +264,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
         {/* ── Right panel: comparison table ── */}
         <div style={{
           background: 'var(--bg-card)',
-          border: '1px solid var(--border-subtle)',
+          border: 'var(--border-width, 1px) solid var(--border-subtle)',
           borderRadius: '14px',
           overflow: 'hidden',
         }}>
@@ -280,7 +280,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
             <div style={{ overflowX: 'auto' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
                 <thead>
-                  <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                  <tr style={{ borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)' }}>
                     <th style={{
                       width: '18%', padding: '1rem 1.25rem', textAlign: 'left',
                       fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500,
@@ -291,7 +291,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
                     {selectedTools.map((tool) => (
                       <th key={tool.slug} style={{
                         padding: '1rem 1.25rem', textAlign: 'left',
-                        borderLeft: '1px solid var(--border-subtle)',
+                        borderLeft: 'var(--border-width, 1px) solid var(--border-subtle)',
                       }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <ToolLogo url={tool.url} icon={tool.icon} favicon_url={tool.favicon_url} size={42} />
@@ -307,7 +307,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
                   {COMPARE_ROWS.map((row, i) => (
                     <tr
                       key={row.key}
-                      style={{ borderBottom: '1px solid var(--border-subtle)' }}
+                      style={{ borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)' }}
                     >
                       <td style={{
                         padding: '0.875rem 1.25rem',
@@ -323,7 +323,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
                         return (
                           <td key={tool.slug} style={{
                             padding: '0.875rem 1.25rem',
-                            borderLeft: '1px solid var(--border-subtle)',
+                            borderLeft: 'var(--border-width, 1px) solid var(--border-subtle)',
                             fontSize: '0.825rem', color: 'var(--text-secondary)',
                           }}>
                             {row.isBoolean
@@ -342,7 +342,7 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
                       Visit
                     </td>
                     {selectedTools.map((tool) => (
-                      <td key={tool.slug} style={{ padding: '1rem 1.25rem', borderLeft: '1px solid var(--border-subtle)' }}>
+                      <td key={tool.slug} style={{ padding: '1rem 1.25rem', borderLeft: 'var(--border-width, 1px) solid var(--border-subtle)' }}>
                         <a
                           href={`/go/${tool.slug}`}
                           target="_blank"

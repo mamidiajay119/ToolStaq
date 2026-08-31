@@ -25,7 +25,7 @@ export default function PrivacyPage() {
           margin-top: 2.5rem;
           margin-bottom: 1rem;
           letter-spacing: -0.01em;
-          border-bottom: 1px solid var(--border-subtle);
+          border-bottom: var(--border-width, 1px) solid var(--border-subtle);
           padding-bottom: 8px;
         }
         .policy-container p {
@@ -57,7 +57,7 @@ export default function PrivacyPage() {
           padding: '6px 12px',
           borderRadius: '99px',
           background: 'rgba(255, 255, 255, 0.15)',
-          border: '1px solid rgba(255, 255, 255, 0.25)',
+          border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.25)',
           fontSize: '0.75rem',
           fontWeight: 600,
           color: '#FFFFFF',

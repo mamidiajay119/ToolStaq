@@ -4,7 +4,7 @@ import CategoriesClient from './CategoriesClient';
 
 export const metadata: Metadata = {
   title: 'All AI Categories — Find Tools by Use Case',
-  description: 'Browse all 27 categories of AI tools, from AI writing and coding to video generation and marketing.',
+  description: 'Browse all categories of AI tools, from AI writing and coding to video generation and marketing.',
 };
 
 export default async function CategoriesIndexPage() {

@@ -48,7 +48,7 @@ export default function SubmitPage() {
       <div className="container-lg" style={{ paddingTop: '6rem', paddingBottom: '6rem', textAlign: 'center' }}>
         <div style={{
           maxWidth: '480px', margin: '0 auto',
-          background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)',
+          background: 'rgba(16,185,129,0.06)', border: 'var(--border-width, 1px) solid rgba(16,185,129,0.2)',
           borderRadius: '24px', padding: '3rem 2rem',
         }}>
           <CheckCircle2 size={36} style={{ color: '#6ee7b7', marginBottom: '1rem' }} />
@@ -86,7 +86,7 @@ export default function SubmitPage() {
               key={benefit}
               style={{
                 background: 'rgba(255, 255, 255, 0.12)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
+                border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.18)',
                 borderRadius: '99px',
                 padding: '4px 12px',
                 fontSize: '0.72rem',
@@ -106,7 +106,7 @@ export default function SubmitPage() {
           justifyContent: 'center',
           gap: '3rem',
           flexWrap: 'wrap',
-          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          borderTop: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.15)',
           paddingTop: '1.75rem',
           maxWidth: '580px',
           width: '100%',
@@ -136,7 +136,7 @@ export default function SubmitPage() {
           {error && (
             <div style={{
               background: 'rgba(239, 68, 68, 0.08)',
-              border: '1px solid rgba(239, 68, 68, 0.25)',
+              border: 'var(--border-width, 1px) solid rgba(239, 68, 68, 0.25)',
               borderRadius: '12px',
               padding: '1rem',
               marginBottom: '1.25rem',
@@ -162,7 +162,7 @@ export default function SubmitPage() {
                 value={form.tool_name}
                 onChange={(e) => update('tool_name', e.target.value)}
                 placeholder="e.g. Jasper AI"
-                className="search-input"
+                className="contact-input"
                 style={{ padding: '10px 14px', fontSize: '0.9rem' }}
               />
             </div>
@@ -178,7 +178,7 @@ export default function SubmitPage() {
                 value={form.url}
                 onChange={(e) => update('url', e.target.value)}
                 placeholder="https://example.com"
-                className="search-input"
+                className="contact-input"
                 style={{ padding: '10px 14px', fontSize: '0.9rem' }}
               />
             </div>
@@ -192,7 +192,7 @@ export default function SubmitPage() {
                 required
                 value={form.category}
                 onChange={(e) => update('category', e.target.value)}
-                className="search-input"
+                className="contact-input"
                 style={{ padding: '10px 14px', fontSize: '0.9rem', cursor: 'pointer' }}
               >
                 <option value="">Select a category...</option>
@@ -210,7 +210,7 @@ export default function SubmitPage() {
                 onChange={(e) => update('description', e.target.value)}
                 placeholder="What does this tool do? Who is it best for?"
                 rows={4}
-                className="search-input"
+                className="contact-input"
                 style={{ padding: '10px 14px', fontSize: '0.9rem', resize: 'vertical', minHeight: '100px', lineHeight: 1.6 }}
               />
             </div>
@@ -226,7 +226,7 @@ export default function SubmitPage() {
                 value={form.email}
                 onChange={(e) => update('email', e.target.value)}
                 placeholder="Enter your email address"
-                className="search-input"
+                className="contact-input"
                 style={{ padding: '10px 14px', fontSize: '0.9rem' }}
               />
               <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' }}>

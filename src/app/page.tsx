@@ -3,6 +3,7 @@ import { ArrowRight, Search, Sparkles, TrendingUp, Star } from 'lucide-react';
 import { getAllTools, getFeaturedTools, slugifyCategory, getAllCategories } from '@/lib/tools';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import ToolCard from '@/components/tools/ToolCard';
+import HomeMarquee from '@/components/home/HomeMarquee';
 import type { Metadata } from 'next';
 import { CATEGORY_SHORT_DESCRIPTIONS } from '@/lib/category-content';
 
@@ -49,7 +50,7 @@ export default async function HomePage() {
       <style>{`
         .how-card {
           background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          border: var(--border-width, 1px) solid var(--border-subtle);
           border-radius: 16px;
           padding: 1.75rem;
           text-align: left;
@@ -82,7 +83,7 @@ export default async function HomePage() {
           padding: 5px 12px;
           border-radius: 99px;
           background: var(--bg-secondary);
-          border: 1px solid var(--border-subtle);
+          border: var(--border-width, 1px) solid var(--border-subtle);
           color: var(--text-secondary);
           font-size: 0.775rem;
           font-weight: 500;
@@ -154,6 +155,18 @@ export default async function HomePage() {
           </div>
         </section>
 
+        {/* ── Top Picks Marquee Band — full width between hero and content ── */}
+        <HomeMarquee tools={allTools
+          .filter(t => t.is_recommended)
+          .map(t => ({
+            slug: t.slug,
+            tool_name: t.tool_name,
+            url: t.url,
+            favicon_url: t.favicon_url ?? null,
+            primary_category: t.primary_category,
+          }))
+        } />
+
         <div className="container-xl">
           {/* ── Category Grid ── */}
           <section style={{ paddingTop: '3.5rem', marginBottom: '7.5rem' }}>
@@ -181,7 +194,7 @@ export default async function HomePage() {
                       width: '52px', height: '52px', borderRadius: '14px', flexShrink: 0,
                       background: 'var(--bg-secondary)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)',
+                      color: 'var(--text-secondary)', border: 'var(--border-width, 1px) solid var(--border-subtle)',
                       boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
                     }}>
                       <CategoryIcon category={cat} size={24} />
@@ -205,7 +218,7 @@ export default async function HomePage() {
                           fontSize: '0.7rem',
                           fontWeight: 600,
                           color: 'var(--text-secondary)',
-                          border: '1px solid var(--border-subtle)',
+                          border: 'var(--border-width, 1px) solid var(--border-subtle)',
                           borderRadius: '99px',
                           padding: '2px 8px',
                           background: 'var(--bg-primary)'

@@ -68,7 +68,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
             <div style={{
               width: '60px', height: '60px', borderRadius: '18px',
               background: 'rgba(255, 255, 255, 0.15)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
+              border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.25)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: '#FFFFFF',
               boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
@@ -98,7 +98,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '1.5rem' }}>
         
         {/* Horizontal Category Chips */}
-        <div className="hide-scroll" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '1.5rem', marginBottom: '1rem', borderBottom: '1px solid var(--border-subtle)' }}>
+        <div className="hide-scroll" style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '1.5rem', marginBottom: '1rem', borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)' }}>
           <Link
             href="/tools"
             className="btn-secondary"

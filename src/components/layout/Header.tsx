@@ -81,7 +81,7 @@ export default function Header() {
       {menuOpen && (
         <div style={{
           background: 'var(--bg-primary)',
-          borderTop: '1px solid var(--border-subtle)',
+          borderTop: 'var(--border-width, 1px) solid var(--border-subtle)',
           padding: '1rem 1.5rem',
           display: 'flex',
           flexDirection: 'column',
