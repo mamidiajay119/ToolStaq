@@ -2,14 +2,13 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
-  ExternalLink, ArrowLeft, Zap, Globe,
+  Zap, Globe,
   Code2, Lock, Gift, RefreshCw, Users, ArrowRight, Shield
 } from 'lucide-react';
 import { getAllSlugs, getToolBySlug, getPricingLabel, slugifyCategory, getToolDescription, getToolsByNames, getInitialUpvotes } from '@/lib/tools';
 import type { Tool } from '@/types/tool';
-import ToolLogo from '@/components/tools/ToolLogo';
 import ToolCard from '@/components/tools/ToolCard';
-import UpvoteButton from '@/components/tools/UpvoteButton';
+import ToolHero from '@/components/tools/ToolHero';
 
 export async function generateStaticParams() {
   const slugs = await getAllSlugs();
@@ -28,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: `${tool.tool_name} — ${tool.primary_category} Tool Review, Pricing & Alternatives`,
     description: desc.slice(0, 160),
     openGraph: {
-      title: `${tool.tool_name} | ToolStaq`,
+      title: `${tool.tool_name} | toolstaq`,
       description: desc.slice(0, 160),
       url: `https://aitoolsdirectory.com/tools/${slug}`,
     },
@@ -97,118 +96,20 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
         <div className="tool-page-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '2.5rem', alignItems: 'start' }}>
           {/* ── Main Content ── */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            {/* Hero */}
-            <div className="tool-hero-card" style={{
-              borderRadius: '16px',
-              padding: '2.5rem',
-              position: 'relative',
-              overflow: 'hidden',
-            }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', flexWrap: 'wrap' }}>
-                <ToolLogo
-                  url={tool.url}
-                  icon={tool.icon}
-                  favicon_url={tool.favicon_url}
-                  size={80}
-                />
-                <div style={{ flex: 1, minWidth: '300px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}>
-                    <h1 style={{ fontSize: '1.5rem', fontWeight: 600, letterSpacing: '-0.03em', margin: 0 }}>{tool.tool_name}</h1>
-                    {tool.is_recommended && (
-                      <span style={{
-                        fontSize: '0.65rem',
-                        fontWeight: 700,
-                        color: 'var(--accent-emerald)',
-                        background: 'rgba(5, 150, 105, 0.08)',
-                        border: 'var(--border-width, 1px) solid rgba(5, 150, 105, 0.2)',
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.04em',
-                        lineHeight: 1.2,
-                      }}>
-                        Recommended
-                      </span>
-                    )}
-                    {tool.is_new && (
-                      <span style={{
-                        fontSize: '0.65rem',
-                        fontWeight: 700,
-                        color: 'var(--accent-primary)',
-                        background: 'rgba(249, 115, 22, 0.08)',
-                        border: 'var(--border-width, 1px) solid rgba(249, 115, 22, 0.2)',
-                        padding: '2px 6px',
-                        borderRadius: '4px',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.04em',
-                        lineHeight: 1.2,
-                      }}>
-                        New
-                      </span>
-                    )}
-                    {tool.open_source && <Badge label="Open Source" variant="emerald" />}
-                  </div>
-                  {tool.title && (
-                    <h2 style={{ fontSize: '0.9rem', fontWeight: 400, color: 'var(--text-secondary)', marginBottom: '1rem', marginTop: 0 }}>
-                      {tool.title}
-                    </h2>
-                  )}
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-                    {tool.category.map((cat) => (
-                      <Link key={cat} href={`/category/${slugifyCategory(cat)}`}>
-                        <span className="badge badge-violet">{cat}</span>
-                      </Link>
-                    ))}
-                  </div>
-                  {/* CTA */}
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', flexWrap: 'wrap', marginTop: '1.5rem' }}>
-                    <a
-                      href={`/go/${tool.slug}`}
-                      className="btn-primary"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ padding: '7px 16px', fontSize: '0.825rem', gap: '6px', height: '36px', display: 'flex', alignItems: 'center' }}
-                    >
-                      <ExternalLink size={13} /> Visit {tool.tool_name}
-                    </a>
-                    
-                    <UpvoteButton toolSlug={tool.slug} initialUpvotes={baseUpvotes} />
-                    
-                    {tool.is_recommended && (
-                      <div style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '6px 12px',
-                        borderRadius: '12px',
-                        border: 'var(--border-width, 1px) solid rgba(16, 185, 129, 0.2)',
-                        background: 'rgba(16, 185, 129, 0.04)',
-                        color: 'var(--accent-emerald)',
-                        fontSize: '0.8rem',
-                        fontWeight: 600,
-                        height: '36px',
-                      }}>
-                        <span style={{
-                          width: '6px',
-                          height: '6px',
-                          borderRadius: '50%',
-                          background: '#10B981',
-                        }} />
-                        Top Pick
-                      </div>
-                    )}
-
-                    <Link
-                      href={`/compare?tool=${tool.slug}`}
-                      className="btn-secondary"
-                      style={{ padding: '7px 16px', fontSize: '0.825rem', height: '36px', display: 'flex', alignItems: 'center' }}
-                    >
-                      Compare Tools
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Hero — animated client component */}
+            <ToolHero
+              toolName={tool.tool_name}
+              toolSlug={tool.slug}
+              toolUrl={tool.url}
+              toolIcon={tool.icon ?? null}
+              toolFaviconUrl={tool.favicon_url ?? null}
+              toolTitle={tool.title ?? null}
+              categories={tool.category.map((cat) => ({ cat, slug: slugifyCategory(cat) }))}
+              isRecommended={!!tool.is_recommended}
+              isNew={!!tool.is_new}
+              openSource={!!tool.open_source}
+              baseUpvotes={baseUpvotes}
+            />
 
             {/* ── Unified Overview Card ── */}
             <div style={{

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { motion } from 'motion/react';
 import { Search, X, Calendar, Clock, Eye, TrendingUp, Flame } from 'lucide-react';
 import type { NewsArticle } from './page';
 import NewsletterForm from '@/components/news/NewsletterForm';
@@ -268,24 +269,49 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
 
       <div className="container-xl" style={{ paddingBottom: '4rem' }}>
 
-        {/* ── Top This Week ── */}
+        {/* ── Top This Week (cascade animation) ── */}
         {filteredTop.length > 0 && (
           <section style={{ marginBottom: '2.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.35, ease: 'easeOut' }}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}
+            >
               <Flame size={15} color="var(--accent-primary)" />
               <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
                 {isFiltering ? 'Top Results' : 'Top This Week'}
               </span>
-            </div>
-            <div className="top-grid">
+            </motion.div>
+
+            {/* Stagger container: each card cascades in 100ms apart */}
+            <motion.div
+              className="top-grid"
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.1 }}
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+              }}
+            >
               {filteredTop.map((article) => (
-                <a
+                <motion.a
                   key={article.id}
                   href={article.url || `/news/${article.slug}`}
                   target={article.url ? '_blank' : undefined}
                   rel={article.url ? 'noopener noreferrer' : undefined}
                   className="top-card"
                   onClick={() => trackView(article.slug)}
+                  variants={{
+                    hidden: { opacity: 0, y: 28, scale: 0.97 },
+                    show: {
+                      opacity: 1, y: 0, scale: 1,
+                      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                    },
+                  }}
+                  whileHover={{ y: -3, transition: { duration: 0.18 } }}
                 >
                   <ArticleImage image_url={article.image_url} category={article.category} title={article.title} size="lg" />
                   <div className="top-card-body">
@@ -317,9 +343,9 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
                       )}
                     </div>
                   </div>
-                </a>
+                </motion.a>
               ))}
-            </div>
+            </motion.div>
           </section>
         )}
 

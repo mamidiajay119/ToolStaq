@@ -1,14 +1,14 @@
 import Link from 'next/link';
-import { ArrowRight, Search, Sparkles, TrendingUp, Star } from 'lucide-react';
+import { ArrowRight, Sparkles, TrendingUp, Star } from 'lucide-react';
 import { getAllTools, getFeaturedTools, slugifyCategory, getAllCategories } from '@/lib/tools';
-import CategoryIcon from '@/components/ui/CategoryIcon';
 import ToolCard from '@/components/tools/ToolCard';
 import HomeMarquee from '@/components/home/HomeMarquee';
+import HeroSection from '@/components/home/HeroSection';
+import CategoryGrid from '@/components/home/CategoryGrid';
 import type { Metadata } from 'next';
-import { CATEGORY_SHORT_DESCRIPTIONS } from '@/lib/category-content';
 
 export const metadata: Metadata = {
-  title: 'ToolStaq — Find the Best AI Tools',
+  title: 'toolstaq — Find the Best AI Tools',
   description: 'Find the perfect AI tool for your workflow. Browse top AI tools across categories including writing, coding, design, video, automation and more.',
 };
 
@@ -37,6 +37,13 @@ export default async function HomePage() {
   const totalCategories = getAllCategories().length;
   const totalFree = allTools.filter(t => t.free_trial || t.pricing_model === 'freemium').length;
   const totalWithApi = allTools.filter(t => t.has_api).length;
+
+  // Pre-compute for CategoryGrid — plain data, no functions passed to client
+  const categoryItems = TOP_CATEGORIES.map((cat) => ({
+    cat,
+    slug: slugifyCategory(cat),
+    count: categoryCounts[cat] || 0,
+  }));
 
   const dynamicStats = [
     { label: 'AI Tools', value: `${totalTools.toLocaleString()}+`, icon: '⚡', color: '#a78bfa' },
@@ -99,61 +106,8 @@ export default async function HomePage() {
       `}</style>
 
       <div>
-        {/* ── Hero ── */}
-        <section className="hero-section">
-          <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-            {/* Headline */}
-            <h1 className="hero-heading">
-              Discover the right{' '}
-              <span className="gradient-text-orange">AI Tools</span>
-              <br />for every workflow
-            </h1>
-
-            <p className="hero-subheading">
-              Explore a curated index of <strong style={{ color: 'var(--text-primary)' }}>{totalTools.toLocaleString()}+ AI tools</strong> across{' '}
-              <strong style={{ color: 'var(--text-primary)' }}>{totalCategories} categories</strong>. Filter by pricing, complexity, and deployment to optimize your workflow.
-            </p>
-
-            {/* CTA Buttons */}
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '2.5rem' }}>
-              <Link href="/tools" className="btn-primary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
-                <Search size={15} /> Browse
-              </Link>
-              <Link href="/news" className="btn-secondary" style={{ fontSize: '0.875rem', padding: '9px 20px' }}>
-                Read <ArrowRight size={15} />
-              </Link>
-            </div>
-
-            {/* Quick Links / Popular Pills */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              flexWrap: 'wrap',
-              maxWidth: '640px',
-              margin: '0 auto',
-            }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginRight: '4px', letterSpacing: '0.05em' }}>popular:</span>
-              {[
-                { label: 'writing', slug: 'ai-writing' },
-                { label: 'coding', slug: 'ai-coding' },
-                { label: 'design', slug: 'ai-design' },
-                { label: 'video', slug: 'ai-video' },
-                { label: 'productivity', slug: 'ai-productivity' },
-                { label: 'marketing', slug: 'ai-marketing' },
-              ].map((pill) => (
-                <Link
-                  key={pill.slug}
-                  href={`/category/${pill.slug}`}
-                  className="hero-pill"
-                >
-                  {pill.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ── Hero (animated client component) ── */}
+        <HeroSection totalTools={totalTools} totalCategories={totalCategories} />
 
         {/* ── Top Picks Marquee Band — full width between hero and content ── */}
         <HomeMarquee tools={allTools
@@ -168,70 +122,11 @@ export default async function HomePage() {
         } />
 
         <div className="container-xl">
-          {/* ── Category Grid ── */}
-          <section style={{ paddingTop: '3.5rem', marginBottom: '7.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-              <div>
-                <h2 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '4px' }}>Browse by Category</h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{totalCategories} categories covering every AI use case</p>
-              </div>
-              <Link href="/tools" className="btn-ghost" style={{ color: 'var(--accent-violet)', fontSize: '0.825rem' }}>
-                View all <ArrowRight size={14} />
-              </Link>
-            </div>
-
-            <div className="category-grid">
-              {TOP_CATEGORIES.map((cat) => {
-                const count = categoryCounts[cat] || 0;
-                const slug = slugifyCategory(cat);
-                return (
-                  <Link
-                    key={cat}
-                    href={`/category/${slug}`}
-                    className="cat-card"
-                  >
-                    <div style={{
-                      width: '52px', height: '52px', borderRadius: '14px', flexShrink: 0,
-                      background: 'var(--bg-secondary)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      color: 'var(--text-secondary)', border: 'var(--border-width, 1px) solid var(--border-subtle)',
-                      boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
-                    }}>
-                      <CategoryIcon category={cat} size={24} />
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-                      <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text-primary)', margin: 0, lineHeight: 1.2, marginBottom: '4px' }}>
-                        {cat.replace('AI ', '')}
-                      </h3>
-                      {CATEGORY_SHORT_DESCRIPTIONS[cat] && (
-                        <p style={{
-                          fontSize: '0.75rem', color: 'var(--text-secondary)', lineHeight: 1.4,
-                          display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden', margin: 0, marginBottom: '6px'
-                        }}>
-                          {CATEGORY_SHORT_DESCRIPTIONS[cat]}
-                        </p>
-                      )}
-                      <div style={{ marginTop: 'auto', paddingTop: '6px' }}>
-                        <span style={{
-                          display: 'inline-block',
-                          fontSize: '0.7rem',
-                          fontWeight: 600,
-                          color: 'var(--text-secondary)',
-                          border: 'var(--border-width, 1px) solid var(--border-subtle)',
-                          borderRadius: '99px',
-                          padding: '2px 8px',
-                          background: 'var(--bg-primary)'
-                        }}>
-                          {count} tools
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </section>
+          {/* ── Category Grid (animated client component) ── */}
+          <CategoryGrid
+            categoryItems={categoryItems}
+            totalCategories={totalCategories}
+          />
 
           {/* ── Featured Tools ── */}
           <section style={{ marginBottom: '7.5rem' }}>

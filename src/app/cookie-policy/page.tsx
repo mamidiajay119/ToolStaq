@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import { Eye, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy — ToolStaq',
-  description: 'Understand how ToolStaq uses cookies and local storage to keep your site preferences active.',
+  title: 'Cookie Policy — toolstaq',
+  description: 'Understand how toolstaq uses cookies and local storage to keep your site preferences active.',
 };
 
 export default function CookiePolicyPage() {
@@ -75,7 +75,7 @@ export default function CookiePolicyPage() {
         <span className="policy-date">Last Updated: August 13, 2026</span>
 
         <p>
-          ToolStaq uses cookies, local browser storage, and similar tracking tokens to enhance your navigation experience, save theme configurations, and analyze anonymous site traffic. This Cookie Policy explains what these trackers are and how we deploy them.
+          toolstaq uses cookies, local browser storage, and similar tracking tokens to enhance your navigation experience, save theme configurations, and analyze anonymous site traffic. This Cookie Policy explains what these trackers are and how we deploy them.
         </p>
 
         <h2>1. What are Cookies?</h2>
@@ -93,7 +93,7 @@ export default function CookiePolicyPage() {
         
         <h3>A. Necessary &amp; Functional Trackers</h3>
         <p>
-          These are required for the website to operate correctly. For example, ToolStaq uses `localStorage` to save your active visual theme:
+          These are required for the website to operate correctly. For example, toolstaq uses `localStorage` to save your active visual theme:
         </p>
         <ul>
           <li><strong>Theme Toggle Flag</strong>: Remembers whether you selected **Light mode** or **Dark mode** so that pages load instantly in the correct visual theme as you click between directory listings.</li>

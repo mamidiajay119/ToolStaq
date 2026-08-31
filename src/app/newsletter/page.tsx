@@ -3,8 +3,8 @@ import { Mail, ShieldCheck, Zap, Sparkles } from 'lucide-react';
 import NewsletterForm from '@/components/news/NewsletterForm';
 
 export const metadata: Metadata = {
-  title: 'Subscribe to the ToolStaq Newsletter — Stay Ahead on AI',
-  description: 'Join developers, builders, and creators who receive a curated weekly summary of the most important AI tools, model releases, and news stories.',
+  title: 'Subscribe to the toolstaq Newsletter — Stay Ahead on AI',
+  description: 'Get weekly breakdowns of top AI tools, new model releases, and practical workflow recipes delivered straight to your inbox.',
 };
 
 export default function NewsletterPage() {
@@ -117,7 +117,7 @@ export default function NewsletterPage() {
             border: 'var(--border-width, 1px) solid var(--border-subtle)',
           }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
-              Join the ToolStaq Newsletter
+              Join the toolstaq Newsletter
             </h2>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0, marginTop: '-0.75rem' }}>
               Delivered every Sunday. Safe, free, and unsubscribable in 1 click.
@@ -137,7 +137,7 @@ export default function NewsletterPage() {
               {
                 icon: <Sparkles size={18} />,
                 title: 'Curated Tool Spotlights',
-                desc: 'Discover high-signal, fully verified AI coding, writing, and automation tools handpicked from the ToolStaq directory.'
+                desc: 'Discover high-signal, fully verified AI coding, writing, and automation tools handpicked from the toolstaq directory.'
               },
               {
                 icon: <ShieldCheck size={18} />,

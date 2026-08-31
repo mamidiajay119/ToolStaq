@@ -4,7 +4,7 @@ import NewsClient from './NewsClient';
 
 export const metadata: Metadata = {
   title: 'AI News & Changelog — Latest Breakthroughs',
-  description: 'Stay ahead of the curve with the latest news, releases, and trends in Artificial Intelligence. Curated by ToolStaq.',
+  description: 'Stay ahead of the curve with the latest news, releases, and trends in Artificial Intelligence. Curated by toolstaq.',
 };
 
 // ISR: re-render after 24h. /api/cron/refresh-news calls revalidatePath('/news') at midnight UTC.
