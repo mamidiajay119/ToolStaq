@@ -45,7 +45,7 @@ function FilterDropdown({ title, badgeCount, children }: { title: string, badgeC
       {open && (
         <div style={{
           position: 'absolute', top: '100%', left: 0, marginTop: '6px', zIndex: 50,
-          background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
+          background: 'var(--bg-card)', border: 'var(--border-width, 1px) solid var(--border-subtle)',
           borderRadius: '16px', padding: '16px', minWidth: '220px',
           boxShadow: 'var(--shadow-hover)', display: 'flex', flexDirection: 'column', gap: '8px'
         }}>
@@ -206,7 +206,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
               paddingBottom: '12px',
               fontSize: '0.95rem',
               borderRadius: '14px',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.2)',
               background: 'rgba(255, 255, 255, 0.1)',
               color: '#FFFFFF',
               outline: 'none',
@@ -230,7 +230,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
               onClick={() => { setSearch(tag); setPage(1); }}
               style={{
                 background: 'rgba(255, 255, 255, 0.12)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
+                border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.18)',
                 borderRadius: '99px',
                 padding: '3px 10px',
                 fontSize: '0.72rem',
@@ -252,16 +252,16 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           justifyContent: 'center',
           gap: '3rem',
           flexWrap: 'wrap',
-          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          borderTop: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.15)',
           paddingTop: '1.75rem',
           maxWidth: '580px',
           width: '100%',
           margin: '0.5rem auto 0',
         }} className="hero-stats-row">
           {[
-            { number: '2,729+', label: 'AI Tools Index' },
-            { number: '24', label: 'Categories' },
-            { number: '100%', label: 'Verified' },
+            { number: '2,729+', label: 'AI Tools' },
+            { number: '96', label: 'Categories' },
+            { number: 'Free & Paid', label: 'Pricing Options' },
           ].map((stat) => (
             <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
@@ -277,6 +277,79 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
 
       <div className="container-xl" style={{ paddingBottom: '4rem' }}>
 
+        {/* Top Picks Marquee — ABOVE category chips for best UX flow */}
+        {recommendedTools.length > 0 && activeFilterCount === 0 && !search.trim() && (
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-primary)' }}>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  Top Picks
+                </span>
+                <span style={{
+                  fontSize: '0.65rem',
+                  fontWeight: 600,
+                  padding: '1px 6px',
+                  borderRadius: '99px',
+                  background: 'rgba(249, 115, 22, 0.1)',
+                  border: 'var(--border-width, 1px) solid rgba(249, 115, 22, 0.25)',
+                  color: 'var(--accent-primary)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.04em'
+                }}>
+                  Featured
+                </span>
+              </div>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                Handpicked top-tier AI tools
+              </span>
+            </div>
+
+            <div className="top-picks-marquee-container">
+              <div className="top-picks-marquee-track">
+                {(recommendedTools.length < 8
+                  ? [...recommendedTools, ...recommendedTools, ...recommendedTools, ...recommendedTools]
+                  : [...recommendedTools, ...recommendedTools]
+                ).map((tool, idx) => (
+                  <Link
+                    key={`${tool.slug}-${idx}`}
+                    href={`/tools/${tool.slug}`}
+                    className="top-picks-marquee-capsule"
+                  >
+                    <ToolLogo
+                      url={tool.url}
+                      icon={tool.icon}
+                      favicon_url={tool.favicon_url}
+                      size={34}
+                      borderRadius={9}
+                    />
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <span style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                        color: 'var(--text-primary)',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}>
+                        {tool.tool_name}
+                      </span>
+                      <span style={{
+                        fontSize: '0.72rem',
+                        color: 'var(--text-muted)',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}>
+                        {tool.primary_category.replace('AI ', '')}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Category Chips Row (Horizontal Scrollable) */}
         <div className="hide-scroll" style={{ 
           display: 'flex', 
@@ -284,7 +357,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           overflowX: 'auto', 
           paddingBottom: '1.5rem', 
           marginBottom: '1.5rem', 
-          borderBottom: '1px solid var(--border-subtle)' 
+          borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)' 
         }}>
           <button
             onClick={() => { setSelectedCategories([]); setPage(1); }}
@@ -350,81 +423,50 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           </div>
         )}
 
-      {/* Recommended Right Now Section */}
-      {recommendedTools.length > 0 && activeFilterCount === 0 && !search.trim() && (
-        <div style={{ marginBottom: '2.5rem' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem', flexWrap: 'wrap', gap: '8px' }}>
-            <div style={{ color: 'var(--accent-primary)' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Top Picks
-              </span>
-            </div>
-            <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-              Handpicked top-tier AI tools
-            </span>
-          </div>
-
-          <div className="hide-scroll" style={{ 
-            display: 'flex', 
-            gap: '12px', 
-            overflowX: 'auto', 
-            paddingTop: '6px',
-            paddingBottom: '12px',
-            marginTop: '-6px',
-            marginBottom: '-6px',
-          }}>
-            {recommendedTools.map((tool) => (
-              <Link
-                key={tool.slug}
-                href={`/tools/${tool.slug}`}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  background: 'var(--bg-card)',
-                  border: '1px solid var(--border-subtle)',
-                  borderRadius: '12px',
-                  padding: '8px 14px',
-                  textDecoration: 'none',
-                  width: '180px',
-                  flexShrink: 0,
-                  position: 'relative',
-                  transition: 'border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease',
-                  boxShadow: 'var(--shadow-card)',
-                }}
-                className="recommended-capsule"
-              >
-                <ToolLogo
-                  url={tool.url}
-                  icon={tool.icon}
-                  favicon_url={tool.favicon_url}
-                  size={24}
-                />
-                <span style={{
-                  fontSize: '0.85rem',
-                  fontWeight: 600,
-                  color: 'var(--text-primary)',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  flex: 1,
-                }}>
-                  {tool.tool_name}
-                </span>
-              </Link>
-            ))}
-          </div>
-          
-          <style>{`
-            .recommended-capsule:hover {
-              border-color: var(--accent-primary) !important;
-              box-shadow: var(--shadow-hover) !important;
-              transform: translateY(-1px);
-              z-index: 10;
-            }
-          `}</style>
-        </div>
-      )}
+      {/* Marquee CSS — shared styles */}
+      <style>{`
+        .top-picks-marquee-container {
+          overflow: hidden;
+          position: relative;
+          width: 100%;
+          padding: 6px 0;
+          mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+        }
+        .top-picks-marquee-track {
+          display: flex;
+          gap: 14px;
+          width: max-content;
+          animation: topPicksMarquee 35s linear infinite;
+        }
+        .top-picks-marquee-track:hover {
+          animation-play-state: paused;
+        }
+        @keyframes topPicksMarquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .top-picks-marquee-capsule {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 14px;
+          padding: 9px 16px;
+          text-decoration: none;
+          min-width: 210px;
+          max-width: 240px;
+          flex-shrink: 0;
+          transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+          box-shadow: var(--shadow-card);
+        }
+        .top-picks-marquee-capsule:hover {
+          border-color: var(--accent-primary) !important;
+          box-shadow: var(--shadow-hover) !important;
+          transform: translateY(-2px);
+        }
+      `}</style>
 
       {/* Active Non-Category Filter Badges */}
       {activeNonCategoryCount > 0 && (
@@ -464,7 +506,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+        <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--bg-secondary)', borderRadius: '12px', border: 'var(--border-width, 1px) solid var(--border-subtle)' }}>
           <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
           <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem' }}>No tools found</h3>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Try adjusting your filters or search query.</p>

@@ -97,11 +97,13 @@ export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonP
           alignItems: 'center',
           gap: '8px',
           padding: '7px 16px',
+          height: '36px',
+          boxSizing: 'border-box',
           fontSize: '0.825rem',
           fontWeight: 600,
-          background: hasVoted ? 'rgba(139, 92, 246, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-          border: hasVoted ? '1px solid rgba(139, 92, 246, 0.3)' : '1px solid var(--border-subtle)',
-          borderRadius: '12px',
+          background: hasVoted ? 'rgba(139, 92, 246, 0.08)' : 'rgba(255, 255, 255, 0.04)',
+          border: hasVoted ? '1px solid rgba(139, 92, 246, 0.4)' : '1px solid rgba(255, 255, 255, 0.14)',
+          borderRadius: '10px',
           color: hasVoted ? 'var(--accent-primary)' : 'var(--text-primary)',
           cursor: 'pointer',
           transition: 'all 150ms ease',
@@ -132,8 +134,8 @@ export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonP
 
       <style>{`
         .upvote-btn:hover {
-          background: ${hasVoted ? 'rgba(139, 92, 246, 0.12)' : 'rgba(255, 255, 255, 0.06)'} !important;
-          border-color: ${hasVoted ? 'rgba(139, 92, 246, 0.4)' : 'var(--text-muted)'} !important;
+          background: ${hasVoted ? 'rgba(139, 92, 246, 0.14)' : 'rgba(255, 255, 255, 0.08)'} !important;
+          border-color: ${hasVoted ? 'rgba(139, 92, 246, 0.5)' : 'rgba(255, 255, 255, 0.28)'} !important;
         }
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(-2px); }

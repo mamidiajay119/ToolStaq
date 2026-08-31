@@ -63,22 +63,25 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="btn-ghost show-mobile"
-          style={{ marginLeft: 'auto', padding: '8px' }}
-          aria-label="Toggle menu"
-        >
-          {menuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Mobile: Theme Toggle + Hamburger */}
+        <div className="show-mobile" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginLeft: 'auto' }}>
+          <ThemeToggle />
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="btn-ghost"
+            style={{ padding: '8px' }}
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {menuOpen && (
         <div style={{
           background: 'var(--bg-primary)',
-          borderTop: '1px solid var(--border-subtle)',
+          borderTop: 'var(--border-width, 1px) solid var(--border-subtle)',
           padding: '1rem 1.5rem',
           display: 'flex',
           flexDirection: 'column',

@@ -58,7 +58,7 @@ export default function ToolLogo({
     borderRadius: `${borderRadius}px`,
     flexShrink: 0,
     background: loaded ? '#ffffff' : 'var(--bg-secondary)',
-    border: loaded ? '1px solid rgba(0, 0, 0, 0.08)' : 'none',
+    border: loaded ? 'var(--border-width, 1px) solid rgba(0, 0, 0, 0.08)' : 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

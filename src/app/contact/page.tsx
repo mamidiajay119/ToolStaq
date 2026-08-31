@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Sparkles, Clock, Send, Loader2, CheckCircle2, AlertCircle, Zap } from 'lucide-react';
+import { Mail, Clock, Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { submitContactForm } from '@/app/actions/contact';
 
 export default function ContactPage() {
@@ -61,7 +61,7 @@ export default function ContactPage() {
         }
         .contact-info-card {
           background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          border: var(--border-width, 1px) solid var(--border-subtle);
           border-radius: 16px;
           padding: 1.5rem;
           display: flex;
@@ -84,22 +84,7 @@ export default function ContactPage() {
           background: var(--bg-secondary);
           color: var(--accent-primary);
           flex-shrink: 0;
-          border: 1px solid var(--border-subtle);
-        }
-        .contact-input {
-          width: 100%;
-          padding: 10px 14px;
-          font-size: 0.875rem;
-          border-radius: 8px;
-          background: var(--bg-primary);
-          border: 1px solid var(--border-subtle);
-          color: var(--text-primary);
-          outline: none;
-          transition: border-color var(--transition-base), box-shadow var(--transition-base);
-        }
-        .contact-input:focus {
-          border-color: var(--accent-primary);
-          box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.1);
+          border: var(--border-width, 1px) solid var(--border-subtle);
         }
       `}</style>
 
@@ -109,16 +94,15 @@ export default function ContactPage() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '6px',
-          padding: '6px 12px',
+          padding: '4px 10px',
           borderRadius: '99px',
           background: 'rgba(255, 255, 255, 0.15)',
-          border: '1px solid rgba(255, 255, 255, 0.25)',
-          fontSize: '0.75rem',
+          border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.25)',
+          fontSize: '0.7rem',
           fontWeight: 600,
           color: '#FFFFFF',
           marginBottom: '1.25rem',
         }}>
-          <Sparkles size={12} color="#FFFFFF" />
           <span>CONTACT SUPPORT</span>
         </div>
         <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Get in Touch</h1>
@@ -133,7 +117,7 @@ export default function ContactPage() {
           {/* Left Column: Form Card */}
           <div style={{
             background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
+            border: 'var(--border-width, 1px) solid var(--border-subtle)',
             borderRadius: '16px',
             padding: '2.5rem 2rem',
             boxShadow: 'var(--shadow-card)',
@@ -188,7 +172,7 @@ export default function ContactPage() {
                       disabled={isLoading}
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="John Doe"
+                      placeholder="Name"
                       className="contact-input"
                     />
                   </div>
@@ -201,7 +185,7 @@ export default function ContactPage() {
                       disabled={isLoading}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="john@example.com"
+                      placeholder="name@company.com"
                       className="contact-input"
                     />
                   </div>
@@ -244,7 +228,7 @@ export default function ContactPage() {
                     padding: '10px 14px',
                     borderRadius: '8px',
                     background: 'rgba(239, 68, 68, 0.05)',
-                    border: '1px solid rgba(239, 68, 68, 0.15)',
+                    border: 'var(--border-width, 1px) solid rgba(239, 68, 68, 0.15)',
                   }}>
                     <AlertCircle size={16} />
                     <span>{status.message}</span>
@@ -259,6 +243,7 @@ export default function ContactPage() {
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    alignSelf: 'flex-start',
                     gap: '8px',
                     padding: '12px 24px',
                     borderRadius: '10px',
@@ -284,7 +269,7 @@ export default function ContactPage() {
           {/* Right Column: Info Cards */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div className="contact-info-card">
-              <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0, letterSpacing: '-0.01em', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '10px' }}>
+              <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0, letterSpacing: '-0.01em', borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)', paddingBottom: '10px' }}>
                 Contact Info
               </h3>
               
@@ -315,22 +300,15 @@ export default function ContactPage() {
 
             {/* List Your Tool CTA Card */}
             <div style={{
-              background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)',
-              border: '1px solid var(--border-subtle)',
+              background: 'var(--bg-card)',
+              border: 'var(--border-width, 1px) solid var(--border-subtle)',
               borderRadius: '16px',
               padding: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '12px',
+              boxShadow: 'var(--shadow-card)',
             }}>
-              <div style={{
-                width: '36px', height: '36px', borderRadius: '8px',
-                background: 'var(--accent-primary)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                color: 'white',
-              }}>
-                <Zap size={16} color="white" />
-              </div>
               <h3 style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0, letterSpacing: '-0.01em' }}>
                 List Your AI Tool
               </h3>
@@ -346,6 +324,7 @@ export default function ContactPage() {
                   fontSize: '0.8rem',
                   fontWeight: 600,
                   textAlign: 'center',
+                  justifyContent: 'center',
                   marginTop: '4px',
                 }}
               >

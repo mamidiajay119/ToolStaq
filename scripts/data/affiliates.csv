@@ -1,0 +1,4 @@
+tool_slug,tool_name,url,affiliate_link,network,commission,commission_type,commission_rate,cookie_duration_days,payout_threshold_usd,payout_methods,status,notes
+heygen,HeyGen,https://heygen.com,https://heygen.com?ref=YOURCODE,PartnerStack,30% recurring,recurring,30,90,100,PayPal|Bank Transfer,active,
+jasper,Jasper,https://jasper.ai,https://jasper.ai/affiliate?ref=YOURCODE,Impact,25% recurring,recurring,25,60,50,PayPal,active,
+pictory,Pictory,https://pictory.ai,,Direct,,percentage,,90,,PayPal,applied,Applied via contact form Aug 2026

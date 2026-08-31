@@ -12,8 +12,11 @@ interface CategoriesClientProps {
   counts: Record<string, number>;
 }
 
+const PER_PAGE = 24;
+
 export default function CategoriesClient({ categories, counts }: CategoriesClientProps) {
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -23,6 +26,15 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
       (CATEGORY_SHORT_DESCRIPTIONS[cat] && CATEGORY_SHORT_DESCRIPTIONS[cat].toLowerCase().includes(q))
     );
   }, [search, categories]);
+
+  const paginated = useMemo(() => {
+    return filtered.slice(0, page * PER_PAGE);
+  }, [filtered, page]);
+
+  const handleSearchChange = (val: string) => {
+    setSearch(val);
+    setPage(1);
+  };
 
   return (
     <>
@@ -85,8 +97,8 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search 24 categories..."
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder={`Search ${categories.length} categories...`}
             className="hero-search-input"
             style={{
               width: '100%',
@@ -96,7 +108,7 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
               paddingBottom: '12px',
               fontSize: '0.95rem',
               borderRadius: '14px',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.2)',
               background: 'rgba(255, 255, 255, 0.1)',
               color: '#FFFFFF',
               outline: 'none',
@@ -120,7 +132,7 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
               onClick={() => setSearch(tag)}
               style={{
                 background: 'rgba(255, 255, 255, 0.12)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
+                border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.18)',
                 borderRadius: '99px',
                 padding: '3px 10px',
                 fontSize: '0.72rem',
@@ -142,16 +154,16 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
           justifyContent: 'center',
           gap: '3rem',
           flexWrap: 'wrap',
-          borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+          borderTop: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.15)',
           paddingTop: '1.75rem',
           maxWidth: '580px',
           width: '100%',
           margin: '0.5rem auto 0',
         }} className="hero-stats-row">
           {[
-            { number: '24', label: 'AI Categories' },
+            { number: `${categories.length}`, label: 'AI Categories' },
             { number: '2,729+', label: 'Curated Tools' },
-            { number: '220+', label: 'Sub-topics' },
+            { number: 'Free & Paid', label: 'Pricing Models' },
           ].map((stat) => (
             <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
@@ -166,15 +178,114 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
       </div>
 
       <div className="container-xl" style={{ paddingBottom: '4rem' }}>
+
+        {/* Categories Marquee — card style matching tools page */}
+        {!search.trim() && (
+          <div style={{ marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem', flexWrap: 'wrap', gap: '8px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
+                Browse Categories
+              </span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                {categories.length} categories available
+              </span>
+            </div>
+            <div className="cat-marquee-container">
+              <div className="cat-marquee-track">
+                {[...categories, ...categories].map((cat, idx) => (
+                  <Link
+                    key={`${cat}-${idx}`}
+                    href={`/category/${slugifyCategory(cat)}`}
+                    className="cat-marquee-card"
+                  >
+                    <div style={{
+                      width: '36px', height: '36px', borderRadius: '10px', flexShrink: 0,
+                      background: 'var(--bg-secondary)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      border: 'var(--border-width, 1px) solid var(--border-subtle)',
+                      color: 'var(--accent-primary)',
+                    }}>
+                      <CategoryIcon category={cat} size={18} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                      <span style={{
+                        fontSize: '0.875rem',
+                        fontWeight: 600,
+                        color: 'var(--text-primary)',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}>
+                        {cat.replace('AI ', '')}
+                      </span>
+                      <span style={{
+                        fontSize: '0.72rem',
+                        color: 'var(--text-muted)',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {counts[cat] || 0} tools
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <style>{`
+              .cat-marquee-container {
+                overflow: hidden;
+                position: relative;
+                width: 100%;
+                padding: 6px 0;
+                mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+                -webkit-mask-image: linear-gradient(to right, transparent, black 3%, black 97%, transparent);
+              }
+              .cat-marquee-track {
+                display: flex;
+                gap: 14px;
+                width: max-content;
+                animation: catMarquee 300s linear infinite;
+              }
+              .cat-marquee-track:hover {
+                animation-play-state: paused;
+              }
+              @keyframes catMarquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .cat-marquee-card {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                background: var(--bg-card);
+                border: var(--border-width, 1px) solid var(--border-subtle);
+                border-radius: 14px;
+                padding: 9px 16px;
+                text-decoration: none;
+                min-width: 185px;
+                max-width: 215px;
+                flex-shrink: 0;
+                transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+                box-shadow: var(--shadow-card);
+              }
+              .cat-marquee-card:hover {
+                border-color: var(--accent-primary) !important;
+                box-shadow: var(--shadow-hover) !important;
+                transform: translateY(-2px);
+              }
+            `}</style>
+          </div>
+        )}
+
         {filtered.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+          <div style={{ textAlign: 'center', padding: '4rem 2rem', background: 'var(--bg-secondary)', borderRadius: '12px', border: 'var(--border-width, 1px) solid var(--border-subtle)' }}>
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
             <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.5rem' }}>No categories found</h3>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Try adjusting your search query.</p>
           </div>
         ) : (
-          <div className="category-grid">
-            {filtered.map((cat) => {
+          <>
+            <div className="category-grid">
+            {paginated.map((cat) => {
               const count = counts[cat] || 0;
               return (
                 <Link
@@ -186,7 +297,7 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
                     width: '52px', height: '52px', borderRadius: '14px', flexShrink: 0,
                     background: 'var(--bg-secondary)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)',
+                    color: 'var(--text-secondary)', border: 'var(--border-width, 1px) solid var(--border-subtle)',
                     boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
                   }}>
                     <CategoryIcon category={cat} size={24} />
@@ -210,7 +321,7 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
                         fontSize: '0.7rem',
                         fontWeight: 600,
                         color: 'var(--text-secondary)',
-                        border: '1px solid var(--border-subtle)',
+                        border: 'var(--border-width, 1px) solid var(--border-subtle)',
                         borderRadius: '99px',
                         padding: '2px 8px',
                         background: 'var(--bg-primary)'
@@ -223,8 +334,21 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
               );
             })}
           </div>
-        )}
-      </div>
-    </>
-  );
+
+          {paginated.length < filtered.length && (
+            <div style={{ textAlign: 'center', marginTop: '3rem', marginBottom: '1rem' }}>
+              <button
+                onClick={() => setPage((p) => p + 1)}
+                className="btn-secondary"
+                style={{ padding: '10px 28px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 600 }}
+              >
+                Load more
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  </>
+);
 }

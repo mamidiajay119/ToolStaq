@@ -19,7 +19,7 @@ export default function NewsletterPage() {
           padding: 1.25rem;
           border-radius: 12px;
           background: var(--bg-card);
-          border: 1px solid var(--border-subtle);
+          border: var(--border-width, 1px) solid var(--border-subtle);
           box-shadow: var(--shadow-card);
           transition: transform 150ms ease, border-color 150ms ease;
         }
@@ -37,7 +37,7 @@ export default function NewsletterPage() {
           background: var(--bg-secondary);
           color: var(--accent-primary);
           flex-shrink: 0;
-          border: 1px solid var(--border-subtle);
+          border: var(--border-width, 1px) solid var(--border-subtle);
         }
         .newsletter-hero {
           position: relative;
@@ -69,7 +69,7 @@ export default function NewsletterPage() {
             padding: '6px 12px',
             borderRadius: '99px',
             background: 'rgba(255, 255, 255, 0.15)',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
+            border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.25)',
             fontSize: '0.75rem',
             fontWeight: 600,
             color: '#FFFFFF',
@@ -114,7 +114,7 @@ export default function NewsletterPage() {
             flexDirection: 'column',
             gap: '1.5rem',
             background: 'var(--bg-card)',
-            border: '1px solid var(--border-subtle)',
+            border: 'var(--border-width, 1px) solid var(--border-subtle)',
           }}>
             <h2 style={{ fontSize: '1.25rem', fontWeight: 700, margin: 0, color: 'var(--text-primary)' }}>
               Join the ToolStaq Newsletter

@@ -18,66 +18,56 @@ interface CurrentsResponse {
   news?: CurrentsArticle[];
 }
 
-function getCategory(title: string, body: string): string {
+export function getCategory(title: string, body: string): string {
   const text = `${title} ${body}`.toLowerCase();
-  
+
   if (
-    text.includes("openai") || 
-    text.includes("gpt") || 
-    text.includes("claude") || 
-    text.includes("gemini") || 
-    text.includes("anthropic") || 
-    text.includes("deepmind") || 
-    text.includes("meta llama") || 
-    text.includes("llama 4") || 
+    text.includes("openai") ||
+    text.includes("gpt") ||
+    text.includes("claude") ||
+    text.includes("gemini") ||
+    text.includes("anthropic") ||
+    text.includes("deepmind") ||
+    text.includes("meta llama") ||
+    text.includes("llama 4") ||
     text.includes("frontier model")
-  ) {
-    return "Frontier Models";
-  }
-  
+  ) return "Frontier Models";
+
   if (
-    text.includes("agent") || 
-    text.includes("copilot") || 
-    text.includes("autonomous") || 
-    text.includes("devin") || 
+    text.includes("agent") ||
+    text.includes("copilot") ||
+    text.includes("autonomous") ||
+    text.includes("devin") ||
     text.includes("browser use") ||
     text.includes("operator")
-  ) {
-    return "AI Agents";
-  }
-  
+  ) return "AI Agents";
+
   if (
-    text.includes("open source") || 
-    text.includes("open weights") || 
-    text.includes("hugging face") || 
+    text.includes("open source") ||
+    text.includes("open weights") ||
+    text.includes("hugging face") ||
     text.includes("huggingface")
-  ) {
-    return "Open Source";
-  }
-  
+  ) return "Open Source";
+
   if (
-    text.includes("next.js") || 
-    text.includes("vercel") || 
-    text.includes("react") || 
-    text.includes("sdk") || 
+    text.includes("next.js") ||
+    text.includes("vercel") ||
+    text.includes("react") ||
+    text.includes("sdk") ||
     text.includes("coding") ||
     text.includes("programmer")
-  ) {
-    return "Web Dev";
-  }
-  
+  ) return "Web Dev";
+
   if (
-    text.includes("regulation") || 
-    text.includes("eu ai act") || 
-    text.includes("compliance") || 
-    text.includes("copyright") || 
+    text.includes("regulation") ||
+    text.includes("eu ai act") ||
+    text.includes("compliance") ||
+    text.includes("copyright") ||
     text.includes("policy") ||
     text.includes("fine") ||
     text.includes("ban")
-  ) {
-    return "Regulation";
-  }
-  
+  ) return "Regulation";
+
   return "AI News";
 }
 
@@ -94,7 +84,7 @@ function getDomainName(urlStr: string): string {
     const url = new URL(urlStr);
     const domain = url.hostname.replace('www.', '');
     return domain.charAt(0).toUpperCase() + domain.slice(1);
-  } catch (e) {
+  } catch {
     return 'AI Source';
   }
 }
@@ -109,9 +99,7 @@ async function triggerBackgroundSync() {
     const url = `https://api.currentsapi.services/v1/search?query=${searchQuery}&category=technology&language=en&limit=15`;
     const response = await fetch(url, {
       method: "GET",
-      headers: {
-        "Authorization": currentsKey,
-      }
+      headers: { "Authorization": currentsKey },
     });
 
     if (!response.ok) throw new Error(`Currents API error: ${response.status}`);
@@ -119,7 +107,6 @@ async function triggerBackgroundSync() {
     const results = data.news || [];
 
     if (results.length > 0) {
-      // Map to db schema format
       const articles = results.map((article) => ({
         slug: slugify(article.title),
         title: article.title,
@@ -127,12 +114,11 @@ async function triggerBackgroundSync() {
         url: article.url || null,
         published_at: article.published ? new Date(article.published).toISOString() : new Date().toISOString(),
         source_name: getDomainName(article.url),
-        image_url: article.image || null
+        image_url: article.image || null,
       }));
 
-      // Filter out duplicate slugs from the proposed upsert array to prevent Postgres constraint errors
-      const uniqueArticles = [];
-      const seenSlugs = new Set();
+      const uniqueArticles: typeof articles = [];
+      const seenSlugs = new Set<string>();
       for (const article of articles) {
         if (article.slug && !seenSlugs.has(article.slug)) {
           seenSlugs.add(article.slug);
@@ -141,89 +127,129 @@ async function triggerBackgroundSync() {
       }
 
       const client = getServiceRoleClient();
-      
-      // Upsert latest articles (on Conflict of slug, it updates)
       const { error: upsertError } = await client
         .from('news_articles')
         .upsert(uniqueArticles, { onConflict: 'slug' });
-
       if (upsertError) throw upsertError;
 
-      // Delete articles older than 1 month (30 days)
       const oneMonthAgo = new Date();
       oneMonthAgo.setDate(oneMonthAgo.getDate() - 30);
-      
       const { error: deleteError } = await client
         .from('news_articles')
         .delete()
         .lt('published_at', oneMonthAgo.toISOString());
-
       if (deleteError) throw deleteError;
-      console.log('Successfully completed background news sync & purge of older articles.');
+
+      console.log('Successfully completed background news sync & purge.');
     }
   } catch (e) {
     console.error('Background news sync failed:', e);
   }
 }
 
-export async function fetchLatestAINews(count = 6): Promise<NewsArticle[]> {
+export async function fetchLatestAINews(count = 40): Promise<NewsArticle[]> {
   try {
-    // 1. Fetch latest articles from Supabase
     const { data: dbNews, error } = await supabase
       .from('news_articles')
-      .select('*')
+      .select('id, slug, title, description, url, published_at, source_name, image_url, view_count, created_at')
       .order('published_at', { ascending: false })
       .limit(count);
 
     if (error) throw error;
 
-    // Check if we need to sync: DB is empty, or the latest post is > 12 hours old
     let shouldSync = false;
     if (!dbNews || dbNews.length === 0) {
       shouldSync = true;
     } else {
       const newestPost = dbNews[0];
       const ageInMs = new Date().getTime() - new Date(newestPost.created_at || new Date()).getTime();
-      if (ageInMs > 12 * 60 * 60 * 1000) {
-        shouldSync = true;
-      }
+      if (ageInMs > 12 * 60 * 60 * 1000) shouldSync = true;
     }
 
     if (shouldSync) {
       if (!dbNews || dbNews.length === 0) {
-        // DB is completely empty (first run): do a synchronous sync to avoid returning empty array
         console.log('News database is empty. Running initial synchronous news sync...');
         await triggerBackgroundSync();
-        
-        // Query again after synchronous sync
         const { data: refreshedNews } = await supabase
           .from('news_articles')
-          .select('*')
+          .select('id, slug, title, description, url, published_at, source_name, image_url, view_count, created_at')
           .order('published_at', { ascending: false })
           .limit(count);
-          
         if (refreshedNews && refreshedNews.length > 0) {
           return mapDbNewsToArticles(refreshedNews);
         }
       } else {
-        // DB has news but it is stale: trigger async sync in background, return current cache instantly
         console.log('News cache is stale. Triggering background news sync...');
         triggerBackgroundSync().catch(console.error);
       }
     }
 
-    if (dbNews && dbNews.length > 0) {
-      return mapDbNewsToArticles(dbNews);
-    }
+    if (dbNews && dbNews.length > 0) return mapDbNewsToArticles(dbNews);
   } catch (e) {
     console.error('Failed to load news from Supabase database:', e);
   }
-
-  // Fallback if anything fails
   return [];
 }
 
-// Map database format to frontend NewsArticle interface
+/**
+ * Fetch top articles from the last 7 days ordered by view_count DESC.
+ * Falls back to the 3 most recent articles when all view counts are 0.
+ */
+export async function fetchTopThisWeek(limit = 3): Promise<NewsArticle[]> {
+  try {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    const { data, error } = await supabase
+      .from('news_articles')
+      .select('id, slug, title, description, url, published_at, source_name, image_url, view_count, created_at')
+      .gte('published_at', oneWeekAgo.toISOString())
+      .order('view_count', { ascending: false })
+      .order('published_at', { ascending: false })
+      .limit(limit);
+
+    if (error) throw error;
+
+    if (data && data.length > 0) return mapDbNewsToArticles(data);
+
+    // Cold-start fallback: return most recent articles regardless of date
+    const { data: fallback } = await supabase
+      .from('news_articles')
+      .select('id, slug, title, description, url, published_at, source_name, image_url, view_count, created_at')
+      .order('published_at', { ascending: false })
+      .limit(limit);
+
+    return fallback ? mapDbNewsToArticles(fallback) : [];
+  } catch (e) {
+    console.error('Failed to fetch top this week:', e);
+    return [];
+  }
+}
+
+/**
+ * Increment view_count for a given article slug.
+ * Called from the API route /api/news/view (server-side, service role key).
+ */
+export async function incrementViewCount(slug: string): Promise<void> {
+  try {
+    const client = getServiceRoleClient();
+    const { data: article } = await client
+      .from('news_articles')
+      .select('id, view_count')
+      .eq('slug', slug)
+      .single();
+
+    if (!article) return;
+
+    await client
+      .from('news_articles')
+      .update({ view_count: (article.view_count ?? 0) + 1 })
+      .eq('id', article.id);
+  } catch (e) {
+    console.error('Failed to increment view count:', e);
+  }
+}
+
 function mapDbNewsToArticles(dbArticles: any[]): NewsArticle[] {
   return dbArticles.map((article) => {
     const words = (article.description || "").split(/\s+/).length;
@@ -232,13 +258,12 @@ function mapDbNewsToArticles(dbArticles: any[]): NewsArticle[] {
     let formattedDate = "Recently";
     if (article.published_at) {
       try {
-        const dateObj = new Date(article.published_at);
-        formattedDate = dateObj.toLocaleDateString("en-US", {
+        formattedDate = new Date(article.published_at).toLocaleDateString("en-US", {
           month: "long",
           day: "numeric",
           year: "numeric",
         });
-      } catch (e) {
+      } catch {
         formattedDate = article.published_at;
       }
     }
@@ -253,6 +278,8 @@ function mapDbNewsToArticles(dbArticles: any[]): NewsArticle[] {
       source: article.source_name || 'AI Source',
       slug: article.slug,
       url: article.url || undefined,
+      image_url: article.image_url || undefined,
+      view_count: article.view_count ?? 0,
     };
   });
 }

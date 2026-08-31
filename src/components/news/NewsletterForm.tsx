@@ -42,7 +42,7 @@ export default function NewsletterForm() {
         padding: '2rem 1.75rem',
         borderRadius: '16px',
         background: 'var(--bg-secondary)',
-        border: '1px solid rgba(16, 185, 129, 0.15)',
+        border: 'var(--border-width, 1px) solid rgba(16, 185, 129, 0.15)',
         textAlign: 'center',
         maxWidth: '420px',
         margin: '0 auto',
@@ -97,7 +97,7 @@ export default function NewsletterForm() {
             fontSize: '0.875rem',
             borderRadius: '8px',
             background: 'var(--bg-primary)',
-            border: '1px solid var(--border-subtle)',
+            border: 'var(--border-width, 1px) solid var(--border-subtle)',
             color: 'var(--text-primary)',
             outline: 'none',
           }}
@@ -143,7 +143,7 @@ export default function NewsletterForm() {
           padding: '8px 12px',
           borderRadius: '8px',
           background: 'rgba(239, 68, 68, 0.05)',
-          border: '1px solid rgba(239, 68, 68, 0.15)',
+          border: 'var(--border-width, 1px) solid rgba(239, 68, 68, 0.15)',
         }}>
           <AlertCircle size={14} />
           <span>{status.message}</span>

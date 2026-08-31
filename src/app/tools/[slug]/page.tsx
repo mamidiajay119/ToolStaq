@@ -120,7 +120,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                         fontWeight: 700,
                         color: 'var(--accent-emerald)',
                         background: 'rgba(5, 150, 105, 0.08)',
-                        border: '1px solid rgba(5, 150, 105, 0.2)',
+                        border: 'var(--border-width, 1px) solid rgba(5, 150, 105, 0.2)',
                         padding: '2px 6px',
                         borderRadius: '4px',
                         textTransform: 'uppercase',
@@ -136,7 +136,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                         fontWeight: 700,
                         color: 'var(--accent-primary)',
                         background: 'rgba(249, 115, 22, 0.08)',
-                        border: '1px solid rgba(249, 115, 22, 0.2)',
+                        border: 'var(--border-width, 1px) solid rgba(249, 115, 22, 0.2)',
                         padding: '2px 6px',
                         borderRadius: '4px',
                         textTransform: 'uppercase',
@@ -181,7 +181,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                         gap: '6px',
                         padding: '6px 12px',
                         borderRadius: '12px',
-                        border: '1px solid rgba(16, 185, 129, 0.2)',
+                        border: 'var(--border-width, 1px) solid rgba(16, 185, 129, 0.2)',
                         background: 'rgba(16, 185, 129, 0.04)',
                         color: 'var(--accent-emerald)',
                         fontSize: '0.8rem',
@@ -213,7 +213,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
             {/* ── Unified Overview Card ── */}
             <div style={{
               background: 'var(--bg-card)',
-              border: '1px solid var(--border-subtle)',
+              border: 'var(--border-width, 1px) solid var(--border-subtle)',
               borderRadius: '16px',
               overflow: 'hidden',
             }}>
@@ -299,7 +299,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                       {tool.target_user_persona.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                           {tool.target_user_persona.map((p) => (
-                            <span key={p} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}>{p}</span>
+                            <span key={p} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: 'var(--border-width, 1px) solid var(--border-subtle)' }}>{p}</span>
                           ))}
                         </div>
                       )}
@@ -319,7 +319,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     </p>
                     <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                       {tool.integrations.map((int) => (
-                        <span key={int} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: '1px solid var(--border-subtle)' }}>{int}</span>
+                        <span key={int} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: 'var(--border-width, 1px) solid var(--border-subtle)' }}>{int}</span>
                       ))}
                     </div>
                   </div>
@@ -386,9 +386,9 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                   { label: 'Free Trial', value: tool.free_trial ? 'Yes' : 'No' },
                   { label: 'Open Source', value: tool.open_source ? 'Yes' : 'No' },
                 ].map(({ label, value }) => (
-                  <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '8px', borderBottom: '1px solid var(--border-subtle)' }}>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{label}</span>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 400, color: 'var(--text-primary)', textAlign: 'right' }}>{value}</span>
+                  <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '8px' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 300, color: 'var(--text-secondary)' }}>{label}</span>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 300, color: 'var(--text-primary)', textAlign: 'right' }}>{value}</span>
                   </div>
                 ))}
               </div>

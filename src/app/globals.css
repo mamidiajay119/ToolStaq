@@ -52,9 +52,10 @@
   --bg-overlay: rgba(0, 0, 0, 0.88);
 
   /* Borders — Framer-style barely-there hairlines */
-  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-subtle: rgba(255, 255, 255, 0.05);
   --border-glass: rgba(255, 255, 255, 0.09);
   --border-accent: #F97316;
+  --border-width: 0.5px;
 
   /* Text Colors */
   --text-primary: #EDEDED;
@@ -113,7 +114,7 @@ img { max-width: 100%; height: auto; }
 /* Flat Card */
 .glass-card, .glass-card-sm, .tool-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
   border-radius: 16px; /* More rounded */
   box-shadow: var(--shadow-card);
   transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
@@ -147,7 +148,7 @@ img { max-width: 100%; height: auto; }
 .badge-violet, .badge-cyan, .badge-emerald, .badge-amber, .badge-rose, .badge-slate {
   background: var(--bg-secondary);
   color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
 }
 
 /* Buttons */
@@ -179,7 +180,7 @@ img { max-width: 100%; height: auto; }
   padding: 10px 18px;
   background: var(--bg-secondary);
   color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
   border-radius: 10px;
   font-weight: 600;
   font-size: 0.9rem;
@@ -192,6 +193,16 @@ img { max-width: 100%; height: auto; }
 .btn-secondary:hover {
   border-color: var(--text-muted);
   background: var(--bg-card-hover);
+}
+
+[data-theme='dark'] .btn-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+[data-theme='dark'] .btn-secondary:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .btn-ghost {
@@ -218,7 +229,7 @@ img { max-width: 100%; height: auto; }
 .search-input {
   width: 100%;
   background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
   border-radius: 10px;
   color: var(--text-primary);
   font-family: inherit;
@@ -233,6 +244,32 @@ img { max-width: 100%; height: auto; }
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 1px var(--accent-primary);
   background: var(--bg-card);
+}
+
+/* Contact & Submit Inputs */
+.contact-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  background: var(--bg-primary);
+  border: var(--border-width, 1px) solid var(--border-subtle);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
+}
+
+[data-theme='dark'] .contact-input {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.contact-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.1);
+}
+
+[data-theme='dark'] .contact-input:focus {
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* Scrollbar */
@@ -279,7 +316,7 @@ img { max-width: 100%; height: auto; }
   appearance: none;
   width: 16px;
   height: 16px;
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
   border-radius: 6px;
   background: var(--bg-card);
   cursor: pointer;
@@ -310,7 +347,7 @@ img { max-width: 100%; height: auto; }
 .pricing-free, .pricing-freemium, .pricing-subscription, .pricing-usage, .pricing-onetime, .pricing-custom {
   background: var(--bg-secondary);
   color: var(--text-secondary);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
 }
 
 /* Misc Utilities to fix previous layouts */
@@ -401,7 +438,7 @@ html:not([data-theme='dark']) .hero-section {
   background-position: center;
   border-bottom-left-radius: 50% 100px;
   border-bottom-right-radius: 50% 100px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: var(--border-width, 1px) solid var(--border-subtle);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
@@ -444,7 +481,7 @@ html:not([data-theme='dark']) .hero-section::before {
 
 .cat-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -559,7 +596,7 @@ html:not([data-theme='dark']) .hero-section .hero-pill:hover {
 /* ─── Submit CTA Card Styles ────────────────────────────────────────── */
 .submit-cta-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
   box-shadow: var(--shadow-card);
   transition: transform var(--transition-base), border-color var(--transition-base);
 }
@@ -576,7 +613,7 @@ html:not([data-theme='dark']) .submit-cta-card {
 /* ─── Tool Detail Hero Card ────────────────────────────────────────── */
 .tool-hero-card {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: var(--border-width, 1px) solid var(--border-subtle);
   box-shadow: var(--shadow-card);
   transition: transform var(--transition-base), border-color var(--transition-base);
 }
@@ -623,6 +660,17 @@ html:not([data-theme='dark']) .tool-hero-card .btn-secondary:hover {
   border-color: rgba(255, 255, 255, 0.4) !important;
 }
 
+html:not([data-theme='dark']) .tool-hero-card .upvote-btn {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #FFFFFF !important;
+}
+
+html:not([data-theme='dark']) .tool-hero-card .upvote-btn:hover {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
 /* ─── Inner Page Mini-Hero Banner (shared across inner pages) ────────── */
 .inner-hero {
   position: relative;
@@ -630,7 +678,7 @@ html:not([data-theme='dark']) .tool-hero-card .btn-secondary:hover {
   text-align: center;
   overflow: hidden;
   background-color: var(--bg-primary);
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: var(--border-width, 1px) solid var(--border-subtle);
   margin-bottom: 3rem;
   display: flex;
   flex-direction: column;
@@ -661,7 +709,7 @@ html:not([data-theme='dark']) .inner-hero {
   background-position: center;
   border-bottom-left-radius: 50% 60px;
   border-bottom-right-radius: 50% 60px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: var(--border-width, 1px) solid var(--border-subtle);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
