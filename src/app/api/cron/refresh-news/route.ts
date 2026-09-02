@@ -1,6 +1,7 @@
 import { type NextRequest } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { getServiceRoleClient } from '@/lib/supabase';
+import { isRelevantAINews } from '@/lib/news';
 
 // Mark as dynamic so this route is never statically cached
 export const dynamic = 'force-dynamic';
@@ -93,6 +94,7 @@ export async function GET(request: NextRequest) {
       }))
       .filter((a) => {
         if (!a.slug || seen.has(a.slug)) return false;
+        if (!isRelevantAINews(a.title, a.description)) return false;
         seen.add(a.slug);
         return true;
       });

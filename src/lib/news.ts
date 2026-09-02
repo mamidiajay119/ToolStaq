@@ -17,6 +17,21 @@ interface CurrentsResponse {
   status: string;
   news?: CurrentsArticle[];
 }
+const ENTERTAINMENT_BLOCKLIST = [
+  'actor', 'actress', 'movie', 'film', 'star', 'bollywood', 'hollywood',
+  'celebrity', 'gossip', 'fake video', 'deepfake video', 'reacts to', 'reacts',
+  'viral video', 'scandal', 'dating', 'relationship', 'box office', 'trailer',
+  'drama', 'cinema', 'entertainment', 'pop culture', 'paparazzi', 'influencer',
+  'faceless side', 'side business', 'shein', 'history a school'
+];
+
+export function isRelevantAINews(title: string, description: string): boolean {
+  const text = `${title} ${description}`.toLowerCase();
+  for (const term of ENTERTAINMENT_BLOCKLIST) {
+    if (text.includes(term)) return false;
+  }
+  return true;
+}
 
 export function getCategory(title: string, body: string): string {
   const text = `${title} ${body}`.toLowerCase();
@@ -50,12 +65,7 @@ export function getCategory(title: string, body: string): string {
   ) return "Open Source";
 
   if (
-    text.includes("next.js") ||
-    text.includes("vercel") ||
-    text.includes("react") ||
-    text.includes("sdk") ||
-    text.includes("coding") ||
-    text.includes("programmer")
+    /\b(reactjs|react\.js|next\.js|nextjs|vercel|coding|programmer|developer|typescript|javascript|frontend|backend|web dev|webdev|sdk|api)\b/i.test(text)
   ) return "Web Dev";
 
   if (
@@ -120,7 +130,7 @@ async function triggerBackgroundSync() {
       const uniqueArticles: typeof articles = [];
       const seenSlugs = new Set<string>();
       for (const article of articles) {
-        if (article.slug && !seenSlugs.has(article.slug)) {
+        if (article.slug && !seenSlugs.has(article.slug) && isRelevantAINews(article.title, article.description)) {
           seenSlugs.add(article.slug);
           uniqueArticles.push(article);
         }
