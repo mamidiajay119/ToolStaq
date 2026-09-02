@@ -53,7 +53,7 @@ export default function NewsletterPage() {
           transform: translateX(-50%);
           width: 140px;
           height: 140px;
-          background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
           filter: blur(25px);
           pointer-events: none;
           z-index: -1;

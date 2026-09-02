@@ -66,7 +66,7 @@ export function getCategory(title: string, body: string): string {
 
   if (
     /\b(reactjs|react\.js|next\.js|nextjs|vercel|coding|programmer|developer|typescript|javascript|frontend|backend|web dev|webdev|sdk|api)\b/i.test(text)
-  ) return "Web Dev";
+  ) return "Open Source";
 
   if (
     text.includes("regulation") ||

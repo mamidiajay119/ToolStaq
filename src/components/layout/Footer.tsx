@@ -9,10 +9,7 @@ export default function Footer() {
   const categories = ['AI Productivity', 'AI Design', 'AI Marketing', 'AI Writing', 'AI Coding'];
 
   return (
-    <footer className="site-footer" style={{
-      borderTop: 'none',
-      marginTop: '3.5rem',
-    }}>
+    <footer className="site-footer">
       <div className="container-xl" style={{ padding: '3.5rem 1.5rem 2rem' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
           {/* Brand */}

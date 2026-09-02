@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
-import { Search, X, Calendar, Clock, Eye, TrendingUp, Flame, Sparkles, Bot, Code2, Globe, ShieldCheck, Newspaper } from 'lucide-react';
+import { Search, X, Calendar, Clock, Eye, TrendingUp, Flame, Sparkles, Bot, Code2, Globe, ShieldCheck, Newspaper, ChevronRight, Plus } from 'lucide-react';
 import type { NewsArticle } from './page';
 import NewsletterForm from '@/components/news/NewsletterForm';
 
@@ -11,22 +11,20 @@ interface NewsClientProps {
   topArticles: NewsArticle[];
 }
 
-const CATEGORIES = ['All', 'Frontier Models', 'AI Agents', 'Open Source', 'Web Dev', 'Regulation', 'AI News'];
+const CATEGORIES = ['All', 'Frontier Models', 'AI Agents', 'Open Source', 'Regulation', 'AI News'];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  'Frontier Models': '#a78bfa',
-  'AI Agents': '#67e8f9',
-  'Open Source': '#6ee7b7',
-  'Web Dev': '#fcd34d',
-  'Regulation': '#fca5a5',
-  'AI News': '#f97316',
+  'Frontier Models': '#8b5cf6',
+  'AI Agents': '#0891b2',
+  'Open Source': '#059669',
+  'Regulation': '#e11d48',
+  'AI News': '#ea580c',
 };
 
 const CATEGORY_ICONS: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
   'Frontier Models': Sparkles,
   'AI Agents': Bot,
   'Open Source': Code2,
-  'Web Dev': Globe,
   'Regulation': ShieldCheck,
   'AI News': Newspaper,
 };
@@ -47,14 +45,13 @@ function ArticleImage({ image_url, category, title, size = 'sm' }: {
 }) {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
-  const color = CATEGORY_COLORS[category] || '#f97316';
+  const color = CATEGORY_COLORS[category] || '#ea580c';
   const IconComponent = CATEGORY_ICONS[category] || Newspaper;
-  const h = size === 'lg' ? '180px' : '64px';
-  const w = size === 'lg' ? '100%' : '64px';
+  
+  const h = size === 'lg' ? '160px' : '54px';
+  const w = size === 'lg' ? '100%' : '54px';
   const radius = size === 'lg' ? '12px 12px 0 0' : '10px';
-  const badgeSize = size === 'lg' ? '48px' : '32px';
-  const iconSize = size === 'lg' ? 22 : 16;
-  const badgeRadius = size === 'lg' ? '14px' : '9px';
+  const iconSize = size === 'lg' ? 32 : 20;
 
   // Route all external images through our server-side proxy to bypass
   // hotlink protection and CORS restrictions on Reddit, Medium, etc.
@@ -64,24 +61,14 @@ function ArticleImage({ image_url, category, title, size = 'sm' }: {
 
   return (
     <div style={{ position: 'relative', width: w, height: h, flexShrink: 0, borderRadius: radius, overflow: 'hidden' }}>
-      {/* Modern glassmorphic icon badge fallback */}
+      {/* Solid category tile filling the entire thumbnail slot with centered white icon */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: `radial-gradient(circle at 50% 35%, ${color}25 0%, ${color}08 70%), linear-gradient(135deg, #09090b 0%, #121217 100%)`,
+        background: color,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        borderBottom: size === 'lg' ? '1px solid rgba(255,255,255,0.06)' : 'none',
+        boxShadow: `inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 4px 12px ${color}30`,
       }}>
-        <div style={{
-          width: badgeSize, height: badgeSize,
-          borderRadius: badgeRadius,
-          background: `${color}18`,
-          border: `1px solid ${color}38`,
-          boxShadow: `0 4px 16px ${color}20, inset 0 1px 0 rgba(255, 255, 255, 0.15)`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          backdropFilter: 'blur(8px)',
-        }}>
-          <IconComponent size={iconSize} color={color} />
-        </div>
+        <IconComponent size={iconSize} color="#FFFFFF" />
       </div>
 
       {/* Image overlay — fades in only on successful load */}
@@ -138,32 +125,218 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
   return (
     <>
       <style>{`
-        /* ── Hero search ── */
-        .news-search-input { color: var(--text-primary) !important; }
-        .news-search-input::placeholder { color: var(--text-muted) !important; }
-        .news-search-input:focus { border-color: rgba(255,255,255,0.25) !important; }
-
-        /* ── Category tabs ── */
-        .news-tab {
-          padding: 6px 16px;
-          border-radius: 99px;
-          font-size: 0.78rem;
-          font-weight: 500;
-          border: 1px solid var(--border-subtle);
+        /* ── News Hero Card Banner (Matching Tools Banner) ── */
+        .news-hero-card {
           background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 24px;
+          padding: 3rem 2.5rem;
+          margin-bottom: 2.5rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+          position: relative;
+          overflow: hidden;
+        }
+        [data-theme='dark'] .news-hero-card {
+          background: linear-gradient(135deg, #0d0a17 0%, #110d1e 50%, #0d0a17 100%);
+          border-color: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .news-hero-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+          align-items: center;
+        }
+        @media (min-width: 900px) {
+          .news-hero-grid { grid-template-columns: 1.15fr 0.85fr; }
+        }
+
+        .news-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 2px 10px;
+          border-radius: 99px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.03);
+          font-size: 0.70rem;
+          font-weight: 500;
+          color: #18181b;
+          margin-bottom: 0.85rem;
+          letter-spacing: -0.01em;
+        }
+        [data-theme='dark'] .news-pill-badge {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+          color: #ededed;
+        }
+
+        .news-hero-heading {
+          font-size: 2.4rem;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.035em;
+          color: var(--text-primary);
+          margin: 0 0 1rem 0;
+        }
+        @media (min-width: 640px) {
+          .news-hero-heading { font-size: 2.85rem; }
+        }
+
+        .news-hero-sub {
+          font-size: 0.95rem;
+          line-height: 1.6;
           color: var(--text-secondary);
+          margin: 0 0 1.5rem 0;
+          max-width: 500px;
+        }
+
+        .news-search-bar {
+          width: 100%;
+          padding: 10px 14px 10px 40px;
+          font-size: 0.9rem;
+          border-radius: 12px;
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          background: var(--bg-secondary);
+          color: var(--text-primary);
+          outline: none;
+          transition: border-color 150ms ease, box-shadow 150ms ease;
+        }
+        .news-search-bar:focus {
+          border-color: var(--accent-primary);
+          box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+        }
+
+        .news-hero-matrix {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(2, 1fr);
+          position: relative;
+          width: 100%;
+          max-width: 380px;
+          margin: 0 auto;
+        }
+
+        .news-matrix-cell {
+          height: 110px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          padding: 1rem;
+          text-decoration: none;
+          cursor: pointer;
+        }
+        .news-cell-top-left { border-right: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+        .news-cell-top-right { border-bottom: 1px solid var(--border-subtle); }
+        .news-cell-bot-left { border-right: 1px solid var(--border-subtle); }
+
+        .news-crosshair {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: var(--border-subtle);
+          font-size: 16px;
+          font-weight: 300;
+          font-family: monospace;
+          pointer-events: none;
+          z-index: 5;
+          user-select: none;
+        }
+
+        /* ── Centered Category Pills Bar ── */
+        .news-category-bar {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          white-space: nowrap;
+          margin-bottom: 2.5rem;
+          padding-bottom: 1rem;
+          border-bottom: 1px solid var(--border-subtle);
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        .news-category-bar::-webkit-scrollbar {
+          display: none;
+        }
+
+        /* ── Monochrome Category Badges ── */
+        .mono-badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 2px 7px;
+          border-radius: 6px;
+          font-size: 0.62rem;
+          font-weight: 600;
+          letter-spacing: -0.01em;
+          background: rgba(0, 0, 0, 0.05);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          color: var(--text-primary);
+          flex-shrink: 0;
+        }
+        [data-theme='dark'] .mono-badge {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: var(--text-primary);
+        }
+        .news-pill {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 3px 12px;
+          border-radius: 99px;
+          font-size: 0.72rem;
+          font-weight: 500;
           cursor: pointer;
           white-space: nowrap;
-          transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
-        }
-        .news-tab:hover { color: var(--text-primary); border-color: var(--accent-primary); }
-        .news-tab.active {
-          background: var(--accent-primary);
-          border-color: var(--accent-primary);
-          color: #fff;
+          transition: all 180ms ease;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+          color: #3f3f46;
         }
 
-        /* ── Top This Week cards ── */
+        .news-pill:hover {
+          border-color: rgba(0, 0, 0, 0.2);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+          color: #09090b;
+        }
+
+        .news-pill.active {
+          background: #0f172a;
+          border-color: #0f172a;
+          color: #ffffff;
+          font-weight: 600;
+          box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+        }
+
+        [data-theme='dark'] .news-pill {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          color: #a1a1aa;
+        }
+        [data-theme='dark'] .news-pill:hover {
+          background: rgba(255, 255, 255, 0.09);
+          border-color: rgba(255, 255, 255, 0.2);
+          color: #f4f4f5;
+        }
+        [data-theme='dark'] .news-pill.active {
+          background: #ffffff;
+          border-color: #ffffff;
+          color: #09090b;
+          font-weight: 600;
+          box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+        }
+
+        /* ── Top This Week & Grid Cards ── */
         .top-card {
           display: flex;
           flex-direction: column;
@@ -179,12 +352,11 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
         }
         .top-card:hover {
           transform: translateY(-3px);
-          border-color: rgba(249,115,22,0.4) !important;
+          border-color: rgba(139,92,246,0.4) !important;
           box-shadow: var(--shadow-hover);
         }
         .top-card-body { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; gap: 8px; flex: 1; }
 
-        /* ── Article grid ── */
         .news-grid {
           display: grid;
           grid-template-columns: 1fr;
@@ -208,11 +380,10 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
         }
         .news-card:hover {
           transform: translateY(-2px);
-          border-color: rgba(249,115,22,0.35) !important;
+          border-color: rgba(139,92,246,0.35) !important;
           box-shadow: var(--shadow-hover);
         }
 
-        /* ── Top section 3-col grid ── */
         .top-grid {
           display: grid;
           grid-template-columns: 1fr;
@@ -220,104 +391,191 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
         }
         @media (min-width: 640px) { .top-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (min-width: 900px) { .top-grid { grid-template-columns: repeat(3, 1fr); } }
-
-        .newsletter-card {
-          background: var(--bg-secondary);
-          border: 1px solid var(--border-subtle);
-          border-radius: 16px;
-          padding: 3rem 2rem;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
-        }
-        [data-theme='dark'] .newsletter-card { background: #000 !important; }
       `}</style>
 
-      {/* ── Hero ── */}
-      <div className="inner-hero" style={{ padding: '4.5rem 1.5rem 5.5rem', marginBottom: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>AI News</h1>
-        <p style={{ color: 'rgba(255,255,255,0.9)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
-          Latest breakthroughs, model releases, and engineering trends.
-        </p>
+      <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '4rem' }}>
+        {/* Animated News Hero Card Banner (Matching Tools Hero Banner) */}
+        <div className="news-hero-card">
+          <div className="news-hero-grid">
+            {/* Left Column: Badge, Headline, Subtitle, CTAs, Search */}
+            <div>
+              <div className="news-pill-badge">
+                <span>+ AI intel</span>
+              </div>
 
-        {/* Search */}
-        <div style={{ position: 'relative', maxWidth: '560px', width: '100%', margin: '1.75rem auto 1rem' }}>
-          <Search size={16} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.6)', pointerEvents: 'none' }} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => { setSearch(e.target.value); setVisibleCount(8); }}
-            placeholder="Search AI news..."
-            className="news-search-input"
-            style={{
-              width: '100%',
-              paddingLeft: '44px',
-              paddingRight: search ? '40px' : '16px',
-              paddingTop: '11px',
-              paddingBottom: '11px',
-              fontSize: '0.925rem',
-              borderRadius: '14px',
-              border: '1px solid rgba(255,255,255,0.18)',
-              background: 'rgba(255,255,255,0.08)',
-              outline: 'none',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.06)',
-              transition: 'border-color 150ms ease',
-            }}
-          />
-          {search && (
-            <button onClick={() => setSearch('')} style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.6)' }}>
-              <X size={15} />
-            </button>
-          )}
-        </div>
+              <h1 className="news-hero-heading">
+                The signal is real.<br />AI news, simplified.
+              </h1>
+              
+              <p className="news-hero-sub">
+                Curated breakthroughs, model releases, and engineering trends across frontier AI. No noise, just verified intel.
+              </p>
 
-        {/* Stats row */}
-        <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          gap: '3rem', flexWrap: 'wrap',
-          borderTop: '1px solid rgba(255,255,255,0.12)',
-          paddingTop: '1.5rem', maxWidth: '560px', width: '100%', margin: '0.5rem auto 0',
-        }}>
-          {[
-            { number: `${newsArticles.length}+`, label: 'Articles' },
-            { number: 'Real-time', label: 'Sync' },
-            { number: 'Weekly', label: 'Briefings' },
-          ].map((stat) => (
-            <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: '1.25rem', fontWeight: 600, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1.2 }}>{stat.number}</span>
-              <span style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase', letterSpacing: '0.05em', marginTop: '3px' }}>{stat.label}</span>
+              {/* Action CTAs */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+                <button
+                  onClick={() => {
+                    const gridEl = document.getElementById('news-articles-grid');
+                    if (gridEl) gridEl.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="btn-primary"
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '10px',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  Read latest news <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                </button>
+                <a
+                  href="#newsletter-signup"
+                  className="btn-secondary"
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '10px',
+                    fontSize: '0.85rem',
+                    fontWeight: 500,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  Subscribe to briefings <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                </a>
+              </div>
+
+              {/* Search Box */}
+              <div style={{ position: 'relative', maxWidth: '480px', width: '100%' }}>
+                <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)', pointerEvents: 'none' }} />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => { setSearch(e.target.value); setVisibleCount(8); }}
+                  placeholder="Search AI news, models, companies..."
+                  className="news-search-bar"
+                />
+                {search && (
+                  <button onClick={() => setSearch('')} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}>
+                    <X size={15} />
+                  </button>
+                )}
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="container-xl" style={{ paddingBottom: '4rem' }}>
+            {/* Right Column: Live Breaking News Headline Cards Widget */}
+            <div style={{ position: 'relative', height: '280px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="hidden-mobile">
+              {/* Card 1: Top Floating News Story */}
+              <motion.a
+                href={newsArticles[0]?.url || `/news/${newsArticles[0]?.slug}`}
+                target={newsArticles[0]?.url ? '_blank' : undefined}
+                rel={newsArticles[0]?.url ? 'noopener noreferrer' : undefined}
+                animate={{ y: [0, -4, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                whileHover={{ scale: 1.04, y: -6 }}
+                style={{
+                  position: 'absolute', top: '10px', right: '25px', width: '240px', height: '140px',
+                  borderRadius: '20px', background: 'linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)',
+                  padding: '1.15rem', color: '#ffffff', transform: 'rotate(4deg)',
+                  boxShadow: '0 12px 32px rgba(124, 58, 237, 0.35)',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                  textDecoration: 'none', zIndex: 1,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.65rem', fontWeight: 600, background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: '99px' }}>
+                    {newsArticles[0]?.category || 'Frontier Models'}
+                  </span>
+                  <span style={{ fontSize: '0.65rem', opacity: 0.85 }}>
+                    {newsArticles[0]?.readTime || '2 min read'}
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.875rem', fontWeight: 600, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {newsArticles[0]?.title || 'Claude & GPT-5 Benchmarks Released'}
+                </div>
+                <div style={{ fontSize: '0.7rem', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span>{newsArticles[0]?.source || 'TechCrunch'}</span>
+                </div>
+              </motion.a>
+
+              {/* Card 2: Bottom Floating News Story */}
+              <motion.a
+                href={newsArticles[1]?.url || `/news/${newsArticles[1]?.slug}`}
+                target={newsArticles[1]?.url ? '_blank' : undefined}
+                rel={newsArticles[1]?.url ? 'noopener noreferrer' : undefined}
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+                whileHover={{ scale: 1.04, y: -6 }}
+                style={{
+                  position: 'absolute', bottom: '10px', left: '10px', width: '250px', height: '145px',
+                  borderRadius: '20px', background: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
+                  padding: '1.2rem', color: '#ffffff', transform: 'rotate(-4deg)',
+                  boxShadow: '0 14px 36px rgba(8, 145, 178, 0.4)',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'space-between', zIndex: 2,
+                  textDecoration: 'none',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: '0.65rem', fontWeight: 600, background: 'rgba(255,255,255,0.2)', padding: '2px 8px', borderRadius: '99px' }}>
+                    {newsArticles[1]?.category || 'AI Agents'}
+                  </span>
+                  <span style={{ fontSize: '0.65rem', opacity: 0.85 }}>
+                    {newsArticles[1]?.readTime || '3 min read'}
+                  </span>
+                </div>
+                <div style={{ fontSize: '0.9rem', fontWeight: 600, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  {newsArticles[1]?.title || 'Autonomous Coding Agents Hit Production'}
+                </div>
+                <div style={{ fontSize: '0.7rem', opacity: 0.8, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span>{newsArticles[1]?.source || 'Engadget'}</span>
+                </div>
+              </motion.a>
+
+              {/* Central Floating Live Intel Badge */}
+              <div style={{
+                position: 'absolute', zIndex: 3,
+                width: '88px', height: '88px', borderRadius: '50%',
+                background: 'rgba(255, 255, 255, 0.94)',
+                border: '1.5px solid rgba(139, 92, 246, 0.4)',
+                boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                color: '#6d28d9', textAlign: 'center', padding: '6px',
+                transform: 'rotate(-10deg)', backdropFilter: 'blur(10px)',
+              }}>
+                <Flame size={18} color="#7c3aed" fill="#7c3aed" style={{ marginBottom: '2px' }} />
+                <span style={{ fontSize: '0.55rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', lineHeight: 1.1 }}>
+                  • LIVE NEWS • INTEL
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* ── Top This Week (cascade animation) ── */}
         {filteredTop.length > 0 && (
           <section style={{ marginBottom: '2.5rem' }}>
             <motion.div
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
               style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}
             >
-              <Flame size={15} color="var(--accent-primary)" />
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
-                {isFiltering ? 'Top Results' : 'Top This Week'}
-              </span>
+              <div className="news-pill-badge" style={{ marginBottom: 0 }}>
+                <span>+ Top stories</span>
+              </div>
             </motion.div>
 
-            {/* Stagger container: each card cascades in 100ms apart */}
+            {/* Stagger container: each card cascades in fast */}
             <motion.div
               className="top-grid"
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.1 }}
+              initial="show"
+              animate="show"
               variants={{
                 hidden: {},
-                show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+                show: { transition: { staggerChildren: 0.05 } },
               }}
             >
               {filteredTop.map((article) => (
@@ -329,10 +587,10 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
                   className="top-card"
                   onClick={() => trackView(article.slug)}
                   variants={{
-                    hidden: { opacity: 0, y: 28, scale: 0.97 },
+                    hidden: { opacity: 1, y: 0, scale: 1 },
                     show: {
                       opacity: 1, y: 0, scale: 1,
-                      transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                      transition: { duration: 0.2 },
                     },
                   }}
                   whileHover={{ y: -3, transition: { duration: 0.18 } }}
@@ -340,12 +598,7 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
                   <ArticleImage image_url={article.image_url} category={article.category} title={article.title} size="lg" />
                   <div className="top-card-body">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                      <span style={{
-                        fontSize: '0.65rem', fontWeight: 700, padding: '2px 8px', borderRadius: '6px',
-                        background: `${CATEGORY_COLORS[article.category] || '#f97316'}22`,
-                        color: CATEGORY_COLORS[article.category] || '#f97316',
-                        letterSpacing: '0.04em', textTransform: 'uppercase',
-                      }}>
+                      <span className="mono-badge">
                         {article.category}
                       </span>
                       <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>{article.source}</span>
@@ -373,12 +626,12 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
           </section>
         )}
 
-        {/* ── Category Tabs ── */}
-        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '1rem', marginBottom: '1.25rem', borderBottom: '1px solid var(--border-subtle)' }} className="hide-scroll">
+        {/* ── Centered Category Pills Bar ── */}
+        <div id="news-articles-grid" className="news-category-bar hide-scroll">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
-              className={`news-tab${activeCategory === cat ? ' active' : ''}`}
+              className={`news-pill${activeCategory === cat ? ' active' : ''}`}
               onClick={() => { setActiveCategory(cat); setVisibleCount(8); }}
             >
               {cat}
@@ -422,12 +675,7 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
                   <ArticleImage image_url={article.image_url} category={article.category} title={article.title} size="sm" />
                   <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                      <span style={{
-                        fontSize: '0.62rem', fontWeight: 700, padding: '2px 7px', borderRadius: '5px',
-                        background: `${CATEGORY_COLORS[article.category] || '#f97316'}22`,
-                        color: CATEGORY_COLORS[article.category] || '#f97316',
-                        letterSpacing: '0.04em', textTransform: 'uppercase', flexShrink: 0,
-                      }}>
+                      <span className="mono-badge">
                         {article.category}
                       </span>
                       <span style={{ fontSize: '0.67rem', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -463,9 +711,17 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
                 <button
                   onClick={() => setVisibleCount(prev => prev + 8)}
                   className="btn-secondary"
-                  style={{ padding: '10px 28px', borderRadius: '12px', fontSize: '0.875rem', fontWeight: 500 }}
+                  style={{
+                    padding: '10px 26px',
+                    borderRadius: '12px',
+                    fontSize: '0.875rem',
+                    fontWeight: 500,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
                 >
-                  Load more articles
+                  Load more articles <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </button>
               </div>
             )}
@@ -473,12 +729,12 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
         )}
 
         {/* ── Newsletter ── */}
-        <section style={{ marginTop: '2rem' }}>
-          <div className="newsletter-card">
+        <section id="newsletter-signup" style={{ marginTop: '5.5rem' }}>
+          <div className="newsletter-card" style={{ textAlign: 'center' }}>
             <div style={{ position: 'absolute', top: '-50px', left: '-50px', width: '180px', height: '180px', background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)', filter: 'blur(30px)', pointerEvents: 'none' }} />
             <div style={{ position: 'absolute', bottom: '-50px', right: '-50px', width: '180px', height: '180px', background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)', filter: 'blur(30px)', pointerEvents: 'none' }} />
-            <h2 style={{ fontSize: '1.4rem', fontWeight: 400, marginBottom: '0.75rem', letterSpacing: '-0.01em' }}>Subscribe to AI Updates</h2>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.75rem', maxWidth: '460px', margin: '0 auto 1.75rem', lineHeight: 1.5 }}>
+            <h2 style={{ fontSize: '1.4rem', fontWeight: 400, marginBottom: '0.75rem', letterSpacing: '-0.01em', textAlign: 'center' }}>Subscribe to AI Updates</h2>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.75rem', maxWidth: '460px', margin: '0 auto 1.75rem', lineHeight: 1.5, textAlign: 'center' }}>
               Get a weekly summary of the most important AI tool launches and news stories sent straight to your inbox.
             </p>
             <NewsletterForm />

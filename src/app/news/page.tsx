@@ -64,7 +64,7 @@ const STATIC_NEWS_ARTICLES: NewsArticle[] = [
     excerpt: 'The newest release of Next.js simplifies streaming LLM responses, structured JSON parsing, and generative UI generation with deep framework integrations.',
     date: 'July 09, 2026',
     readTime: '3 min read',
-    category: 'Web Dev',
+    category: 'Open Source',
     source: 'Vercel',
     slug: 'nextjs-16-vercel-ai-sdk',
     view_count: 0,

@@ -2,7 +2,8 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { X } from 'lucide-react';
+import { motion } from 'motion/react';
+import { X, Search, ChevronRight, Plus, Sparkles, Scale, ArrowLeftRight } from 'lucide-react';
 import type { Tool } from '@/types/tool';
 import { getPricingLabel } from '@/lib/tools';
 import ToolLogo from '@/components/tools/ToolLogo';
@@ -51,6 +52,14 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
     }).filter(Boolean) as { label: string; slugs: string[] }[];
   }, [tools]);
 
+  const chatgptTool = useMemo(() => {
+    return tools.find(t => t.slug === 'chatgpt' || t.tool_name.toLowerCase().includes('chatgpt'));
+  }, [tools]);
+
+  const claudeTool = useMemo(() => {
+    return tools.find(t => t.slug === 'claude' || t.tool_name.toLowerCase().includes('claude'));
+  }, [tools]);
+
   useEffect(() => {
     const initialTool = searchParams.get('tool');
     if (initialTool && tools.some(t => t.slug === initialTool)) {
@@ -83,93 +92,204 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
   return (
     <>
       <style>{`
-        .hero-tag-btn:hover {
-          background: rgba(255, 255, 255, 0.22) !important;
+        .compare-hero-card {
+          background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 24px;
+          padding: 3rem 2.5rem;
+          margin-bottom: 2.5rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+          position: relative;
+          overflow: hidden;
         }
-        [data-theme='dark'] .hero-tag-btn {
-          background: rgba(255, 255, 255, 0.05) !important;
-          border-color: rgba(255, 255, 255, 0.08) !important;
-          color: var(--text-secondary) !important;
+        [data-theme='dark'] .compare-hero-card {
+          background: linear-gradient(135deg, #0d0a17 0%, #110d1e 50%, #0d0a17 100%);
+          border-color: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
-        [data-theme='dark'] .hero-tag-btn:hover {
-          background: rgba(255, 255, 255, 0.08) !important;
-          color: var(--text-primary) !important;
+
+        .compare-hero-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 2.5rem;
+          align-items: center;
         }
-        [data-theme='dark'] .hero-stats-row {
-          border-top-color: rgba(255, 255, 255, 0.06) !important;
+        @media (min-width: 900px) {
+          .compare-hero-grid { grid-template-columns: 1.15fr 0.85fr; }
         }
-        [data-theme='dark'] .hero-stats-row span:first-child {
-          color: var(--text-primary) !important;
+
+        .compare-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 2px 10px;
+          border-radius: 99px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.03);
+          font-size: 0.70rem;
+          font-weight: 500;
+          color: #18181b;
+          margin-bottom: 0.85rem;
+          letter-spacing: -0.01em;
         }
-        [data-theme='dark'] .hero-stats-row span:last-child {
-          color: var(--text-secondary) !important;
+        [data-theme='dark'] .compare-pill-badge {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+          color: #ededed;
+        }
+
+        .compare-hero-heading {
+          font-size: 2.4rem;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.035em;
+          color: var(--text-primary);
+          margin: 0 0 1rem 0;
+        }
+        @media (min-width: 640px) {
+          .compare-hero-heading { font-size: 2.85rem; }
+        }
+
+        .compare-hero-sub {
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: var(--text-secondary);
+          margin: 0 0 1.5rem 0;
+          max-width: 500px;
         }
       `}</style>
 
-      <div className="inner-hero" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Compare AI Tools</h1>
-        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Select up to 3 tools and compare them side-by-side</p>
+      <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '4rem' }}>
+        {/* Animated Compare Hero Card Banner */}
+        <div className="compare-hero-card">
+          <div className="compare-hero-grid">
+            {/* Left Column: Badge, Headline, Subtitle, CTAs */}
+            <div>
+              <div className="compare-pill-badge">
+                <span>+ Tool comparison</span>
+              </div>
 
-        {/* Preset Capsules */}
-        {presets.length > 0 && (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', marginTop: '1.5rem', marginBottom: '1.75rem' }}>
-            <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>Popular:</span>
-            {presets.map((preset) => (
-              <button
-                key={preset.label}
-                onClick={() => setSelected(preset.slugs)}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.12)',
-                  border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.18)',
-                  borderRadius: '99px',
-                  padding: '3px 10px',
-                  fontSize: '0.72rem',
-                  color: '#FFFFFF',
-                  cursor: 'pointer',
-                  transition: 'background 150ms ease',
-                }}
-                className="hero-tag-btn"
-              >
-                {preset.label}
-              </button>
-            ))}
-          </div>
-        )}
+              <h1 className="compare-hero-heading">
+                Compare AI tools side-by-side
+              </h1>
 
-        {/* Platform Stats Row */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '3rem',
-          flexWrap: 'wrap',
-          borderTop: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.15)',
-          paddingTop: '1.75rem',
-          maxWidth: '580px',
-          width: '100%',
-          margin: '0.5rem auto 0',
-        }} className="hero-stats-row">
-          {[
-            { number: '2,729+', label: 'Tools Supported' },
-            { number: '3 Max', label: 'Side-by-Side' },
-            { number: 'Full Matrix', label: 'Feature Comparison' },
-          ].map((stat) => (
-            <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-                {stat.number}
-              </span>
-              <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '3px' }}>
-                {stat.label}
-              </span>
+              <p className="compare-hero-sub">
+                Evaluate pricing models, starting costs, complexity levels, API access, and deployment options side-by-side to make the right software choice.
+              </p>
+
+              {/* Action CTAs */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                <button
+                  onClick={() => {
+                    const selectorEl = document.getElementById('compare-selector-box');
+                    if (selectorEl) selectorEl.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="btn-primary"
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '10px',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  Compare tools <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                </button>
+                <a
+                  href="/tools"
+                  className="btn-secondary"
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '10px',
+                    fontSize: '0.85rem',
+                    fontWeight: 500,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  Explore directory <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                </a>
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      <div className="container-xl" style={{ paddingBottom: '3rem' }}>
+            {/* Right Column: Comparison Preview Grid with VS badge */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ position: 'relative', width: '100%', maxWidth: '380px', height: '170px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {/* Tool 1 Card */}
+                <motion.div
+                  animate={{ y: [0, -4, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{
+                    position: 'absolute', left: '10px', width: '170px', height: '120px',
+                    borderRadius: '16px', background: 'var(--bg-card)',
+                    border: '1px solid var(--border-subtle)',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
+                    padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    if (chatgptTool?.slug && claudeTool?.slug) setSelected([chatgptTool.slug, claudeTool.slug]);
+                  }}
+                >
+                  <ToolLogo
+                    url={chatgptTool?.url || 'https://chatgpt.com'}
+                    icon={chatgptTool?.icon || '🤖'}
+                    favicon_url={chatgptTool?.favicon_url}
+                    size={38}
+                    borderRadius={10}
+                  />
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>ChatGPT</span>
+                </motion.div>
+
+                {/* VS Badge in the center */}
+                <div style={{
+                  position: 'absolute', zIndex: 5,
+                  width: '42px', height: '42px', borderRadius: '50%',
+                  background: 'var(--accent-primary)', color: '#FFFFFF',
+                  fontWeight: 800, fontSize: '0.78rem', letterSpacing: '0.04em',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 4px 16px rgba(139, 92, 246, 0.4)',
+                  border: '3px solid var(--bg-card)',
+                }}>
+                  VS
+                </div>
+
+                {/* Tool 2 Card */}
+                <motion.div
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
+                  style={{
+                    position: 'absolute', right: '10px', width: '170px', height: '120px',
+                    borderRadius: '16px', background: 'var(--bg-card)',
+                    border: '1px solid var(--border-subtle)',
+                    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
+                    padding: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    if (chatgptTool?.slug && claudeTool?.slug) setSelected([chatgptTool.slug, claudeTool.slug]);
+                  }}
+                >
+                  <ToolLogo
+                    url={claudeTool?.url || 'https://claude.ai'}
+                    icon={claudeTool?.icon || '🧠'}
+                    favicon_url={claudeTool?.favicon_url}
+                    size={38}
+                    borderRadius={10}
+                  />
+                  <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)' }}>Claude</span>
+                </motion.div>
+              </div>
+            </div>
+          </div>
+        </div>
 
       {/* Two-panel layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+      <div id="compare-selector-box" style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '1.5rem', alignItems: 'start' }}>
 
         {/* ── Left panel: selection ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', position: 'sticky', top: '80px' }}>

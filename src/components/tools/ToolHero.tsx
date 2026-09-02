@@ -76,8 +76,8 @@ export default function ToolHero({
             {isNew && (
               <span style={{
                 fontSize: '0.65rem', fontWeight: 700, color: 'var(--accent-primary)',
-                background: 'rgba(249, 115, 22, 0.08)',
-                border: 'var(--border-width, 1px) solid rgba(249, 115, 22, 0.2)',
+                background: 'rgba(139, 92, 246, 0.08)',
+                border: 'var(--border-width, 1px) solid rgba(139, 92, 246, 0.2)',
                 padding: '2px 6px', borderRadius: '4px', textTransform: 'uppercase',
                 letterSpacing: '0.04em', lineHeight: 1.2,
               }}>

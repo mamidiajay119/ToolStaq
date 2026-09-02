@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, Zap, GitCompare, PlusCircle, Mail } from 'lucide-react';
+import { Menu, X, Zap, Mail } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
@@ -19,25 +19,42 @@ export default function Header() {
     <header
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
+        top: '12px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '100%',
+        maxWidth: '1400px',
+        padding: '0 1.5rem',
         zIndex: 100,
         transition: 'all 200ms ease',
-        background: scrolled ? 'var(--bg-overlay)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(12px)' : 'none',
-        borderBottom: 'none',
       }}
     >
-      <div className="container-xl" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '64px', gap: '1.5rem' }}>
-        
+      {/* Full-Width Floating Rounded Square Bar */}
+      <div
+        className="floating-header-bar"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          height: '56px',
+          padding: '0 24px',
+          borderRadius: '16px',
+          background: scrolled ? 'var(--header-bg-scrolled)' : 'var(--header-bg)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid var(--header-border)',
+          boxShadow: scrolled ? 'var(--header-shadow-scrolled)' : 'var(--header-shadow)',
+          transition: 'all 200ms ease',
+          position: 'relative',
+        }}
+      >
         {/* Left: Logo */}
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
           <div style={{
             width: '32px', height: '32px', borderRadius: '8px',
             background: 'var(--accent-primary)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)',
           }}>
             <Zap size={16} color="white" strokeWidth={2.5} />
           </div>
@@ -48,17 +65,17 @@ export default function Header() {
 
         {/* Center: Nav Links */}
         <nav className="center-nav hidden-mobile">
-          <Link href="/tools" className="btn-ghost">Tools</Link>
-          <Link href="/categories" className="btn-ghost">Categories</Link>
-          <Link href="/news" className="btn-ghost">AI News</Link>
-          <Link href="/compare" className="btn-ghost">Compare</Link>
-          <Link href="/submit" className="btn-ghost">Submit Tool</Link>
+          <Link href="/tools" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Tools</Link>
+          <Link href="/categories" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Categories</Link>
+          <Link href="/news" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>AI News</Link>
+          <Link href="/compare" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Compare</Link>
+          <Link href="/submit" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Submit Tool</Link>
         </nav>
 
         {/* Right: Actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="hidden-mobile">
           <ThemeToggle />
-          <Link href="/newsletter" className="btn-primary" style={{ padding: '7px 16px', fontSize: '0.85rem' }}>
+          <Link href="/newsletter" className="btn-primary" style={{ padding: '6px 18px', borderRadius: '10px', fontSize: '0.825rem' }}>
             <Mail size={14} style={{ marginRight: '4px' }} /> Subscribe
           </Link>
         </div>
@@ -69,7 +86,7 @@ export default function Header() {
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="btn-ghost"
-            style={{ padding: '8px' }}
+            style={{ padding: '8px', borderRadius: '10px' }}
             aria-label="Toggle menu"
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -77,28 +94,46 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Dropdown */}
       {menuOpen && (
         <div style={{
-          background: 'var(--bg-primary)',
-          borderTop: 'var(--border-width, 1px) solid var(--border-subtle)',
-          padding: '1rem 1.5rem',
+          marginTop: '8px',
+          background: 'var(--bg-card)',
+          border: '1px solid var(--border-subtle)',
+          borderRadius: '20px',
+          padding: '1rem 1.25rem',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px',
+          gap: '6px',
+          boxShadow: '0 12px 32px rgba(0,0,0,0.2)',
+          backdropFilter: 'blur(16px)',
         }}>
-          <Link href="/tools" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Tools</Link>
-          <Link href="/categories" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Categories</Link>
-          <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>AI News</Link>
-          <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Compare</Link>
-          <Link href="/submit" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start' }}>Submit Tool</Link>
-          <Link href="/newsletter" className="btn-primary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', marginTop: '8px', gap: '8px' }}>
+          <Link href="/tools" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Tools</Link>
+          <Link href="/categories" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Categories</Link>
+          <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>AI News</Link>
+          <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Compare</Link>
+          <Link href="/submit" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Submit Tool</Link>
+          <Link href="/newsletter" className="btn-primary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'center', marginTop: '6px', gap: '6px', borderRadius: '99px' }}>
             <Mail size={14} /> Subscribe
           </Link>
         </div>
       )}
 
       <style>{`
+        :root {
+          --header-bg: rgba(255, 255, 255, 0.75);
+          --header-bg-scrolled: rgba(255, 255, 255, 0.92);
+          --header-border: rgba(139, 92, 246, 0.18);
+          --header-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
+          --header-shadow-scrolled: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        [data-theme='dark'] {
+          --header-bg: rgba(23, 15, 46, 0.75);
+          --header-bg-scrolled: rgba(15, 10, 30, 0.92);
+          --header-border: rgba(167, 139, 250, 0.22);
+          --header-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+          --header-shadow-scrolled: 0 12px 40px rgba(0, 0, 0, 0.7);
+        }
         .center-nav {
           display: flex;
           align-items: center;

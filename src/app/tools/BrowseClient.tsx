@@ -3,11 +3,12 @@
 import { useState, useMemo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Search, X, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { Search, X, ChevronDown, ChevronUp, Sparkles, ChevronRight } from 'lucide-react';
 import ToolCard from '@/components/tools/ToolCard';
 import type { Tool } from '@/types/tool';
 import Link from 'next/link';
 import ToolLogo from '@/components/tools/ToolLogo';
+import ToolsHeroBanner from '@/components/tools/ToolsHeroBanner';
 
 const PRICING_MODELS = ['freemium', 'subscription', 'usage-based', 'one-time', 'custom pricing'];
 const COMPLEXITY_LEVELS = ['Beginner', 'Intermediate', 'Advanced'];
@@ -190,122 +191,89 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
         [data-theme='dark'] .hero-stats-row span:last-child {
           color: var(--text-secondary) !important;
         }
+        .category-pills-row {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          white-space: nowrap;
+          margin-bottom: 2rem;
+          padding-bottom: 0.5rem;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        .category-pills-row::-webkit-scrollbar {
+          display: none;
+        }
+
+        .category-pill-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 3px 12px;
+          border-radius: 99px;
+          font-size: 0.72rem;
+          font-weight: 500;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 180ms ease;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.03);
+          color: #3f3f46;
+        }
+
+        .category-pill-btn:hover {
+          border-color: rgba(0, 0, 0, 0.2);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+          color: #09090b;
+        }
+
+        .category-pill-btn.active {
+          background: #0f172a;
+          border-color: #0f172a;
+          color: #ffffff;
+          font-weight: 600;
+          box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+        }
+
+        [data-theme='dark'] .category-pill-btn {
+          background: rgba(255, 255, 255, 0.05);
+          border-color: rgba(255, 255, 255, 0.1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          color: #a1a1aa;
+        }
+        [data-theme='dark'] .category-pill-btn:hover {
+          background: rgba(255, 255, 255, 0.09);
+          border-color: rgba(255, 255, 255, 0.2);
+          color: #f4f4f5;
+        }
+        [data-theme='dark'] .category-pill-btn.active {
+          background: #ffffff;
+          border-color: #ffffff;
+          color: #09090b;
+          font-weight: 600;
+          box-shadow: 0 4px 14px rgba(255, 255, 255, 0.15);
+        }
       `}</style>
 
-      {/* Expanded Inner Hero Banner */}
-      <div className="inner-hero" style={{ padding: '4.5rem 1.5rem 5.5rem', marginBottom: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>AI Tools</h1>
-        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Explore hand-curated AI tools for your workflow.</p>
-        
-        {/* Search box inside Hero */}
-        <div style={{ position: 'relative', maxWidth: '580px', width: '100%', margin: '1.75rem auto 1rem' }}>
-          <Search size={16} style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.7)', pointerEvents: 'none' }} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-            placeholder="Search 2,729+ tools, categories, use cases..."
-            className="hero-search-input"
-            style={{
-              width: '100%',
-              paddingLeft: '44px',
-              paddingRight: search ? '40px' : '16px',
-              paddingTop: '12px',
-              paddingBottom: '12px',
-              fontSize: '0.95rem',
-              borderRadius: '14px',
-              border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.2)',
-              background: 'rgba(255, 255, 255, 0.1)',
-              color: '#FFFFFF',
-              outline: 'none',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
-              transition: 'all 150ms ease',
-            }}
-          />
-          {search && (
-            <button onClick={() => { setSearch(''); setPage(1); }} style={{ position: 'absolute', right: '14px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.7)' }}>
-              <X size={15} />
-            </button>
-          )}
-        </div>
+      <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '4rem' }}>
+        {/* Animated Integration Grid Hero Banner (Calendly/Linear Style) */}
+        <ToolsHeroBanner
+          search={search}
+          setSearch={setSearch}
+          setPage={setPage}
+          totalCount={tools.length}
+        />
 
-        {/* Trending tags */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '2rem' }}>
-          <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.7)' }}>Trending:</span>
-          {['Voice Cloning', 'SEO Writing', 'Code Assistant', 'Video Creator'].map((tag) => (
-            <button
-              key={tag}
-              onClick={() => { setSearch(tag); setPage(1); }}
-              style={{
-                background: 'rgba(255, 255, 255, 0.12)',
-                border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.18)',
-                borderRadius: '99px',
-                padding: '3px 10px',
-                fontSize: '0.72rem',
-                color: '#FFFFFF',
-                cursor: 'pointer',
-                transition: 'background 150ms ease',
-              }}
-              className="hero-tag-btn"
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-
-        {/* Platform Stats Row */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '3rem',
-          flexWrap: 'wrap',
-          borderTop: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.15)',
-          paddingTop: '1.75rem',
-          maxWidth: '580px',
-          width: '100%',
-          margin: '0.5rem auto 0',
-        }} className="hero-stats-row">
-          {[
-            { number: '2,729+', label: 'AI Tools' },
-            { number: '96', label: 'Categories' },
-            { number: 'Free & Paid', label: 'Pricing Options' },
-          ].map((stat) => (
-            <div key={stat.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontSize: '1.35rem', fontWeight: 600, color: '#FFFFFF', letterSpacing: '-0.02em', lineHeight: 1.2 }}>
-                {stat.number}
-              </span>
-              <span style={{ fontSize: '0.72rem', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.04em', marginTop: '3px' }}>
-                {stat.label}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="container-xl" style={{ paddingBottom: '4rem' }}>
-
-        {/* Top Picks Marquee — ABOVE category chips for best UX flow */}
-        {recommendedTools.length > 0 && activeFilterCount === 0 && !search.trim() && (
+        {/* Top Picks Marquee — ALWAYS displayed irrespective of category selected */}
+        {recommendedTools.length > 0 && !search.trim() && (
           <div style={{ marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem', flexWrap: 'wrap', gap: '8px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--accent-primary)' }}>
-                <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                  Top Picks
-                </span>
-                <span style={{
-                  fontSize: '0.65rem',
-                  fontWeight: 600,
-                  padding: '1px 6px',
-                  borderRadius: '99px',
-                  background: 'rgba(249, 115, 22, 0.1)',
-                  border: 'var(--border-width, 1px) solid rgba(249, 115, 22, 0.25)',
-                  color: 'var(--accent-primary)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em'
-                }}>
-                  Featured
-                </span>
+              <div className="tools-pill-badge" style={{ marginBottom: 0 }}>
+                <span>+ Top Picks</span>
               </div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                 Handpicked top-tier AI tools
@@ -358,30 +326,21 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
           </div>
         )}
 
-        {/* Category Chips Row (Horizontal Scrollable) */}
-        <div className="hide-scroll" style={{ 
-          display: 'flex', 
-          gap: '10px', 
-          overflowX: 'auto', 
-          paddingBottom: '1.5rem', 
-          marginBottom: '1.5rem', 
-          borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)' 
-        }}>
+        {/* Centered Category Pills Row matching reference screenshot */}
+        <div id="tools-directory-grid" className="category-pills-row">
           <button
             onClick={() => { setSelectedCategories([]); setPage(1); }}
-            className={selectedCategories.length === 0 ? "btn-primary" : "btn-secondary"}
-            style={{ padding: '6px 16px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+            className={`category-pill-btn ${selectedCategories.length === 0 ? "active" : ""}`}
           >
-            All Categories
+            All
           </button>
           {allCategories.map(cat => (
             <button
               key={cat}
               onClick={() => toggleArr(selectedCategories, cat, setSelectedCategories)}
-              className={selectedCategories.includes(cat) ? "btn-primary" : "btn-secondary"}
-              style={{ padding: '6px 16px', borderRadius: '99px', fontSize: '0.75rem', whiteSpace: 'nowrap' }}
+              className={`category-pill-btn ${selectedCategories.includes(cat) ? "active" : ""}`}
             >
-              {cat.replace('AI ', '')}
+              {cat}
             </button>
           ))}
         </div>
@@ -565,8 +524,19 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
 
           {paginated.length < filtered.length && (
             <div style={{ textAlign: 'center', marginTop: '2.5rem', marginBottom: '0.5rem' }}>
-              <button onClick={() => setPage((p) => p + 1)} className="btn-secondary" style={{ padding: '8px 24px', borderRadius: '12px' }}>
-                Load more
+              <button
+                onClick={() => setPage((p) => p + 1)}
+                className="btn-secondary"
+                style={{
+                  padding: '9px 24px',
+                  borderRadius: '12px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '0.875rem',
+                }}
+              >
+                Load more <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
               </button>
             </div>
           )}

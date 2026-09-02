@@ -13,7 +13,7 @@
   /* Borders */
   --border-subtle: #E5E7EB;
   --border-glass: #E5E7EB;
-  --border-accent: #F97316;
+  --border-accent: #8B5CF6;
 
   /* Text Colors */
   --text-primary: #111827;
@@ -22,10 +22,10 @@
   --hero-text-primary: #111827;
   --hero-text-secondary: rgba(17, 24, 39, 0.8);
 
-  /* Accent Colors (Firecrawl Orange) */
-  --accent-primary: #F97316;
-  --accent-hover: #EA580C;
-  --accent-subtle: #FFEDD5;
+  /* Accent Colors (Purple / Violet Branding) */
+  --accent-primary: #8B5CF6;
+  --accent-hover: #7C3AED;
+  --accent-subtle: #F3E8FF;
 
   /* Specific Semantic Colors */
   --accent-cyan: #0891B2;
@@ -44,30 +44,30 @@
 
 /* ─── Dark Mode Tokens ─────────────────────────────────────────────── */
 [data-theme='dark'] {
-  /* Backgrounds — pure Framer-style black */
-  --bg-primary: #000000;
-  --bg-secondary: #0A0A0A;
-  --bg-card: #000000;
-  --bg-card-hover: #0D0D0D;
-  --bg-overlay: rgba(0, 0, 0, 0.88);
+  /* Backgrounds — Rich Slate Midnight Void (Cal.com AI / Raycast / Linear style) */
+  --bg-primary: #09090b;
+  --bg-secondary: #121217;
+  --bg-card: #0d0e12;
+  --bg-card-hover: #16161e;
+  --bg-overlay: rgba(9, 9, 11, 0.92);
 
-  /* Borders — Framer-style barely-there hairlines */
-  --border-subtle: rgba(255, 255, 255, 0.05);
-  --border-glass: rgba(255, 255, 255, 0.09);
-  --border-accent: #F97316;
-  --border-width: 0.5px;
+  /* Borders — Refined hairlines with subtle glass contrast */
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.14);
+  --border-accent: #8B5CF6;
+  --border-width: 1px;
 
-  /* Text Colors */
-  --text-primary: #EDEDED;
-  --text-secondary: #8C8C8C;
-  --text-muted: #4A4A4A;
+  /* Text Colors — High readability */
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
   --hero-text-primary: #FFFFFF;
-  --hero-text-secondary: rgba(255, 255, 255, 0.75);
+  --hero-text-secondary: rgba(255, 255, 255, 0.85);
 
   /* Accent Colors */
-  --accent-primary: #F97316;
-  --accent-hover: #EA580C;
-  --accent-subtle: #2C1000;
+  --accent-primary: #8B5CF6;
+  --accent-hover: #7C3AED;
+  --accent-subtle: #2E1065;
 
   /* Specific Semantic Colors */
   --accent-cyan: #22D3EE;
@@ -88,6 +88,7 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
@@ -97,6 +98,8 @@ body {
   min-height: 100vh;
   line-height: 1.6;
   transition: background-color var(--transition-base), color var(--transition-base);
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -129,7 +132,7 @@ img { max-width: 100%; height: auto; }
 
 .tool-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(249, 115, 22, 0.35);
+  border-color: rgba(139, 92, 246, 0.35);
   box-shadow: var(--shadow-hover);
 }
 
@@ -408,8 +411,8 @@ img { max-width: 100%; height: auto; }
   }
 }
 
-.gradient-text-orange {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, #FF5A00 100%);
+.gradient-text-orange, .gradient-text-purple {
+  background: linear-gradient(135deg, #A78BFA 0%, #8B5CF6 50%, #7C3AED 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -493,42 +496,62 @@ html:not([data-theme='dark']) .hero-section::before {
   cursor: pointer;
 }
 .cat-card:hover {
-  border-color: rgba(249, 115, 22, 0.35) !important;
+  border-color: rgba(139, 92, 246, 0.35) !important;
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }
 
-/* ─── Footer Wave Styles ────────────────────────────────────────────── */
+/* ─── Footer Styles (Matching AI News Banner Background) ──────────────── */
 .site-footer {
-  background-color: var(--bg-primary);
-  transition: background var(--transition-base);
+  background: linear-gradient(135deg, #e2d6fc 0%, #eae0fe 50%, #dcd0fa 100%);
+  border-top: 1px solid #d3c2fa;
+  margin-top: 4rem;
+  transition: background var(--transition-base), border-color var(--transition-base);
 }
 
-/* Light mode footer wave background */
-html:not([data-theme='dark']) .site-footer {
-  background-color: #0788C9;
-  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTQ0MCA3MDAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImZvb3RlckJhc2UiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzA3ODhDOSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjQ4JSIgc3RvcC1jb2xvcj0iIzE0OUNDOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMyOUM5Q0MiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJmb290ZXJMaWdodCIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjEiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMTU5QkM5Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzI4QzhDQyIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CgogIDwhLS0gTWFpbiBiYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSIxNDQwIiBoZWlnaHQ9IjcwMCIgZmlsbD0idXJsKCNmb290ZXJCYXNlKSIvPgoKICA8IS0tIExhcmdlIGxlZnQgdHJhbnNsdWNlbnQgY3VydmUgLS0+CiAgPHBhdGggZD0iTTAgMCBINDcwIEM0MDUgMTMwIDM5MCAyNTUgNDUwIDM4MCBDNTIwIDUyNSA3MDAgNjQwIDkyMCA3MDAgSDAgWiIgZmlsbD0iIzA4N0ZCRCIgb3BhY2l0eT0iMC40OCIvPgoKICA8IS0tIENlbnRyYWwgc3dlZXBpbmcgY3VydmUgLS0+CiAgPHBhdGggZD0iTTAgMCBIODAwIEM3MzAgMTU1IDcwMCAzMDAgNzcwIDQ0NSBDODUwIDYwNSAxMDQwIDY5MCAxMjYwIDcwMCBIMCBaIiBmaWxsPSIjMTU5Q0M4IiBvcGFjaXR5PSIwLjkyIi8+CgogIDwhLS0gTGFyZ2UgcmlnaHQgY3lhbiBjdXJ2ZSAtLT4KICA8cGF0aCBkPSJNNDUwIDAgSDE0NDAgVjU5MCBDMTI1MCA2MjAgMTA0MCA2MDAgOTAwIDUyMCBDNzUwIDQzNSA2OTAgMjgwIDc2MCAwIFoiIGZpbGw9IiMyQkM4Q0MiIG9wYWNpdHk9IjAuNzIiLz4KCiAgPCEtLSBTb2Z0IGhvcml6b250YWwgc3dlZXBpbmcgd2F2ZSAtLT4KICA8cGF0aCBkPSJNMCAzMDAgQzI0MCA0NTAgNDkwIDQ3MCA3MjAgNTIwIEM5NzAgNTc1IDEyMTAgNjIwIDE0NDAgNTUwIFY3MDAgSDAgWiIgZmlsbD0iIzEzQTZDOSIgb3BhY2l0eT0iMC4zMiIvPgoKICA8IS0tIFdhdnkgdG9wIG92ZXJsYXkgLS0+CiAgPHBhdGggZD0iTTAgMCBWOTUgQzE4MCAxNjUgMzQwIDE5MCA1MjAgMTUwIEM2OTAgMTEyIDgzMCA0NSAxMDAwIDU1IEMxMTYwIDY1IDEyODAgMTM1IDE0NDAgMTE1IFYwIFoiIGZpbGw9IiMwODdGQzAiIG9wYWNpdHk9IjAuMTgiLz4KPC9zdmc+");
-  background-size: cover;
-  background-position: center;
+[data-theme='dark'] .site-footer {
+  background: linear-gradient(135deg, #170f2e 0%, #20153c 50%, #181031 100%);
+  border-top: 1px solid rgba(167, 139, 250, 0.22);
 }
 
-/* Light mode text color overrides for footer visibility */
-html:not([data-theme='dark']) .site-footer span,
-html:not([data-theme='dark']) .site-footer p,
-html:not([data-theme='dark']) .site-footer h4,
+/* Dark mode footer typography adjustments for high contrast */
+[data-theme='dark'] .site-footer span {
+  color: #f4f4f5 !important;
+}
+[data-theme='dark'] .site-footer h4 {
+  color: #c4b5fd !important;
+}
+[data-theme='dark'] .site-footer p {
+  color: #d4d4d8 !important;
+}
+[data-theme='dark'] .site-footer a {
+  color: #a1a1aa !important;
+  opacity: 1 !important;
+}
+[data-theme='dark'] .site-footer a:hover {
+  color: #ffffff !important;
+}
+
+/* Light mode footer text colors for purple background */
+html:not([data-theme='dark']) .site-footer span {
+  color: #1e1b2e !important;
+  text-shadow: none !important;
+}
+html:not([data-theme='dark']) .site-footer h4 {
+  color: #6b5c8d !important;
+  text-shadow: none !important;
+}
+html:not([data-theme='dark']) .site-footer p {
+  color: #5b5275 !important;
+  text-shadow: none !important;
+}
 html:not([data-theme='dark']) .site-footer a {
-  color: #FFFFFF !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-  font-weight: 500 !important;
-  -webkit-font-smoothing: antialiased;
-}
-
-html:not([data-theme='dark']) .site-footer a {
-  opacity: 0.9;
-}
-
-html:not([data-theme='dark']) .site-footer a:hover {
+  color: #5b5275 !important;
+  text-shadow: none !important;
   opacity: 1;
+}
+html:not([data-theme='dark']) .site-footer a:hover {
+  color: #8b5cf6 !important;
 }
 
 /* Search input adjustments in light mode footer */

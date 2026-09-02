@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Header />
-          <main style={{ flex: '1 0 auto', paddingTop: '64px' }}>
+          <main style={{ flex: '1 0 auto', paddingTop: '76px' }}>
             {children}
           </main>
           <Footer />
