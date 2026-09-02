@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { motion } from 'motion/react';
-import { Search, X, Calendar, Clock, Eye, TrendingUp, Flame } from 'lucide-react';
+import { Search, X, Calendar, Clock, Eye, TrendingUp, Flame, Sparkles, Bot, Code2, Globe, ShieldCheck, Newspaper } from 'lucide-react';
 import type { NewsArticle } from './page';
 import NewsletterForm from '@/components/news/NewsletterForm';
 
@@ -22,6 +22,15 @@ const CATEGORY_COLORS: Record<string, string> = {
   'AI News': '#f97316',
 };
 
+const CATEGORY_ICONS: Record<string, React.ComponentType<{ size?: number; color?: string }>> = {
+  'Frontier Models': Sparkles,
+  'AI Agents': Bot,
+  'Open Source': Code2,
+  'Web Dev': Globe,
+  'Regulation': ShieldCheck,
+  'AI News': Newspaper,
+};
+
 function trackView(slug: string) {
   fetch('/api/news/view', {
     method: 'POST',
@@ -39,9 +48,13 @@ function ArticleImage({ image_url, category, title, size = 'sm' }: {
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
   const color = CATEGORY_COLORS[category] || '#f97316';
+  const IconComponent = CATEGORY_ICONS[category] || Newspaper;
   const h = size === 'lg' ? '180px' : '64px';
   const w = size === 'lg' ? '100%' : '64px';
   const radius = size === 'lg' ? '12px 12px 0 0' : '10px';
+  const badgeSize = size === 'lg' ? '48px' : '32px';
+  const iconSize = size === 'lg' ? 22 : 16;
+  const badgeRadius = size === 'lg' ? '14px' : '9px';
 
   // Route all external images through our server-side proxy to bypass
   // hotlink protection and CORS restrictions on Reddit, Medium, etc.
@@ -51,15 +64,26 @@ function ArticleImage({ image_url, category, title, size = 'sm' }: {
 
   return (
     <div style={{ position: 'relative', width: w, height: h, flexShrink: 0, borderRadius: radius, overflow: 'hidden' }}>
-      {/* Gradient fallback — always the base layer */}
+      {/* Modern glassmorphic icon badge fallback */}
       <div style={{
         position: 'absolute', inset: 0,
-        background: `linear-gradient(135deg, ${color}33, ${color}66)`,
+        background: `radial-gradient(circle at 50% 35%, ${color}25 0%, ${color}08 70%), linear-gradient(135deg, #09090b 0%, #121217 100%)`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: size === 'lg' ? '2.5rem' : '1.6rem',
+        borderBottom: size === 'lg' ? '1px solid rgba(255,255,255,0.06)' : 'none',
       }}>
-        🤖
+        <div style={{
+          width: badgeSize, height: badgeSize,
+          borderRadius: badgeRadius,
+          background: `${color}18`,
+          border: `1px solid ${color}38`,
+          boxShadow: `0 4px 16px ${color}20, inset 0 1px 0 rgba(255, 255, 255, 0.15)`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          backdropFilter: 'blur(8px)',
+        }}>
+          <IconComponent size={iconSize} color={color} />
+        </div>
       </div>
+
       {/* Image overlay — fades in only on successful load */}
       {proxySrc && !imgError && (
         <img
