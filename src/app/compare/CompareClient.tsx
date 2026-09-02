@@ -103,8 +103,8 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
           overflow: hidden;
         }
         [data-theme='dark'] .compare-hero-card {
-          background: linear-gradient(135deg, #0d0a17 0%, #110d1e 50%, #0d0a17 100%);
-          border-color: rgba(255, 255, 255, 0.08);
+          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
+          border: 1px solid rgba(139, 92, 246, 0.2);
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 

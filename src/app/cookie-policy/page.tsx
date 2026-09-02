@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Eye, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Cookie Policy — toolstaq',
@@ -10,17 +10,79 @@ export default function CookiePolicyPage() {
   return (
     <>
       <style>{`
+        /* ── Hero Card Banner Standard ── */
+        .cookie-hero-card {
+          position: relative;
+          background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 24px;
+          padding: 2.75rem 3rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+          overflow: hidden;
+          transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+        }
+        [data-theme='dark'] .cookie-hero-card {
+          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
+          border: 1px solid rgba(139, 92, 246, 0.2);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 640px) {
+          .cookie-hero-card { padding: 2.25rem 1.5rem; }
+        }
+
+        .cookie-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 2px 10px;
+          border-radius: 99px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.03);
+          font-size: 0.70rem;
+          font-weight: 500;
+          color: #18181b;
+          margin-bottom: 0.85rem;
+          letter-spacing: -0.01em;
+        }
+        [data-theme='dark'] .cookie-pill-badge {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+          color: #ededed;
+        }
+
+        .cookie-hero-heading {
+          font-size: 2.4rem;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.035em;
+          color: var(--text-primary);
+          margin: 0 0 0.85rem 0;
+        }
+        @media (min-width: 640px) {
+          .cookie-hero-heading { font-size: 2.85rem; }
+        }
+
+        .cookie-hero-sub {
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: var(--text-secondary);
+          margin: 0;
+          max-width: 620px;
+        }
+
+        /* ── Content Area ── */
         .policy-container {
-          max-width: 780px;
-          margin: 0 auto;
-          padding: 4rem 1.5rem;
+          width: 100%;
+          padding: 2.5rem 0 5rem;
           color: var(--text-primary);
           line-height: 1.8;
           font-size: 0.95rem;
         }
         .policy-container h2 {
           font-size: 1.35rem;
-          fontWeight: 600;
+          font-weight: 600;
           margin-top: 2.5rem;
           margin-bottom: 1rem;
           letter-spacing: -0.01em;
@@ -39,89 +101,63 @@ export default function CookiePolicyPage() {
         .policy-container li {
           margin-bottom: 0.5rem;
         }
-        .policy-date {
-          font-size: 0.825rem;
-          color: var(--text-muted);
-          margin-bottom: 2rem;
-          display: block;
+        .policy-link {
+          color: var(--accent-primary);
+          text-decoration: none;
+          font-weight: 500;
+          transition: opacity 150ms ease;
+        }
+        .policy-link:hover {
+          opacity: 0.8;
+          text-decoration: none;
         }
       `}</style>
 
-      {/* Hero */}
-      <div className="inner-hero" style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '6px 12px',
-          borderRadius: '99px',
-          background: 'rgba(255, 255, 255, 0.15)',
-          border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.25)',
-          fontSize: '0.75rem',
-          fontWeight: 600,
-          color: '#FFFFFF',
-          marginBottom: '1.25rem',
-        }}>
-          <Eye size={12} color="#FFFFFF" />
-          <span>SITE TRACKERS</span>
+      {/* Hero Card Banner */}
+      <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '1rem' }}>
+        <div className="cookie-hero-card">
+          <div className="cookie-pill-badge">
+            <span>+ Cookie policy</span>
+          </div>
+
+          <h1 className="cookie-hero-heading">
+            Cookie Policy
+          </h1>
+
+          <p className="cookie-hero-sub">
+            Learn how toolstaq uses cookies and local browser storage to save your theme preferences and optimize browsing performance.
+          </p>
         </div>
-        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Cookie Policy</h1>
-        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)', maxWidth: '520px', margin: '0 auto' }}>
-          Learn how we use cookies and browser storage to optimize your experience.
-        </p>
-      </div>
 
-      <div className="policy-container">
-        <span className="policy-date">Last Updated: August 13, 2026</span>
+        <div className="policy-container">
+          <p>
+            toolstaq uses cookies, local browser storage, and similar tracking tokens to enhance your navigation experience, save theme configurations, and analyze anonymous site traffic. This Cookie Policy explains what these trackers are and how we deploy them.
+          </p>
 
-        <p>
-          toolstaq uses cookies, local browser storage, and similar tracking tokens to enhance your navigation experience, save theme configurations, and analyze anonymous site traffic. This Cookie Policy explains what these trackers are and how we deploy them.
-        </p>
+          <h2>1. What Are Cookies?</h2>
+          <p>
+            Cookies are small text files stored on your computer or mobile device when you visit a website. They allow the site to remember your actions and preferences (such as dark/light mode preference, filter states, and active session settings) over a period of time.
+          </p>
 
-        <h2>1. What are Cookies?</h2>
-        <p>
-          Cookies are small text files downloaded to your computer or mobile device when you visit a website. They allow websites to recognise your device, remember preferences, and verify actions.
-        </p>
-        <p>
-          We also use **browser local storage** (`localStorage`), which acts similarly to cookies but is stored directly inside your browser database and does not get transmitted with network requests.
-        </p>
+          <h2>2. Cookies We Use</h2>
+          <p>
+            We restrict tracker usage to essential functionality:
+          </p>
+          <ul>
+            <li><strong>Essential &amp; Preference Cookies:</strong> Used to save your active theme selection (Light vs Dark mode) and local filter choices across directory sessions.</li>
+            <li><strong>Performance &amp; Analytics:</strong> Anonymous, privacy-friendly analytics cookies used to measure aggregate visitor counts and popular tool categories.</li>
+          </ul>
 
-        <h2>2. How We Use Cookies &amp; Storage</h2>
-        <p>
-          We classify our trackers into two categories:
-        </p>
-        
-        <h3>A. Necessary &amp; Functional Trackers</h3>
-        <p>
-          These are required for the website to operate correctly. For example, toolstaq uses `localStorage` to save your active visual theme:
-        </p>
-        <ul>
-          <li><strong>Theme Toggle Flag</strong>: Remembers whether you selected **Light mode** or **Dark mode** so that pages load instantly in the correct visual theme as you click between directory listings.</li>
-          <li><strong>Upvote Protection Tokens</strong>: Stores a reference indicating you have upvoted a tool, ensuring the client UI does not allow duplicate upvoting during your browser session.</li>
-        </ul>
+          <h2>3. Managing Your Preferences</h2>
+          <p>
+            You can control or clear cookies at any time through your browser settings. Please note that disabling essential local storage may reset your light/dark theme preference to default.
+          </p>
 
-        <h3>B. Analytical &amp; Performance Trackers</h3>
-        <p>
-          These collect anonymous, aggregate information about how visitors navigate the directory:
-        </p>
-        <ul>
-          <li>Identifies which AI categories receive the most clicks.</li>
-          <li>Measures news article reading times and search terms.</li>
-          <li>All analytical data is completely anonymized. We do not link performance metrics to emails or personal identities.</li>
-        </ul>
-
-        <h2>3. Managing Cookie Settings</h2>
-        <p>
-          Most web browsers automatically accept cookies. However, you can manage or disable cookies completely by adjusting your browser preferences (usually found under &quot;Options,&quot; &quot;Settings,&quot; or &quot;Privacy&quot;). 
-        </p>
-        <p>
-          Please note that disabling cookies or clearing local storage will reset your visual theme preference back to the default setting and clear saved tool upvote visual statuses in the UI.
-        </p>
-
-        <h2>4. Contact Us</h2>
-        <p>
-          If you have any questions regarding our use of cookies or local storage, please reach out to us on our Contact Page.
-        </p>
+          <h2>4. Contact Us</h2>
+          <p>
+            If you have questions regarding our cookie practices, please contact us via our <Link href="/contact" className="policy-link">Contact Page</Link>.
+          </p>
+        </div>
       </div>
     </>
   );

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Clock, Send, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ChevronRight, Clock, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { submitContactForm } from '@/app/actions/contact';
 
 export default function ContactPage() {
@@ -48,6 +48,68 @@ export default function ContactPage() {
   return (
     <>
       <style>{`
+        /* ── Hero Card Banner Standard ── */
+        .contact-hero-card {
+          position: relative;
+          background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 24px;
+          padding: 2.75rem 3rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+          overflow: hidden;
+          transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+        }
+        [data-theme='dark'] .contact-hero-card {
+          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
+          border: 1px solid rgba(139, 92, 246, 0.2);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 640px) {
+          .contact-hero-card { padding: 2.25rem 1.5rem; }
+        }
+
+        .contact-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 2px 10px;
+          border-radius: 99px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.03);
+          font-size: 0.70rem;
+          font-weight: 500;
+          color: #18181b;
+          margin-bottom: 0.85rem;
+          letter-spacing: -0.01em;
+        }
+        [data-theme='dark'] .contact-pill-badge {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+          color: #ededed;
+        }
+
+        .contact-hero-heading {
+          font-size: 2.4rem;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.035em;
+          color: var(--text-primary);
+          margin: 0 0 0.85rem 0;
+        }
+        @media (min-width: 640px) {
+          .contact-hero-heading { font-size: 2.85rem; }
+        }
+
+        .contact-hero-sub {
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: var(--text-secondary);
+          margin: 0;
+          max-width: 620px;
+        }
+
         .contact-grid {
           display: grid;
           grid-template-columns: 1fr;
@@ -88,27 +150,21 @@ export default function ContactPage() {
         }
       `}</style>
 
-      {/* Hero */}
-      <div className="inner-hero" style={{ marginBottom: '3rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '4px 10px',
-          borderRadius: '99px',
-          background: 'rgba(255, 255, 255, 0.15)',
-          border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.25)',
-          fontSize: '0.7rem',
-          fontWeight: 600,
-          color: '#FFFFFF',
-          marginBottom: '1.25rem',
-        }}>
-          <span>CONTACT SUPPORT</span>
+      {/* Hero Card Banner */}
+      <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '1.5rem' }}>
+        <div className="contact-hero-card">
+          <div className="contact-pill-badge">
+            <span>+ Get in touch</span>
+          </div>
+
+          <h1 className="contact-hero-heading">
+            Contact &amp; Support
+          </h1>
+
+          <p className="contact-hero-sub">
+            Have questions about listing your AI software, partnership inquiries, or directory feedback? We&apos;d love to connect.
+          </p>
         </div>
-        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Get in Touch</h1>
-        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)', maxWidth: '520px', margin: '0 auto' }}>
-          Have questions, feedback, or sponsorship inquiries? We&apos;d love to hear from you.
-        </p>
       </div>
 
       <div className="container-xl" style={{ paddingBottom: '5rem' }}>
@@ -244,21 +300,21 @@ export default function ContactPage() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     alignSelf: 'flex-start',
-                    gap: '8px',
-                    padding: '12px 24px',
+                    gap: '6px',
+                    padding: '9px 18px',
                     borderRadius: '10px',
                     cursor: isLoading ? 'not-allowed' : 'pointer',
-                    fontSize: '0.9rem',
+                    fontSize: '0.85rem',
                     fontWeight: 600,
                   }}
                 >
                   {isLoading ? (
                     <>
-                      Sending Message <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
+                      Sending message <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} />
                     </>
                   ) : (
                     <>
-                      Send Message <Send size={16} />
+                      Send message <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
                     </>
                   )}
                 </button>
@@ -273,17 +329,7 @@ export default function ContactPage() {
                 Contact Info
               </h3>
               
-              <div className="info-item">
-                <div className="info-icon">
-                  <Mail size={16} />
-                </div>
-                <div>
-                  <h4 style={{ fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 2px 0' }}>Support & Operations</h4>
-                  <a href="mailto:support@toolstaq.com" style={{ fontSize: '0.825rem', color: 'var(--accent-primary)', textDecoration: 'none' }}>
-                    support@toolstaq.com
-                  </a>
-                </div>
-              </div>
+              {/* Response Time Item */}
 
               <div className="info-item">
                 <div className="info-icon">

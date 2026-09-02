@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Shield, Sparkles } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Terms of Service — toolstaq',
@@ -11,17 +10,79 @@ export default function TermsPage() {
   return (
     <>
       <style>{`
+        /* ── Hero Card Banner Standard ── */
+        .terms-hero-card {
+          position: relative;
+          background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 24px;
+          padding: 2.75rem 3rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+          overflow: hidden;
+          transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+        }
+        [data-theme='dark'] .terms-hero-card {
+          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
+          border: 1px solid rgba(139, 92, 246, 0.2);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        @media (max-width: 640px) {
+          .terms-hero-card { padding: 2.25rem 1.5rem; }
+        }
+
+        .terms-pill-badge {
+          display: inline-flex;
+          align-items: center;
+          padding: 2px 10px;
+          border-radius: 99px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.03);
+          font-size: 0.70rem;
+          font-weight: 500;
+          color: #18181b;
+          margin-bottom: 0.85rem;
+          letter-spacing: -0.01em;
+        }
+        [data-theme='dark'] .terms-pill-badge {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+          color: #ededed;
+        }
+
+        .terms-hero-heading {
+          font-size: 2.4rem;
+          font-weight: 700;
+          line-height: 1.15;
+          letter-spacing: -0.035em;
+          color: var(--text-primary);
+          margin: 0 0 0.85rem 0;
+        }
+        @media (min-width: 640px) {
+          .terms-hero-heading { font-size: 2.85rem; }
+        }
+
+        .terms-hero-sub {
+          font-size: 0.95rem;
+          line-height: 1.6;
+          color: var(--text-secondary);
+          margin: 0;
+          max-width: 620px;
+        }
+
+        /* ── Content Area ── */
         .policy-container {
-          max-width: 780px;
-          margin: 0 auto;
-          padding: 4rem 1.5rem;
+          width: 100%;
+          padding: 2.5rem 0 5rem;
           color: var(--text-primary);
           line-height: 1.8;
           font-size: 0.95rem;
         }
         .policy-container h2 {
           font-size: 1.35rem;
-          fontWeight: 600;
+          font-weight: 600;
           margin-top: 2.5rem;
           margin-bottom: 1rem;
           letter-spacing: -0.01em;
@@ -40,92 +101,77 @@ export default function TermsPage() {
         .policy-container li {
           margin-bottom: 0.5rem;
         }
-        .policy-date {
-          font-size: 0.825rem;
-          color: var(--text-muted);
-          margin-bottom: 2rem;
-          display: block;
+        .policy-link {
+          color: var(--accent-primary);
+          text-decoration: none;
+          font-weight: 500;
+          transition: opacity 150ms ease;
+        }
+        .policy-link:hover {
+          opacity: 0.8;
+          text-decoration: none;
         }
       `}</style>
 
-      {/* Hero */}
-      <div className="inner-hero" style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '6px',
-          padding: '6px 12px',
-          borderRadius: '99px',
-          background: 'rgba(255, 255, 255, 0.15)',
-          border: 'var(--border-width, 1px) solid rgba(255, 255, 255, 0.25)',
-          fontSize: '0.75rem',
-          fontWeight: 600,
-          color: '#FFFFFF',
-          marginBottom: '1.25rem',
-        }}>
-          <Shield size={12} color="#FFFFFF" />
-          <span>LEGAL AGREEMENT</span>
+      {/* Hero Card Banner */}
+      <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '1rem' }}>
+        <div className="terms-hero-card">
+          <div className="terms-pill-badge">
+            <span>+ Legal terms</span>
+          </div>
+
+          <h1 className="terms-hero-heading">
+            Terms of Service
+          </h1>
+
+          <p className="terms-hero-sub">
+            Please read these guidelines and user agreements carefully before exploring or submitting software to the toolstaq AI directory index.
+          </p>
         </div>
-        <h1 style={{ color: '#FFFFFF', textShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>Terms of Service</h1>
-        <p style={{ color: 'rgba(255, 255, 255, 0.95)', textShadow: '0 1px 2px rgba(0,0,0,0.1)', maxWidth: '520px', margin: '0 auto' }}>
-          Please read these terms carefully before using the toolstaq AI directory.
-        </p>
-      </div>
 
-      <div className="policy-container">
-        <span className="policy-date">Last Updated: August 13, 2026</span>
+        <div className="policy-container">
+          <p>
+            Welcome to toolstaq (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using our website, services, and directory index (collectively, the &quot;Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
+          </p>
 
-        <p>
-          Welcome to toolstaq (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using our website, services, and directory index (collectively, the &quot;Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
-        </p>
+          <h2>1. Description of Service</h2>
+          <p>
+            toolstaq is a curated directory database cataloging artificial intelligence (AI) tools, applications, libraries, and frameworks. We provide descriptions, price estimations, categorizations, and comparison tools to help users discover software.
+          </p>
+          <p>
+            Please note that toolstaq does not own, run, sell, or manage any of the third-party software products listed in the directory. We act purely as an informational index.
+          </p>
 
-        <h2>1. Description of Service</h2>
-        <p>
-          toolstaq is a curated directory database cataloging artificial intelligence (AI) tools, applications, libraries, and frameworks. We provide descriptions, price estimations, categorizations, and comparison tools to help users discover software.
-        </p>
-        <p>
-          Please note that toolstaq does not own, run, sell, or manage any of the third-party software products listed in the directory. We act purely as an informational index.
-        </p>
+          <h2>2. Third-Party Websites &amp; Services</h2>
+          <p>
+            Our Service contains outgoing links to external websites, apps, and platforms operated by third parties. 
+          </p>
+          <ul>
+            <li>We have no control over the content, terms of service, privacy policies, safety, or pricing models of third-party products.</li>
+            <li>We do not warrant, endorse, or guarantee the accuracy, completeness, or safety of any external services.</li>
+            <li>Any transaction, subscription, or registration you perform on an external website is strictly between you and that third-party provider. toolstaq assumes no liability whatsoever for any damage, loss, or transaction failure resulting from your use of external software.</li>
+          </ul>
 
-        <h2>2. Third-Party Websites &amp; Services</h2>
-        <p>
-          Our Service contains outgoing links to external websites, apps, and platforms operated by third parties. 
-        </p>
-        <ul>
-          <li>We have no control over the content, terms of service, privacy policies, safety, or pricing models of third-party products.</li>
-          <li>We do not warrant, endorse, or guarantee the accuracy, completeness, or safety of any external services.</li>
-          <li>Any transaction, subscription, or registration you perform on an external website is strictly between you and that third-party provider. toolstaq assumes no liability whatsoever for any damage, loss, or transaction failure resulting from your use of external software.</li>
-        </ul>
+          <h2>3. User Submissions</h2>
+          <p>
+            Users may submit AI tools for inclusion in our directory. By submitting a tool, you represent that all information provided is accurate and does not violate any copyright, trademark, or third-party right. We reserve the right to edit, decline, or remove any submission at our sole discretion.
+          </p>
 
-        <h2>3. User Submissions</h2>
-        <p>
-          If you submit an AI tool for inclusion in our directory via the submission form:
-        </p>
-        <ul>
-          <li>You warrant that all information provided (tool name, description, URL, tags) is accurate, truthful, and up-to-date.</li>
-          <li>You grant toolstaq a non-exclusive, worldwide, royalty-free, perpetual license to display your tool&apos;s name, logo, links, and description on our directory.</li>
-          <li>We reserve the right to review, edit, reject, delete, or re-categorize any tool submission at our sole discretion, without notice.</li>
-        </ul>
+          <h2>4. Intellectual Property</h2>
+          <p>
+            All branding, design assets, directory structures, code, and editorial text created by toolstaq are the property of toolstaq. Third-party brand names, logos, and trademarks displayed in our directory belong to their respective owners.
+          </p>
 
-        <h2>4. Directory Content &amp; Accuracy</h2>
-        <p>
-          While we make reasonable efforts to verify categories, pricing labels, and descriptions, AI products evolve rapidly. toolstaq does not guarantee that the directory database is 100% accurate, error-free, or up-to-date. Pricing, feature lists, and availability are subject to change by third-party creators at any time.
-        </p>
+          <h2>5. Disclaimer of Warranties</h2>
+          <p>
+            The Service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis without warranties of any kind. We do not guarantee uninterrupted access, error-free operation, or absolute accuracy of listed tools.
+          </p>
 
-        <h2>5. Intellectual Property</h2>
-        <p>
-          All branding, code, layouts, design tokens, graphics, and custom search indexes are the property of toolstaq and are protected by international copyright laws. Third-party brand names, icons, logos, and descriptions remain the intellectual property of their respective creators and are displayed here strictly under fair-use guidelines for educational and review purposes.
-        </p>
-
-        <h2>6. Disclaimer of Warranties</h2>
-        <p style={{ fontStyle: 'italic' }}>
-          The service is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. toolstaq makes no warranties, express or implied, including but not limited to merchantability, fitness for a particular purpose, non-infringement, or availability.
-        </p>
-
-        <h2>7. Contact</h2>
-        <p>
-          For any questions regarding these Terms of Service or to request removal or editing of a listing, please contact us through our dedicated <Link href="/contact" style={{ color: 'var(--accent-primary)', textDecoration: 'none' }}>Contact Page</Link>.
-        </p>
+          <h2>6. Contact &amp; Questions</h2>
+          <p>
+            If you have any questions regarding these Terms of Service, please reach out via our <Link href="/contact" className="policy-link">Contact Page</Link>.
+          </p>
+        </div>
       </div>
     </>
   );
