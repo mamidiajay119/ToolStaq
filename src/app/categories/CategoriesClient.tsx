@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'motion/react';
-import { Search, X, ChevronRight, Plus, Sparkles, Code2, Bot, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Search, X, ChevronRight, Plus, Sparkles, Code2, Bot, Zap, Palette, Video, Music, Wrench } from 'lucide-react';
 import { slugifyCategory } from '@/lib/tools';
 import { CATEGORY_SHORT_DESCRIPTIONS } from '@/lib/category-content';
 import CategoryIcon from '@/components/ui/CategoryIcon';
@@ -18,6 +18,42 @@ const PER_PAGE = 24;
 export default function CategoriesClient({ categories, counts }: CategoriesClientProps) {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
+
+  // Pool of top featured categories for matrix live rotation
+  const FEATURED_CATEGORIES = useMemo(() => [
+    { name: 'AI Coding', icon: <Code2 size={20} color="#8b5cf6" /> },
+    { name: 'AI Agents', icon: <Bot size={20} color="#0891b2" /> },
+    { name: 'Frontier Models', icon: <Sparkles size={20} color="#059669" /> },
+    { name: 'AI Productivity', icon: <Zap size={20} color="#d97706" /> },
+    { name: 'AI Design & UI', icon: <Palette size={20} color="#ec4899" /> },
+    { name: 'AI Video & Motion', icon: <Video size={20} color="#3b82f6" /> },
+    { name: 'AI Audio & Music', icon: <Music size={20} color="#10b981" /> },
+    { name: 'Developer Tools', icon: <Wrench size={20} color="#6366f1" /> },
+  ], []);
+
+  const [matrixSlots, setMatrixSlots] = useState(() => FEATURED_CATEGORIES.slice(0, 4));
+  const [isMatrixPaused, setIsMatrixPaused] = useState(false);
+
+  useEffect(() => {
+    if (isMatrixPaused || FEATURED_CATEGORIES.length < 4) return;
+
+    const interval = setInterval(() => {
+      const slotToSwap = Math.floor(Math.random() * 4);
+
+      setMatrixSlots((currentSlots) => {
+        const currentNames = new Set(currentSlots.map((s) => s.name));
+        const available = FEATURED_CATEGORIES.filter((c) => !currentNames.has(c.name));
+        if (available.length === 0) return currentSlots;
+
+        const nextCat = available[Math.floor(Math.random() * available.length)];
+        const nextSlots = [...currentSlots];
+        nextSlots[slotToSwap] = nextCat;
+        return nextSlots;
+      });
+    }, 2800);
+
+    return () => clearInterval(interval);
+  }, [isMatrixPaused, FEATURED_CATEGORIES]);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -94,9 +130,6 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
           letter-spacing: -0.035em;
           color: var(--text-primary);
           margin: 0 0 1rem 0;
-        }
-        @media (min-width: 640px) {
-          .categories-hero-heading { font-size: 2.85rem; }
         }
 
         .categories-hero-sub {
@@ -176,11 +209,13 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
             {/* Left Column: Badge, Headline, Subtitle, CTAs, Search */}
             <div>
               <div className="categories-pill-badge">
-                <span>+ AI categories</span>
+                <span>+ AI Categories</span>
               </div>
 
               <h1 className="categories-hero-heading">
-                Find the right AI tool for any use case
+                Find the right AI tool
+                <br />
+                for any use case
               </h1>
 
               <p className="categories-hero-sub">
@@ -242,46 +277,56 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
               </div>
             </div>
 
-            {/* Right Column: Animated Crosshair 2x2 Category Grid */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Right Column: Animated Crosshair 2x2 Category Grid with Superhuman Live Rotation */}
+            <div
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              onMouseEnter={() => setIsMatrixPaused(true)}
+              onMouseLeave={() => setIsMatrixPaused(false)}
+            >
               <div className="cat-hero-matrix">
-                {[
-                  { name: 'AI Coding', icon: <Code2 size={20} color="#8b5cf6" />, count: `${counts['AI Coding'] || 140}+ tools`, class: 'cat-cell-top-left' },
-                  { name: 'AI Agents', icon: <Bot size={20} color="#0891b2" />, count: `${counts['AI Agents'] || 85}+ tools`, class: 'cat-cell-top-right' },
-                  { name: 'Frontier Models', icon: <Sparkles size={20} color="#059669" />, count: `${counts['Frontier Models'] || 42}+ tools`, class: 'cat-cell-bot-left' },
-                  { name: 'AI Productivity', icon: <Zap size={20} color="#d97706" />, count: `${counts['AI Productivity'] || 210}+ tools`, class: '' },
-                ].map((item, idx) => (
-                  <div
-                    key={item.name}
-                    className={`cat-matrix-cell ${item.class}`}
-                    onClick={() => handleSearchChange(item.name)}
-                  >
-                    <motion.div
-                      animate={{ y: [0, -3.5, 0] }}
-                      transition={{ duration: 3 + idx * 0.4, repeat: Infinity, ease: 'easeInOut', delay: idx * 0.2 }}
-                      whileHover={{ scale: 1.08, y: -4 }}
-                      style={{
-                        width: '44px',
-                        height: '44px',
-                        borderRadius: '12px',
-                        background: 'var(--bg-secondary)',
-                        border: '1px solid var(--border-subtle)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
-                      }}
+                {matrixSlots.map((item, idx) => {
+                  const cellClasses = ['cat-cell-top-left', 'cat-cell-top-right', 'cat-cell-bot-left', ''];
+                  const cellClass = cellClasses[idx];
+                  const toolCount = counts[item.name] || 0;
+
+                  return (
+                    <Link
+                      key={idx}
+                      href={`/category/${slugifyCategory(item.name)}`}
+                      className={`cat-matrix-cell ${cellClass}`}
+                      style={{ textDecoration: 'none' }}
                     >
-                      {item.icon}
-                    </motion.div>
-                    <span style={{ fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'center' }}>
-                      {item.name}
-                    </span>
-                    <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)' }}>
-                      {item.count}
-                    </span>
-                  </div>
-                ))}
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={item.name}
+                          initial={{ opacity: 0, y: 6, scale: 0.94 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -6, scale: 0.94 }}
+                          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                        >
+                          <div style={{
+                            width: '44px',
+                            height: '44px',
+                            borderRadius: '12px',
+                            background: 'var(--bg-secondary)',
+                            border: '1px solid var(--border-subtle)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
+                            flexShrink: 0,
+                          }}>
+                            {item.icon}
+                          </div>
+                          <span style={{ fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: '130px' }}>
+                            {item.name}
+                          </span>
+                        </motion.div>
+                      </AnimatePresence>
+                    </Link>
+                  );
+                })}
 
                 {/* Center Crosshair */}
                 <div className="cat-crosshair">+</div>
@@ -295,7 +340,7 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
           <div id="categories-grid" style={{ marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem', flexWrap: 'wrap', gap: '8px' }}>
               <div className="categories-pill-badge" style={{ marginBottom: 0 }}>
-                <span>+ Browse categories</span>
+                <span>+ Browse Categories</span>
               </div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
                 {categories.length} categories available
@@ -451,9 +496,9 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
               <button
                 onClick={() => setPage((p) => p + 1)}
                 className="btn-secondary"
-                style={{ padding: '10px 28px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 600 }}
+                style={{ padding: '10px 28px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
               >
-                Load more
+                Load more <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
               </button>
             </div>
           )}

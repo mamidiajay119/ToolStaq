@@ -4,7 +4,7 @@ import { getAllTools, getAllCategories } from '@/lib/tools';
 import BrowseToolsClient from './BrowseClient';
 
 export const metadata: Metadata = {
-  title: 'Browse All AI Tools — Filter by Category, Pricing & More',
+  title: 'The Right AI Tools to Power Your Workflow',
   description: 'Browse and filter top AI tools by category, pricing model, complexity, deployment type, free trial availability, and API access.',
 };
 

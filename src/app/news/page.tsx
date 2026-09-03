@@ -3,7 +3,7 @@ import { fetchLatestAINews, fetchTopThisWeek } from '@/lib/news';
 import NewsClient from './NewsClient';
 
 export const metadata: Metadata = {
-  title: 'AI News & Changelog — Latest Breakthroughs',
+  title: 'AI News, Simplified',
   description: 'Stay ahead of the curve with the latest news, releases, and trends in Artificial Intelligence. Curated by toolstaq.',
 };
 

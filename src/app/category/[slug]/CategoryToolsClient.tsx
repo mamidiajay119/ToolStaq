@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { ChevronRight } from 'lucide-react';
 import ToolCard from '@/components/tools/ToolCard';
 import type { Tool } from '@/types/tool';
 
@@ -34,9 +35,9 @@ export default function CategoryToolsClient({ tools }: CategoryToolsClientProps)
           <button 
             onClick={() => setPage((p) => p + 1)} 
             className="btn-secondary" 
-            style={{ padding: '8px 24px', borderRadius: '12px' }}
+            style={{ padding: '8px 24px', borderRadius: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
           >
-            Load more
+            Load more <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
           </button>
         </div>
       )}

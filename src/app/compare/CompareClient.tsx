@@ -147,9 +147,6 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
           color: var(--text-primary);
           margin: 0 0 1rem 0;
         }
-        @media (min-width: 640px) {
-          .compare-hero-heading { font-size: 2.85rem; }
-        }
 
         .compare-hero-sub {
           font-size: 0.95rem;
@@ -167,11 +164,12 @@ export default function CompareClient({ tools }: { tools: Tool[] }) {
             {/* Left Column: Badge, Headline, Subtitle, CTAs */}
             <div>
               <div className="compare-pill-badge">
-                <span>+ Tool comparison</span>
+                <span>+ Tool Comparison</span>
               </div>
 
               <h1 className="compare-hero-heading">
-                Compare AI tools side-by-side
+                Compare AI tools<br />
+                side-by-side
               </h1>
 
               <p className="compare-hero-sub">

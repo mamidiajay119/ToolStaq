@@ -22,7 +22,7 @@ export default function Footer() {
               }}>
                 <Zap size={16} color="white" strokeWidth={2.5} />
               </div>
-              <span style={{ fontFamily: "'Geist', sans-serif", fontWeight: 400, fontSize: '1.15rem', letterSpacing: '-0.035em', color: 'var(--text-primary)' }}>
+              <span className="brand-text" style={{ fontSize: '1.15rem' }}>
                 toolstaq
               </span>
             </Link>
@@ -108,7 +108,7 @@ export default function Footer() {
           gap: '1rem',
         }}>
           <p style={{ color: 'var(--text-muted)', fontSize: '0.825rem', textAlign: 'center' }}>
-            © 2026 toolstaq. Built to help you find the right AI Tool.
+            © 2026 <span className="brand-text">toolstaq</span>. Built to help you find the right AI Tool.
           </p>
 
         </div>

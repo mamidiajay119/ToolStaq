@@ -145,9 +145,6 @@ export default function SubmitPage() {
           color: var(--text-primary);
           margin: 0 0 1rem 0;
         }
-        @media (min-width: 640px) {
-          .submit-hero-heading { font-size: 2.85rem; }
-        }
 
         .submit-hero-sub {
           font-size: 0.95rem;
@@ -231,11 +228,12 @@ export default function SubmitPage() {
           <div className="submit-hero-grid">
             <div>
               <div className="submit-pill-badge">
-                <span>+ Tool submission</span>
+                <span>+ Community Submission</span>
               </div>
 
               <h1 className="submit-hero-heading">
-                List your AI tool on ToolStaq
+                List your AI tool<br />
+                on <span className="brand-text">toolstaq</span>
               </h1>
 
               <p className="submit-hero-sub">

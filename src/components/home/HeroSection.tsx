@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Search, ChevronRight, X, Sparkles, Terminal, Bot, Image as ImageIcon, Cpu, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import { ChevronRight, Sparkles, Terminal, Bot, Image as ImageIcon, Cpu, CheckCircle2, ArrowUpRight } from 'lucide-react';
+import RotatingBrandGrid from '@/components/home/RotatingBrandGrid';
 
 interface HeroSectionProps {
   totalTools: number;
@@ -14,78 +13,85 @@ interface HeroSectionProps {
 const HERO_FEATURED_CATEGORIES = [
   {
     title: 'Coding Assistants',
-    badge: 'Popular',
+    badge: '+ Popular',
     icon: Terminal,
     color: '#8b5cf6',
     count: '340+ tools',
-    tools: ['Cursor', 'GitHub Copilot', 'v0.dev', 'Claude Code'],
+    tools: ['Cursor', 'Copilot', 'v0', 'Claude'],
   },
   {
     title: 'Autonomous Agents',
-    badge: 'Trending',
+    badge: '+ Trending',
     icon: Bot,
     color: '#0891b2',
     count: '210+ tools',
-    tools: ['Devin AI', 'CrewAI', 'AutoGPT', 'Manus AI'],
+    tools: ['Devin', 'CrewAI', 'AutoGPT', 'Manus'],
   },
   {
     title: 'Creative Generators',
-    badge: 'Hot',
+    badge: '+ Hot',
     icon: ImageIcon,
-    color: '#059669',
+    color: '#10b981',
     count: '480+ tools',
-    tools: ['Midjourney v6', 'Runway Gen-3', 'Flux.1', 'Sora AI'],
+    tools: ['Midjourney', 'Runway', 'Flux', 'Sora'],
   },
   {
     title: 'Frontier Models',
-    badge: 'Core',
+    badge: '+ Core',
     icon: Cpu,
-    color: '#ea580c',
+    color: '#f59e0b',
     count: '150+ models',
-    tools: ['ChatGPT o3', 'Gemini 1.5 Pro', 'Claude 3.5', 'Llama 3.3'],
+    tools: ['ChatGPT', 'Claude', 'Gemini', 'Llama'],
   },
 ];
 
 export default function HeroSection({ totalTools, totalCategories }: HeroSectionProps) {
-  const router = useRouter();
-  const [search, setSearch] = useState('');
-
-  const handleSearchSubmit = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (search.trim()) {
-      router.push(`/tools?search=${encodeURIComponent(search.trim())}`);
-    } else {
-      router.push('/tools');
-    }
-  };
-
   return (
     <section className="cal-hero-wrapper">
       <style>{`
-        /* ── Cal.com Inspired Full-Hero Wrapper ── */
+        /* ── Cal.com Inspired Bounded Hero Card Container ── */
         .cal-hero-wrapper {
           position: relative;
           width: 100%;
-          padding: 3rem 0 2rem;
-          overflow: hidden;
+          padding: 1.25rem 0 2rem;
         }
 
-        /* Ambient Glow Mesh Background */
+        .cal-hero-card {
+          position: relative;
+          background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 24px;
+          padding: 3.5rem 2rem 3rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+          overflow: hidden;
+          transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+        }
+        [data-theme='dark'] .cal-hero-card {
+          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
+          border: 1px solid rgba(139, 92, 246, 0.2);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+        }
+        @media (max-width: 640px) {
+          .cal-hero-card { padding: 2.5rem 1.25rem 2rem; }
+        }
+
+        /* Ambient Glow Mesh Background (Dark Mode only) */
         .cal-hero-bg-glow {
+          display: none;
+        }
+        [data-theme='dark'] .cal-hero-bg-glow {
+          display: block;
           position: absolute;
           top: -140px;
           left: 50%;
           transform: translateX(-50%);
           width: 1100px;
           height: 600px;
-          background: radial-gradient(ellipse at 50% 20%, rgba(139, 92, 246, 0.14) 0%, rgba(139, 92, 246, 0.02) 50%, transparent 75%);
-          pointer-events: none;
-          z-index: 0;
-        }
-        [data-theme='dark'] .cal-hero-bg-glow {
           background: 
             radial-gradient(ellipse 80% 60% at 50% -10%, rgba(139, 92, 246, 0.28) 0%, rgba(99, 102, 241, 0.08) 50%, transparent 80%),
             radial-gradient(ellipse 50% 50% at 50% 50%, rgba(167, 139, 250, 0.06) 0%, transparent 70%);
+          pointer-events: none;
+          z-index: 0;
         }
 
         .cal-hero-content {
@@ -223,8 +229,7 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
         /* Interactive Showcase Dashboard Card (Cal.com AI style) */
         .cal-showcase-card {
           width: 100%;
-          max-width: 1180px;
-          margin: 1.5rem auto 0;
+          margin: 1.5rem 0 0 0;
           background: var(--bg-card);
           border: 1px solid var(--border-subtle);
           border-radius: 24px;
@@ -301,25 +306,34 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
         }
 
         .cal-tag-pill {
-          font-size: 0.65rem;
-          font-weight: 600;
-          padding: 2px 7px;
+          display: inline-flex;
+          align-items: center;
+          gap: 3px;
+          padding: 1px 8px;
           border-radius: 99px;
-          background: rgba(0, 0, 0, 0.06);
-          color: var(--text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+          font-size: 0.68rem;
+          font-weight: 500;
+          color: #18181b;
+          letter-spacing: -0.01em;
+          line-height: 1.3;
+          text-transform: none;
         }
         [data-theme='dark'] .cal-tag-pill {
-          background: rgba(255, 255, 255, 0.08);
-          color: #a1a1aa;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+          color: #ededed;
         }
       `}</style>
 
-      <div className="cal-hero-bg-glow" />
-
       <div className="container-xl" style={{ position: 'relative', zIndex: 1 }}>
-        {/* Main Hero Header */}
+        <div className="cal-hero-card">
+          <div className="cal-hero-bg-glow" />
+
+          {/* Main Hero Header */}
         <div className="cal-hero-content">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -328,7 +342,7 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
             className="cal-hero-badge"
           >
             <span className="cal-badge-pulse" />
-            <span>Built for modern AI workflows</span>
+            <span>The Curated AI Directory</span>
           </motion.div>
 
           <motion.h1
@@ -349,52 +363,6 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
           >
             Discover, compare, and integrate over {totalTools > 0 ? totalTools.toLocaleString() : '2,700'}+ verified AI software tools across {totalCategories} handpicked categories.
           </motion.p>
-
-          {/* Interactive Search Bar */}
-          <motion.form
-            onSubmit={handleSearchSubmit}
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.45, delay: 0.22 }}
-            className="cal-search-box"
-          >
-            <Search
-              size={18}
-              style={{
-                position: 'absolute',
-                left: '16px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: 'var(--text-muted)',
-                pointerEvents: 'none',
-              }}
-            />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={`Search ${totalTools > 0 ? totalTools.toLocaleString() : '2,700'}+ AI tools by model, code, image, agent...`}
-              className="cal-search-input"
-            />
-            {search && (
-              <button
-                type="button"
-                onClick={() => setSearch('')}
-                style={{
-                  position: 'absolute',
-                  right: '14px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: 'var(--text-muted)',
-                }}
-              >
-                <X size={16} />
-              </button>
-            )}
-          </motion.form>
 
           {/* Action Buttons */}
           <motion.div
@@ -436,6 +404,11 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
           </motion.div>
         </div>
 
+        {/* Superhuman Live Rotating Brand Matrix Bar */}
+        <div style={{ marginTop: '1.25rem', marginBottom: '1.75rem' }}>
+          <RotatingBrandGrid />
+        </div>
+
         {/* Live Interactive Command Center Showcase Card (Cal.com AI / Embed Inspired) */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -450,8 +423,8 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
                 <div className="cal-dot" style={{ background: '#f59e0b' }} />
                 <div className="cal-dot" style={{ background: '#10b981' }} />
               </div>
-              <span style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text-muted)' }}>
-                toolstaq.com / intelligence-index
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                <span className="brand-text">toolstaq.com</span> / intelligence-index
               </span>
             </div>
 
@@ -491,12 +464,12 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
                   </div>
 
                   <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.75rem', marginTop: 'auto' }}>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'nowrap', gap: '5px', overflow: 'hidden' }}>
                       {cat.tools.map((t) => (
                         <span key={t} style={{
                           fontSize: '0.68rem', fontWeight: 500, padding: '2px 6px', borderRadius: '5px',
                           background: 'var(--bg-card)', border: '1px solid var(--border-subtle)',
-                          color: 'var(--text-secondary)',
+                          color: 'var(--text-secondary)', whiteSpace: 'nowrap',
                         }}>
                           {t}
                         </span>
@@ -508,6 +481,7 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
             })}
           </div>
         </motion.div>
+        </div>
       </div>
     </section>
   );

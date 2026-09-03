@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { FileText } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — toolstaq',
+  title: 'Terms of Service',
   description: 'Understand the terms, guidelines, and user agreement for using the toolstaq AI directory.',
 };
 
@@ -52,16 +53,36 @@ export default function TermsPage() {
           color: #ededed;
         }
 
+        .terms-monochrome-icon {
+          width: 76px;
+          height: 76px;
+          border-radius: 22px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #3f3f46;
+          flex-shrink: 0;
+        }
+        [data-theme='dark'] .terms-monochrome-icon {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+          color: #ededed;
+        }
+
         .terms-hero-heading {
-          font-size: 2.4rem;
+          font-size: 2.2rem;
           font-weight: 700;
           line-height: 1.15;
           letter-spacing: -0.035em;
           color: var(--text-primary);
-          margin: 0 0 0.85rem 0;
+          margin: 0 0 0.75rem 0;
         }
         @media (min-width: 640px) {
-          .terms-hero-heading { font-size: 2.85rem; }
+          .terms-hero-heading { font-size: 2.65rem; }
         }
 
         .terms-hero-sub {
@@ -75,10 +96,15 @@ export default function TermsPage() {
         /* ── Content Area ── */
         .policy-container {
           width: 100%;
-          padding: 2.5rem 0 5rem;
+          padding: 2.5rem 3rem 5rem 3rem;
           color: var(--text-primary);
           line-height: 1.8;
           font-size: 0.95rem;
+        }
+        @media (max-width: 640px) {
+          .policy-container {
+            padding: 2.5rem 1.5rem 5rem 1.5rem;
+          }
         }
         .policy-container h2 {
           font-size: 1.35rem;
@@ -116,30 +142,39 @@ export default function TermsPage() {
       {/* Hero Card Banner */}
       <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '1rem' }}>
         <div className="terms-hero-card">
-          <div className="terms-pill-badge">
-            <span>+ Legal terms</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <div className="terms-pill-badge">
+                <span>+ Legal Terms</span>
+              </div>
+
+              <h1 className="terms-hero-heading">
+                Terms of Service
+              </h1>
+
+              <p className="terms-hero-sub">
+                Please read these guidelines and user agreements carefully before exploring or submitting software to the <span className="brand-text">toolstaq</span> AI directory index.
+              </p>
+            </div>
+
+            {/* Right-aligned Monochrome Icon Badge */}
+            <div className="terms-monochrome-icon">
+              <FileText size={36} />
+            </div>
           </div>
-
-          <h1 className="terms-hero-heading">
-            Terms of Service
-          </h1>
-
-          <p className="terms-hero-sub">
-            Please read these guidelines and user agreements carefully before exploring or submitting software to the toolstaq AI directory index.
-          </p>
         </div>
 
         <div className="policy-container">
           <p>
-            Welcome to toolstaq (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using our website, services, and directory index (collectively, the &quot;Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
+            Welcome to <span className="brand-text">toolstaq</span> (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;). By accessing or using our website, services, and directory index (collectively, the &quot;Service&quot;), you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our Service.
           </p>
 
           <h2>1. Description of Service</h2>
           <p>
-            toolstaq is a curated directory database cataloging artificial intelligence (AI) tools, applications, libraries, and frameworks. We provide descriptions, price estimations, categorizations, and comparison tools to help users discover software.
+            <span className="brand-text">toolstaq</span> is a curated directory database cataloging artificial intelligence (AI) tools, applications, libraries, and frameworks. We provide descriptions, price estimations, categorizations, and comparison tools to help users discover software.
           </p>
           <p>
-            Please note that toolstaq does not own, run, sell, or manage any of the third-party software products listed in the directory. We act purely as an informational index.
+            Please note that <span className="brand-text">toolstaq</span> does not own, run, sell, or manage any of the third-party software products listed in the directory. We act purely as an informational index.
           </p>
 
           <h2>2. Third-Party Websites &amp; Services</h2>
@@ -149,7 +184,7 @@ export default function TermsPage() {
           <ul>
             <li>We have no control over the content, terms of service, privacy policies, safety, or pricing models of third-party products.</li>
             <li>We do not warrant, endorse, or guarantee the accuracy, completeness, or safety of any external services.</li>
-            <li>Any transaction, subscription, or registration you perform on an external website is strictly between you and that third-party provider. toolstaq assumes no liability whatsoever for any damage, loss, or transaction failure resulting from your use of external software.</li>
+            <li>Any transaction, subscription, or registration you perform on an external website is strictly between you and that third-party provider. <span className="brand-text">toolstaq</span> assumes no liability whatsoever for any damage, loss, or transaction failure resulting from your use of external software.</li>
           </ul>
 
           <h2>3. User Submissions</h2>
@@ -159,7 +194,7 @@ export default function TermsPage() {
 
           <h2>4. Intellectual Property</h2>
           <p>
-            All branding, design assets, directory structures, code, and editorial text created by toolstaq are the property of toolstaq. Third-party brand names, logos, and trademarks displayed in our directory belong to their respective owners.
+            All branding, design assets, directory structures, code, and editorial text created by <span className="brand-text">toolstaq</span> are the property of <span className="brand-text">toolstaq</span>. Third-party brand names, logos, and trademarks displayed in our directory belong to their respective owners.
           </p>
 
           <h2>5. Disclaimer of Warranties</h2>

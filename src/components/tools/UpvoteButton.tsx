@@ -12,6 +12,7 @@ interface UpvoteButtonProps {
 export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonProps) {
   const [upvotesCount, setUpvotesCount] = useState(initialUpvotes);
   const [hasVoted, setHasVoted] = useState(false);
+  const [showThanks, setShowThanks] = useState(false);
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -57,10 +58,20 @@ export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonP
   const handleUpvote = async () => {
     const fingerprint = localStorage.getItem('voting_fingerprint') || 'anonymous';
     const originalHasVoted = hasVoted;
+    const isCastingVote = !originalHasVoted;
     
     // Optimistic UI updates
-    setHasVoted(!originalHasVoted);
+    setHasVoted(isCastingVote);
     setUpvotesCount(c => originalHasVoted ? Math.max(0, c - 1) : c + 1);
+
+    if (isCastingVote) {
+      setShowThanks(true);
+      setTimeout(() => {
+        setShowThanks(false);
+      }, 3500);
+    } else {
+      setShowThanks(false);
+    }
 
     try {
       if (originalHasVoted) {
@@ -85,24 +96,25 @@ export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonP
       // Revert optimistic updates on error
       setHasVoted(originalHasVoted);
       setUpvotesCount(c => originalHasVoted ? c + 1 : Math.max(0, c - 1));
+      setShowThanks(false);
     }
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-start' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
       <button
         onClick={handleUpvote}
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: '8px',
-          padding: '7px 16px',
-          height: '36px',
+          padding: '8px 18px',
+          height: '38px',
           boxSizing: 'border-box',
-          fontSize: '0.825rem',
+          fontSize: '0.85rem',
           fontWeight: 600,
-          background: hasVoted ? 'rgba(139, 92, 246, 0.08)' : 'rgba(255, 255, 255, 0.04)',
-          border: hasVoted ? '1px solid rgba(139, 92, 246, 0.4)' : '1px solid rgba(255, 255, 255, 0.14)',
+          background: hasVoted ? 'rgba(139, 92, 246, 0.08)' : 'var(--bg-secondary)',
+          border: hasVoted ? '1px solid rgba(139, 92, 246, 0.4)' : '1px solid var(--border-subtle)',
           borderRadius: '10px',
           color: hasVoted ? 'var(--accent-primary)' : 'var(--text-primary)',
           cursor: 'pointer',
@@ -120,13 +132,14 @@ export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonP
         <span>{upvotesCount.toLocaleString()} upvotes</span>
       </button>
       
-      {/* Dynamic visibility based on hydration & voting state */}
-      {isHydrated && hasVoted && (
+      {/* Dynamic thanks message auto-dismisses after 3.5 seconds */}
+      {showThanks && (
         <span style={{ 
-          fontSize: '0.7rem', 
-          color: 'var(--text-muted)', 
-          paddingLeft: '4px',
-          animation: 'fadeIn 200ms ease' 
+          fontSize: '0.80rem', 
+          fontWeight: 500,
+          color: 'var(--text-secondary)', 
+          whiteSpace: 'nowrap',
+          animation: 'fadeInOut 3.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' 
         }}>
           Thanks for your vote.
         </span>
@@ -134,12 +147,14 @@ export default function UpvoteButton({ toolSlug, initialUpvotes }: UpvoteButtonP
 
       <style>{`
         .upvote-btn:hover {
-          background: ${hasVoted ? 'rgba(139, 92, 246, 0.14)' : 'rgba(255, 255, 255, 0.08)'} !important;
-          border-color: ${hasVoted ? 'rgba(139, 92, 246, 0.5)' : 'rgba(255, 255, 255, 0.28)'} !important;
+          background: ${hasVoted ? 'rgba(139, 92, 246, 0.14)' : 'var(--bg-card)'} !important;
+          border-color: ${hasVoted ? 'rgba(139, 92, 246, 0.5)' : 'var(--accent-primary)'} !important;
         }
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-2px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInOut {
+          0% { opacity: 0; transform: translateX(-4px); }
+          12% { opacity: 1; transform: translateX(0); }
+          82% { opacity: 1; transform: translateX(0); }
+          100% { opacity: 0; transform: translateX(-4px); }
         }
       `}</style>
     </div>

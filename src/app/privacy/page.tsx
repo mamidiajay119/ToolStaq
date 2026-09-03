@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — toolstaq',
+  title: 'Privacy Policy',
   description: 'Learn how toolstaq protects, manages, and respects your personal data and privacy settings.',
 };
 
@@ -52,16 +53,36 @@ export default function PrivacyPage() {
           color: #ededed;
         }
 
+        .privacy-monochrome-icon {
+          width: 76px;
+          height: 76px;
+          border-radius: 22px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #3f3f46;
+          flex-shrink: 0;
+        }
+        [data-theme='dark'] .privacy-monochrome-icon {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+          color: #ededed;
+        }
+
         .privacy-hero-heading {
-          font-size: 2.4rem;
+          font-size: 2.2rem;
           font-weight: 700;
           line-height: 1.15;
           letter-spacing: -0.035em;
           color: var(--text-primary);
-          margin: 0 0 0.85rem 0;
+          margin: 0 0 0.75rem 0;
         }
         @media (min-width: 640px) {
-          .privacy-hero-heading { font-size: 2.85rem; }
+          .privacy-hero-heading { font-size: 2.65rem; }
         }
 
         .privacy-hero-sub {
@@ -75,10 +96,15 @@ export default function PrivacyPage() {
         /* ── Content Area ── */
         .policy-container {
           width: 100%;
-          padding: 2.5rem 0 5rem;
+          padding: 2.5rem 3rem 5rem 3rem;
           color: var(--text-primary);
           line-height: 1.8;
           font-size: 0.95rem;
+        }
+        @media (max-width: 640px) {
+          .policy-container {
+            padding: 2.5rem 1.5rem 5rem 1.5rem;
+          }
         }
         .policy-container h2 {
           font-size: 1.35rem;
@@ -116,22 +142,31 @@ export default function PrivacyPage() {
       {/* Hero Card Banner */}
       <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '1rem' }}>
         <div className="privacy-hero-card">
-          <div className="privacy-pill-badge">
-            <span>+ Privacy policy</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <div className="privacy-pill-badge">
+                <span>+ Privacy Policy</span>
+              </div>
+
+              <h1 className="privacy-hero-heading">
+                Privacy Policy
+              </h1>
+
+              <p className="privacy-hero-sub">
+                Your privacy is fundamental to us. Learn how <span className="brand-text">toolstaq</span> protects, manages, and respects your personal data.
+              </p>
+            </div>
+
+            {/* Right-aligned Monochrome Icon Badge */}
+            <div className="privacy-monochrome-icon">
+              <ShieldCheck size={36} />
+            </div>
           </div>
-
-          <h1 className="privacy-hero-heading">
-            Privacy Policy
-          </h1>
-
-          <p className="privacy-hero-sub">
-            Your privacy is fundamental to us. Learn how toolstaq protects, manages, and respects your personal data.
-          </p>
         </div>
 
         <div className="policy-container">
           <p>
-            At toolstaq (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), we are committed to protecting your privacy. This Privacy Policy details the types of information we collect, how we use it, and the security measures we take to protect your data when you visit and interact with our AI directory.
+            At <span className="brand-text">toolstaq</span> (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;), we are committed to protecting your privacy. This Privacy Policy details the types of information we collect, how we use it, and the security measures we take to protect your data when you visit and interact with our AI directory.
           </p>
 
           <h2>1. Information We Collect</h2>
@@ -146,7 +181,7 @@ export default function PrivacyPage() {
 
           <h2>2. How We Use Your Information</h2>
           <p>
-            We process information solely to provide and improve the toolstaq platform:
+            We process information solely to provide and improve the <span className="brand-text">toolstaq</span> platform:
           </p>
           <ul>
             <li>To index, review, and publish user-submitted AI tools to the directory.</li>

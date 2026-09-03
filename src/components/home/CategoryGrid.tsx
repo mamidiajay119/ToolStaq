@@ -22,25 +22,23 @@ const ease = [0.22, 1, 0.36, 1] as const;
 export default function CategoryGrid({ categoryItems, totalCategories }: CategoryGridProps) {
   return (
     <section style={{ paddingTop: '2.5rem', marginBottom: '6rem' }}>
-      {/* Section header — Cal.com inspired badge & clean title */}
+      {/* Section header — Cal.com inspired badge & clean centered title */}
       <motion.div
-        style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '2.5rem', gap: '0.5rem' }}
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.4, ease }}
       >
-        <div>
-          <div className="cal-hero-badge" style={{ marginBottom: '0.65rem' }}>
-            <span>+ Explore categories</span>
-          </div>
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.03em', margin: 0 }}>
-            Browse by AI Capability
-          </h2>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.90rem', margin: '4px 0 0 0' }}>
-            {totalCategories} hand-curated categories covering every AI software engineering & business workflow.
-          </p>
+        <div className="cal-hero-badge" style={{ marginBottom: '0.25rem' }}>
+          <span>+ Explore categories</span>
         </div>
+        <h2 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.035em', margin: 0, color: 'var(--text-primary)' }}>
+          Browse by AI Capability
+        </h2>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.925rem', margin: '0 0 0.5rem 0', maxWidth: '560px' }}>
+          {totalCategories} hand-curated categories covering every AI software engineering &amp; business workflow.
+        </p>
         <Link href="/categories" className="btn-secondary" style={{ fontSize: '0.84rem', padding: '8px 16px', borderRadius: '10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
           All categories <ChevronRight size={14} />
         </Link>

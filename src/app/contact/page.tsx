@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronRight, Clock, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ChevronRight, Clock, Loader2, CheckCircle2, AlertCircle, Mail } from 'lucide-react';
 import { submitContactForm } from '@/app/actions/contact';
 
 export default function ContactPage() {
@@ -90,16 +90,36 @@ export default function ContactPage() {
           color: #ededed;
         }
 
+        .contact-monochrome-icon {
+          width: 76px;
+          height: 76px;
+          border-radius: 22px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #3f3f46;
+          flex-shrink: 0;
+        }
+        [data-theme='dark'] .contact-monochrome-icon {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+          color: #ededed;
+        }
+
         .contact-hero-heading {
-          font-size: 2.4rem;
+          font-size: 2.2rem;
           font-weight: 700;
           line-height: 1.15;
           letter-spacing: -0.035em;
           color: var(--text-primary);
-          margin: 0 0 0.85rem 0;
+          margin: 0 0 0.75rem 0;
         }
         @media (min-width: 640px) {
-          .contact-hero-heading { font-size: 2.85rem; }
+          .contact-hero-heading { font-size: 2.65rem; }
         }
 
         .contact-hero-sub {
@@ -153,17 +173,26 @@ export default function ContactPage() {
       {/* Hero Card Banner */}
       <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '1.5rem' }}>
         <div className="contact-hero-card">
-          <div className="contact-pill-badge">
-            <span>+ Get in touch</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <div className="contact-pill-badge">
+                <span>+ Get In Touch</span>
+              </div>
+
+              <h1 className="contact-hero-heading">
+                Contact &amp; Support
+              </h1>
+
+              <p className="contact-hero-sub">
+                Have questions about listing your AI software, partnership inquiries, or directory feedback? We&apos;d love to connect.
+              </p>
+            </div>
+
+            {/* Right-aligned Monochrome Icon Badge */}
+            <div className="contact-monochrome-icon">
+              <Mail size={36} />
+            </div>
           </div>
-
-          <h1 className="contact-hero-heading">
-            Contact &amp; Support
-          </h1>
-
-          <p className="contact-hero-sub">
-            Have questions about listing your AI software, partnership inquiries, or directory feedback? We&apos;d love to connect.
-          </p>
         </div>
       </div>
 

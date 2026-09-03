@@ -1,8 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-import { ExternalLink, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 import ToolLogo from '@/components/tools/ToolLogo';
 import UpvoteButton from '@/components/tools/UpvoteButton';
 
@@ -26,6 +27,10 @@ export default function ToolHero({
   toolName, toolSlug, toolUrl, toolIcon, toolFaviconUrl,
   toolTitle, categories, isRecommended, isNew, openSource, baseUpvotes,
 }: ToolHeroProps) {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [toolSlug]);
+
   return (
     <>
       <style>{`
@@ -44,8 +49,21 @@ export default function ToolHero({
           border: 1px solid rgba(139, 92, 246, 0.2);
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
+        .tool-hero-top-badges {
+          position: absolute;
+          top: 2rem;
+          right: 2.25rem;
+          display: flex;
+          gap: 6px;
+          align-items: center;
+          z-index: 5;
+        }
         @media (max-width: 640px) {
           .tool-hero-card { padding: 2rem 1.5rem; }
+          .tool-hero-top-badges {
+            position: static;
+            margin-bottom: 0.75rem;
+          }
         }
 
         .tool-category-pill {
@@ -72,6 +90,27 @@ export default function ToolHero({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease }}
       >
+        {/* Top-Right Status Badges */}
+        {(isRecommended || isNew || openSource) && (
+          <div className="tool-hero-top-badges">
+            {isRecommended && (
+              <span className="monochrome-pill-badge">
+                <span>+ Recommended</span>
+              </span>
+            )}
+            {isNew && (
+              <span className="monochrome-pill-badge">
+                <span>+ New</span>
+              </span>
+            )}
+            {openSource && (
+              <span className="monochrome-pill-badge">
+                <span>+ Open Source</span>
+              </span>
+            )}
+          </div>
+        )}
+
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1.5rem', flexWrap: 'wrap' }}>
 
           {/* Logo */}
@@ -79,7 +118,6 @@ export default function ToolHero({
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease, delay: 0.08 }}
-            style={{ borderRadius: '16px', overflow: 'hidden', border: '1px solid rgba(0,0,0,0.12)' }}
           >
             <ToolLogo
               url={toolUrl}
@@ -92,7 +130,7 @@ export default function ToolHero({
 
           <div style={{ flex: 1, minWidth: '280px' }}>
 
-            {/* Name + badges row */}
+            {/* Name row */}
             <motion.div
               style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' }}
               initial={{ opacity: 0, x: -12 }}
@@ -102,39 +140,6 @@ export default function ToolHero({
               <h1 style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.035em', margin: 0, color: 'var(--text-primary)' }}>
                 {toolName}
               </h1>
-              {isRecommended && (
-                <span style={{
-                  fontSize: '0.65rem', fontWeight: 700, color: '#10b981',
-                  background: 'rgba(16, 185, 129, 0.08)',
-                  border: '1px solid rgba(16, 185, 129, 0.2)',
-                  padding: '2px 8px', borderRadius: '99px', textTransform: 'uppercase',
-                  letterSpacing: '0.04em', lineHeight: 1.2,
-                }}>
-                  Recommended
-                </span>
-              )}
-              {isNew && (
-                <span style={{
-                  fontSize: '0.65rem', fontWeight: 700, color: 'var(--accent-primary)',
-                  background: 'rgba(139, 92, 246, 0.08)',
-                  border: '1px solid rgba(139, 92, 246, 0.2)',
-                  padding: '2px 8px', borderRadius: '99px', textTransform: 'uppercase',
-                  letterSpacing: '0.04em', lineHeight: 1.2,
-                }}>
-                  New
-                </span>
-              )}
-              {openSource && (
-                <span style={{
-                  fontSize: '0.65rem', fontWeight: 700, color: '#10b981',
-                  background: 'rgba(16, 185, 129, 0.08)',
-                  border: '1px solid rgba(16, 185, 129, 0.2)',
-                  padding: '2px 8px', borderRadius: '99px', textTransform: 'uppercase',
-                  letterSpacing: '0.04em', lineHeight: 1.2,
-                }}>
-                  Open Source
-                </span>
-              )}
             </motion.div>
 
             {/* Subtitle */}
@@ -194,15 +199,8 @@ export default function ToolHero({
                   style={{ padding: '8px 18px', fontSize: '0.85rem', gap: '6px', height: '38px', borderRadius: '10px', display: 'flex', alignItems: 'center' }}
                   variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease } } }}
                 >
-                  <ExternalLink size={14} /> Visit {toolName}
+                  Visit {toolName} <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
                 </motion.a>,
-
-                <motion.div
-                  key="upvote"
-                  variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease } } }}
-                >
-                  <UpvoteButton toolSlug={toolSlug} initialUpvotes={baseUpvotes} />
-                </motion.div>,
 
                 <motion.div
                   key="compare"
@@ -211,10 +209,17 @@ export default function ToolHero({
                   <Link
                     href={`/compare?tool=${toolSlug}`}
                     className="btn-secondary"
-                    style={{ padding: '8px 18px', fontSize: '0.85rem', height: '38px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '4px' }}
+                    style={{ padding: '8px 18px', fontSize: '0.85rem', height: '38px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}
                   >
-                    Compare Tools <ChevronRight size={14} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                    Compare Tools <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
                   </Link>
+                </motion.div>,
+
+                <motion.div
+                  key="upvote"
+                  variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease } } }}
+                >
+                  <UpvoteButton toolSlug={toolSlug} initialUpvotes={baseUpvotes} />
                 </motion.div>,
               ].filter(Boolean)}
             </motion.div>

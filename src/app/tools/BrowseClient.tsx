@@ -272,7 +272,7 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
         {recommendedTools.length > 0 && !search.trim() && (
           <div style={{ marginBottom: '2rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.85rem', flexWrap: 'wrap', gap: '8px' }}>
-              <div className="tools-pill-badge" style={{ marginBottom: 0 }}>
+              <div className="monochrome-pill-badge-sm" style={{ marginBottom: 0 }}>
                 <span>+ Top Picks</span>
               </div>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
@@ -443,35 +443,52 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
       {activeNonCategoryCount > 0 && (
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
           {selectedPricing.map((p) => (
-            <span key={p} onClick={() => toggleArr(selectedPricing, p, setSelectedPricing)} style={{ cursor: 'pointer', padding: '4px 10px' }} className="badge badge-slate">
+            <span key={p} onClick={() => toggleArr(selectedPricing, p, setSelectedPricing)} style={{ cursor: 'pointer' }} className="monochrome-pill-badge-sm">
               {p} <X size={12} />
             </span>
           ))}
           {selectedComplexity.map((c) => (
-            <span key={c} onClick={() => toggleArr(selectedComplexity, c, setSelectedComplexity)} style={{ cursor: 'pointer', padding: '4px 10px' }} className="badge badge-slate">
+            <span key={c} onClick={() => toggleArr(selectedComplexity, c, setSelectedComplexity)} style={{ cursor: 'pointer' }} className="monochrome-pill-badge-sm">
               {c} <X size={12} />
             </span>
           ))}
           {selectedDeployment.map((d) => (
-            <span key={d} onClick={() => toggleArr(selectedDeployment, d, setSelectedDeployment)} style={{ cursor: 'pointer', padding: '4px 10px' }} className="badge badge-slate">
+            <span key={d} onClick={() => toggleArr(selectedDeployment, d, setSelectedDeployment)} style={{ cursor: 'pointer' }} className="monochrome-pill-badge-sm">
               {d} <X size={12} />
             </span>
           ))}
           {freeTrialOnly && (
-            <span onClick={() => setFreeTrialOnly(false)} style={{ cursor: 'pointer', padding: '4px 10px' }} className="badge badge-slate">
+            <span onClick={() => setFreeTrialOnly(false)} style={{ cursor: 'pointer' }} className="monochrome-pill-badge-sm">
               Free Trial <X size={12} />
             </span>
           )}
           {apiOnly && (
-            <span onClick={() => setApiOnly(false)} style={{ cursor: 'pointer', padding: '4px 10px' }} className="badge badge-slate">
+            <span onClick={() => setApiOnly(false)} style={{ cursor: 'pointer' }} className="monochrome-pill-badge-sm">
               Has API <X size={12} />
             </span>
           )}
           {openSourceOnly && (
-            <span onClick={() => setOpenSourceOnly(false)} style={{ cursor: 'pointer', padding: '4px 10px' }} className="badge badge-slate">
+            <span onClick={() => setOpenSourceOnly(false)} style={{ cursor: 'pointer' }} className="monochrome-pill-badge-sm">
               Open Source <X size={12} />
             </span>
           )}
+          <button
+            onClick={() => {
+              setSelectedPricing([]);
+              setSelectedComplexity([]);
+              setSelectedDeployment([]);
+              setFreeTrialOnly(false);
+              setApiOnly(false);
+              setOpenSourceOnly(false);
+            }}
+            style={{
+              background: 'none', border: 'none', color: 'var(--accent-primary)',
+              fontSize: '0.75rem', cursor: 'pointer', textDecoration: 'underline',
+              padding: '2px 6px',
+            }}
+          >
+            Clear non-category filters
+          </button>
         </div>
       )}
 

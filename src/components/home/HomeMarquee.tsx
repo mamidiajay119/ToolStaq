@@ -23,8 +23,6 @@ export default function HomeMarquee({ tools }: HomeMarqueeProps) {
 
   return (
     <div style={{
-      borderTop: 'var(--border-width, 1px) solid var(--border-subtle)',
-      borderBottom: 'var(--border-width, 1px) solid var(--border-subtle)',
       padding: '1.25rem 0',
       background: 'var(--bg-primary)',
       width: '100%',

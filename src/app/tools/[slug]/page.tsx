@@ -72,25 +72,53 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
     description: getToolDescription(tool),
   };
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Tools", "item": "https://aitoolsdirectory.com/tools" },
+      { "@type": "ListItem", "position": 2, "name": tool.primary_category, "item": `https://aitoolsdirectory.com/category/${categorySlug}` },
+      { "@type": "ListItem", "position": 3, "name": tool.tool_name, "item": `https://aitoolsdirectory.com/tools/${slug}` }
+    ]
+  };
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      <div className="container-xl" style={{ paddingTop: '2.5rem', paddingBottom: '4rem' }}>
+      <style>{`
+        .tool-breadcrumb {
+          font-size: 0.8rem;
+          color: var(--text-muted);
+          margin-bottom: 1.25rem;
+          display: flex;
+          gap: 6px;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+        .tool-breadcrumb a {
+          color: var(--text-secondary);
+          text-decoration: none;
+          transition: color 150ms ease;
+        }
+        .tool-breadcrumb a:hover {
+          color: var(--accent-primary);
+        }
+      `}</style>
+
+      <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '4rem' }}>
         {/* Breadcrumb */}
-        <nav style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2rem', fontSize: '0.825rem', color: 'var(--text-muted)' }}>
-          <Link href="/" className="btn-ghost" style={{ padding: '4px 0', fontSize: '0.825rem' }}>Home</Link>
+        <nav className="tool-breadcrumb">
+          <Link href="/">Home</Link>
           <span>/</span>
-          <Link href="/tools" className="btn-ghost" style={{ padding: '4px 0', fontSize: '0.825rem' }}>Tools</Link>
+          <Link href="/tools">Tools</Link>
           <span>/</span>
-          <Link href={`/category/${categorySlug}`} className="btn-ghost" style={{ padding: '4px 0', fontSize: '0.825rem' }}>
+          <Link href={`/category/${categorySlug}`}>
             {tool.primary_category}
           </Link>
           <span>/</span>
-          <span style={{ color: 'var(--text-secondary)' }}>{tool.tool_name}</span>
+          <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>{tool.tool_name}</span>
         </nav>
 
         <div className="tool-page-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '2.5rem', alignItems: 'start' }}>
@@ -156,7 +184,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         {tool.core_features_rich.split('\n').filter(Boolean).map((f, i) => (
                            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                             <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                             <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
                              <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
                            </div>
                         ))}
@@ -165,7 +193,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {tool.core_features.map((f, i) => (
                           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                            <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
                             <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f}</span>
                           </div>
                         ))}
@@ -191,7 +219,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: tool.target_user_persona.length > 0 ? '1rem' : 0 }}>
                           {cleanBestFor.map((b, i) => (
                             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                              <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                              <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
                               <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{b}</span>
                             </div>
                           ))}
@@ -200,7 +228,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                       {tool.target_user_persona.length > 0 && (
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                           {tool.target_user_persona.map((p) => (
-                            <span key={p} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: 'var(--border-width, 1px) solid var(--border-subtle)' }}>{p}</span>
+                            <span key={p} className="monochrome-pill-badge-sm">{p}</span>
                           ))}
                         </div>
                       )}
@@ -220,7 +248,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     </p>
                     <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                       {tool.integrations.map((int) => (
-                        <span key={int} className="badge" style={{ fontSize: '0.75rem', padding: '3px 8px', background: 'var(--bg-secondary)', color: 'var(--text-secondary)', border: 'var(--border-width, 1px) solid var(--border-subtle)' }}>{int}</span>
+                        <span key={int} className="monochrome-pill-badge-sm">{int}</span>
                       ))}
                     </div>
                   </div>
@@ -238,7 +266,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {tool.technical_architecture.split('\n').filter(Boolean).map((f, i) => (
                          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                           <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                           <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
                            <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
                          </div>
                       ))}
@@ -258,7 +286,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {tool.pricing_details.split('\n').filter(Boolean).map((f, i) => (
                          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                           <span style={{ color: 'var(--accent-primary)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                           <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
                            <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
                          </div>
                       ))}

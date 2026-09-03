@@ -58,7 +58,7 @@ export default function Header() {
           }}>
             <Zap size={16} color="white" strokeWidth={2.5} />
           </div>
-          <span style={{ fontFamily: "'Geist', sans-serif", fontWeight: 400, fontSize: '1.2rem', letterSpacing: '-0.035em', color: 'var(--text-primary)' }}>
+          <span className="brand-text" style={{ fontSize: '1.2rem' }}>
             toolstaq
           </span>
         </Link>
@@ -67,6 +67,7 @@ export default function Header() {
         <nav className="center-nav hidden-mobile">
           <Link href="/tools" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Tools</Link>
           <Link href="/categories" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Categories</Link>
+          <Link href="/providers" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Providers</Link>
           <Link href="/news" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>AI News</Link>
           <Link href="/compare" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Compare</Link>
           <Link href="/submit" className="btn-ghost" style={{ borderRadius: '10px', fontSize: '0.875rem' }}>Submit Tool</Link>
@@ -110,6 +111,7 @@ export default function Header() {
         }}>
           <Link href="/tools" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Tools</Link>
           <Link href="/categories" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Categories</Link>
+          <Link href="/providers" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Providers</Link>
           <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>AI News</Link>
           <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Compare</Link>
           <Link href="/submit" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Submit Tool</Link>

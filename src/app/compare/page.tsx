@@ -4,7 +4,7 @@ import { getAllTools } from '@/lib/tools';
 import CompareClient from './CompareClient';
 
 export const metadata: Metadata = {
-  title: 'Compare AI Tools — Side-by-Side Feature Comparison',
+  title: 'Compare AI Tools Side-by-Side',
   description: 'Compare AI tools side-by-side. Evaluate pricing, features, complexity, API availability, and more to find the best tool for your needs.',
 };
 

@@ -26,7 +26,7 @@ export default function ToolCard({ tool, hideRecommendedBadge = false }: ToolCar
   const pricingClass = getPricingClass(tool.pricing_model, tool.free_trial);
 
   return (
-    <Link href={`/tools/${tool.slug}`} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+    <Link href={`/tools/${tool.slug}`} scroll={true} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
       <div className="tool-card" style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: '16px', padding: '1.25rem' }}>
 
         {/* Top: Logo + Name & Title */}
@@ -50,36 +50,12 @@ export default function ToolCard({ tool, hideRecommendedBadge = false }: ToolCar
                 {tool.tool_name}
               </h3>
               {tool.is_recommended && !hideRecommendedBadge && (
-                <span style={{
-                  fontSize: '0.6rem',
-                  fontWeight: 700,
-                  color: 'var(--accent-emerald)',
-                  background: 'rgba(5, 150, 105, 0.08)',
-                  border: 'var(--border-width, 1px) solid rgba(5, 150, 105, 0.2)',
-                  padding: '1px 5px',
-                  borderRadius: '4px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  flexShrink: 0,
-                  lineHeight: 1,
-                }}>
+                <span className="monochrome-pill-badge-sm">
                   Recommended
                 </span>
               )}
               {tool.is_new && (
-                <span style={{
-                  fontSize: '0.6rem',
-                  fontWeight: 700,
-                  color: 'var(--accent-primary)',
-                  background: 'rgba(139, 92, 246, 0.08)',
-                  border: 'var(--border-width, 1px) solid rgba(139, 92, 246, 0.2)',
-                  padding: '1px 5px',
-                  borderRadius: '4px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em',
-                  flexShrink: 0,
-                  lineHeight: 1,
-                }}>
+                <span className="monochrome-pill-badge-sm">
                   New
                 </span>
               )}
@@ -96,16 +72,16 @@ export default function ToolCard({ tool, hideRecommendedBadge = false }: ToolCar
           </div>
         </div>
 
-        {/* Bottom: Pricing, Category, Rank */}
+        {/* Bottom: Pricing, Category */}
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           marginTop: 'auto',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span className={pricingClass} style={{ fontSize: '0.65rem', padding: '1px 6px', borderRadius: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+            <span className="monochrome-pill-badge-sm">
               {pricingLabel}
             </span>
-            <span className="badge badge-slate" style={{ fontSize: '0.65rem', padding: '1px 6px', borderRadius: '4px' }}>
+            <span className="monochrome-pill-badge-sm">
               {tool.primary_category}
             </span>
           </div>

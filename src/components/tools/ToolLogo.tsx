@@ -57,8 +57,9 @@ export default function ToolLogo({
     height: `${size}px`,
     borderRadius: `${borderRadius}px`,
     flexShrink: 0,
-    background: loaded ? '#ffffff' : 'var(--bg-secondary)',
-    border: loaded ? 'var(--border-width, 1px) solid rgba(0, 0, 0, 0.08)' : 'none',
+    background: loaded ? 'var(--bg-card)' : 'var(--bg-secondary)',
+    border: '1px solid var(--border-subtle)',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -101,12 +102,11 @@ export default function ToolLogo({
         onLoad={() => setLoaded(true)}
         onError={handleError}
         style={{
-          width: size >= 64 ? `${size - 12}px` : `${size - 8}px`,
-          height: size >= 64 ? `${size - 12}px` : `${size - 8}px`,
-          objectFit: 'contain',
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
           opacity: loaded ? 1 : 0,
           transition: 'opacity 0.25s ease',
-          borderRadius: size >= 64 ? '6px' : '4px',
           position: 'relative',
           zIndex: 1,
         }}

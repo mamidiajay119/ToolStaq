@@ -3,12 +3,13 @@ import { ArrowRight, ChevronRight, Sparkles, TrendingUp, Star, ShieldCheck, Zap 
 import { getAllTools, getFeaturedTools, slugifyCategory, getAllCategories } from '@/lib/tools';
 import ToolCard from '@/components/tools/ToolCard';
 import HomeMarquee from '@/components/home/HomeMarquee';
+import RotatingBrandGrid from '@/components/home/RotatingBrandGrid';
 import HeroSection from '@/components/home/HeroSection';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'toolstaq — The Intelligent Index for AI Tools',
+  title: 'The Intelligent Index for Frontier AI Tools',
   description: 'Discover the right AI tools to power your workflow. Browse top AI tools across categories including coding, LLMs, design, video, automation and more.',
 };
 
@@ -98,18 +99,6 @@ export default async function HomePage() {
         {/* ── Full Hero Section (Cal.com inspired) ── */}
         <HeroSection totalTools={totalTools} totalCategories={totalCategories} />
 
-        {/* ── Top Picks Marquee Band ── */}
-        <HomeMarquee tools={allTools
-          .filter(t => t.is_recommended)
-          .map(t => ({
-            slug: t.slug,
-            tool_name: t.tool_name,
-            url: t.url,
-            favicon_url: t.favicon_url ?? null,
-            primary_category: t.primary_category,
-          }))
-        } />
-
         <div className="container-xl">
           {/* ── Category Grid ── */}
           <CategoryGrid
@@ -119,18 +108,16 @@ export default async function HomePage() {
 
           {/* ── Trending Tools Section ── */}
           <section style={{ marginBottom: '6.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
-              <div>
-                <div className="cal-hero-badge" style={{ marginBottom: '0.65rem' }}>
-                  <span>+ Trending index</span>
-                </div>
-                <h2 style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.03em', margin: 0 }}>
-                  Featured AI Breakthroughs
-                </h2>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.90rem', margin: '4px 0 0 0' }}>
-                  Top-rated AI tools curated directly from developer community signals.
-                </p>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '2.5rem', gap: '0.5rem' }}>
+              <div className="cal-hero-badge" style={{ marginBottom: '0.25rem' }}>
+                <span>+ Trending index</span>
               </div>
+              <h2 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.035em', margin: 0, color: 'var(--text-primary)' }}>
+                Featured AI Breakthroughs
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.925rem', margin: '0 0 0.5rem 0', maxWidth: '560px' }}>
+                Top-rated AI tools curated directly from developer community signals.
+              </p>
               <Link href="/tools" className="btn-secondary" style={{ fontSize: '0.84rem', padding: '8px 16px', borderRadius: '10px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                 View directory <ChevronRight size={14} />
               </Link>
@@ -143,44 +130,81 @@ export default async function HomePage() {
             </div>
           </section>
 
-          {/* ── How It Works (Cal.com 3-step workflow) ── */}
+          {/* ── 3 Core Search Dimensions (Tools, Categories, Providers) ── */}
           <section style={{ marginBottom: '6.5rem' }}>
             <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
               <div className="cal-hero-badge" style={{ marginBottom: '0.65rem' }}>
-                <span>+ Simple workflow</span>
+                <span>+ Explore Dimensions</span>
               </div>
               <h2 style={{ fontSize: '1.85rem', fontWeight: 750, letterSpacing: '-0.035em', margin: 0 }}>
-                Find &amp; integrate the right AI in 3 steps
+                Explore the AI Ecosystem Across 3 Dimensions
               </h2>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.925rem', marginTop: '6px' }}>
-                No mandatory accounts. Instant directory exploration with zero friction.
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.925rem', marginTop: '6px', maxWidth: '600px', margin: '6px auto 0' }}>
+                Find exactly what you need—whether searching for specific tools, curated use cases, or model providers.
               </p>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
               {[
-                { step: '01', title: 'Search or Filter', desc: 'Search by model capability or narrow down by pricing, complexity, and deployment options.' },
-                { step: '02', title: 'Compare Specifications', desc: 'Evaluate side-by-side pricing tiers, API key access, and open source repository links.' },
-                { step: '03', title: 'Ship & Integrate', desc: 'Click directly through to official product access points and accelerate your build.' },
-              ].map((step) => (
-                <div key={step.step} className="how-card" style={{ display: 'flex', flexDirection: 'column' }}>
-                  <div style={{
-                    fontSize: '1.75rem',
-                    fontWeight: 800,
-                    color: 'var(--text-primary)',
-                    letterSpacing: '-0.04em',
-                    marginBottom: '1rem',
-                    fontFamily: "'Geist', sans-serif",
-                    opacity: 0.85,
-                  }}>
-                    {step.step}
+                {
+                  step: '01',
+                  title: 'Search by Tools',
+                  desc: 'Discover 2,700+ verified AI software applications—from coding copilots and autonomous agents to voice synthesis and image generators.',
+                  href: '/tools',
+                  cta: 'Explore tools',
+                },
+                {
+                  step: '02',
+                  title: 'Search by Categories',
+                  desc: 'Browse hand-curated categories like AI Coding, Frontier LLMs, Creative Engines, and AI Automation to match your exact workflow needs.',
+                  href: '/categories',
+                  cta: 'Explore categories',
+                },
+                {
+                  step: '03',
+                  title: 'Search by Providers',
+                  desc: 'Explore research labs and model providers—compare token pricing, context windows, and live model families across OpenAI, Anthropic, DeepSeek, and Google.',
+                  href: '/providers',
+                  cta: 'Explore providers',
+                },
+              ].map((card) => (
+                <div key={card.step} className="how-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', justifyContent: 'space-between' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div style={{
+                      fontSize: '1.75rem',
+                      fontWeight: 800,
+                      color: 'var(--text-primary)',
+                      letterSpacing: '-0.04em',
+                      marginBottom: '1rem',
+                      fontFamily: "'Geist', sans-serif",
+                      opacity: 0.85,
+                    }}>
+                      {card.step}
+                    </div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 650, color: 'var(--text-primary)', marginBottom: '10px' }}>
+                      {card.title}
+                    </h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: '0 0 1.5rem 0' }}>
+                      {card.desc}
+                    </p>
                   </div>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 650, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                    {step.title}
-                  </h3>
-                  <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>
-                    {step.desc}
-                  </p>
+                  <Link
+                    href={card.href}
+                    className="btn-secondary"
+                    style={{
+                      padding: '7px 15px',
+                      borderRadius: '10px',
+                      fontSize: '0.825rem',
+                      fontWeight: 600,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      width: 'fit-content',
+                      marginTop: 'auto',
+                    }}
+                  >
+                    {card.cta} <ChevronRight size={14} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                  </Link>
                 </div>
               ))}
             </div>
@@ -193,7 +217,7 @@ export default async function HomePage() {
                 <span>+ List your AI product</span>
               </div>
               <h2 style={{ fontSize: '1.85rem', fontWeight: 750, letterSpacing: '-0.035em', marginBottom: '0.75rem' }}>
-                Building an AI tool? List it on ToolStaq
+                Building an AI tool? List it on <span className="brand-text">toolstaq</span>
               </h2>
               <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', marginBottom: '1.75rem', maxWidth: '520px', margin: '0 auto 1.75rem', lineHeight: 1.6 }}>
                 Reach thousands of developers, tech leads, and founders searching for new AI software daily. Fast 4–48h editorial review SLA.

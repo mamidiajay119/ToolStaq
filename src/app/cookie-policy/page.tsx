@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Cookie } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy — toolstaq',
+  title: 'Cookie Policy',
   description: 'Understand how toolstaq uses cookies and local storage to keep your site preferences active.',
 };
 
@@ -52,16 +53,36 @@ export default function CookiePolicyPage() {
           color: #ededed;
         }
 
+        .cookie-monochrome-icon {
+          width: 76px;
+          height: 76px;
+          border-radius: 22px;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.09);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #3f3f46;
+          flex-shrink: 0;
+        }
+        [data-theme='dark'] .cookie-monochrome-icon {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+          color: #ededed;
+        }
+
         .cookie-hero-heading {
-          font-size: 2.4rem;
+          font-size: 2.2rem;
           font-weight: 700;
           line-height: 1.15;
           letter-spacing: -0.035em;
           color: var(--text-primary);
-          margin: 0 0 0.85rem 0;
+          margin: 0 0 0.75rem 0;
         }
         @media (min-width: 640px) {
-          .cookie-hero-heading { font-size: 2.85rem; }
+          .cookie-hero-heading { font-size: 2.65rem; }
         }
 
         .cookie-hero-sub {
@@ -75,10 +96,15 @@ export default function CookiePolicyPage() {
         /* ── Content Area ── */
         .policy-container {
           width: 100%;
-          padding: 2.5rem 0 5rem;
+          padding: 2.5rem 3rem 5rem 3rem;
           color: var(--text-primary);
           line-height: 1.8;
           font-size: 0.95rem;
+        }
+        @media (max-width: 640px) {
+          .policy-container {
+            padding: 2.5rem 1.5rem 5rem 1.5rem;
+          }
         }
         .policy-container h2 {
           font-size: 1.35rem;
@@ -116,22 +142,31 @@ export default function CookiePolicyPage() {
       {/* Hero Card Banner */}
       <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '1rem' }}>
         <div className="cookie-hero-card">
-          <div className="cookie-pill-badge">
-            <span>+ Cookie policy</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
+            <div style={{ flex: 1, minWidth: '280px' }}>
+              <div className="cookie-pill-badge">
+                <span>+ Cookie Policy</span>
+              </div>
+
+              <h1 className="cookie-hero-heading">
+                Cookie Policy
+              </h1>
+
+              <p className="cookie-hero-sub">
+                Learn how <span className="brand-text">toolstaq</span> uses cookies and local browser storage to save your theme preferences and optimize browsing performance.
+              </p>
+            </div>
+
+            {/* Right-aligned Monochrome Icon Badge */}
+            <div className="cookie-monochrome-icon">
+              <Cookie size={36} />
+            </div>
           </div>
-
-          <h1 className="cookie-hero-heading">
-            Cookie Policy
-          </h1>
-
-          <p className="cookie-hero-sub">
-            Learn how toolstaq uses cookies and local browser storage to save your theme preferences and optimize browsing performance.
-          </p>
         </div>
 
         <div className="policy-container">
           <p>
-            toolstaq uses cookies, local browser storage, and similar tracking tokens to enhance your navigation experience, save theme configurations, and analyze anonymous site traffic. This Cookie Policy explains what these trackers are and how we deploy them.
+            <span className="brand-text">toolstaq</span> uses cookies, local browser storage, and similar tracking tokens to enhance your navigation experience, save theme configurations, and analyze anonymous site traffic. This Cookie Policy explains what these trackers are and how we deploy them.
           </p>
 
           <h2>1. What Are Cookies?</h2>

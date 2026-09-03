@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import ScrollToTop from '@/components/layout/ScrollToTop';
 import { getMeta } from '@/lib/tools';
 
 export const metadata: Metadata = {
   title: {
-    default: 'toolstaq — Find the Best AI Tools',
-    template: '%s | toolstaq',
+    default: 'toolstaq - The Intelligent Index for Frontier AI Tools',
+    template: 'toolstaq - %s',
   },
   description:
     'The most comprehensive AI tools directory. Discover, compare, and filter AI tools by category, pricing, complexity and more.',
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
+        <ScrollToTop />
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
           <Header />
           <main style={{ flex: '1 0 auto', paddingTop: '76px' }}>

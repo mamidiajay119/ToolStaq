@@ -3,7 +3,7 @@ import { getAllCategories, getCategoryCounts } from '@/lib/tools';
 import CategoriesClient from './CategoriesClient';
 
 export const metadata: Metadata = {
-  title: 'All AI Categories — Find Tools by Use Case',
+  title: 'Find the Right AI Tool for Any Use Case',
   description: 'Browse all categories of AI tools, from AI writing and coding to video generation and marketing.',
 };
 

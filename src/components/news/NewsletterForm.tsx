@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { ArrowRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ChevronRight, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { subscribeToNewsletter } from '@/app/actions/subscribe';
 
 export default function NewsletterForm() {
@@ -125,7 +125,7 @@ export default function NewsletterForm() {
             </>
           ) : (
             <>
-              Subscribe <ArrowRight size={14} />
+              Subscribe <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
             </>
           )}
         </button>

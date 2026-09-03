@@ -117,6 +117,7 @@ export function getAllCategories(): string[] {
 function normalizeTool(t: any): Tool {
   return {
     ...t,
+    tool_name: (t.tool_name || '').replace(/\s*\([^)]+\)$/i, '').trim(),
     category: t.category || [],
     features: t.features || [],
     target_segment: t.target_segment || [],
@@ -287,12 +288,35 @@ export function getPricingLabel(tool: Tool): string {
 }
 
 export function slugifyCategory(cat: string): string {
-  return cat.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  return cat
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 export function categoryFromSlug(slug: string): string {
   const categories = getAllCategories();
-  return categories.find((c) => slugifyCategory(c) === slug) || slug;
+  const normalizedSlug = slug.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  
+  // 1. Match against static categories list
+  const found = categories.find((c) => slugifyCategory(c) === slug || slugifyCategory(c) === normalizedSlug);
+  if (found) return found;
+
+  // 2. Title Case fallback with proper acronyms handling (AI, API, HR, SEO, UI, UX, 3D)
+  return slug
+    .replace(/--+/g, '-')
+    .split('-')
+    .filter(Boolean)
+    .map((word) => {
+      const upper = word.toUpperCase();
+      if (['AI', 'API', 'HR', 'SEO', 'UI', 'UX', '3D', 'LLM', 'IDE'].includes(upper)) {
+        return upper;
+      }
+      if (word === 'and') return '&';
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
 }
 
 export function getInitialUpvotes(slug: string, isRecommended?: boolean): number {
