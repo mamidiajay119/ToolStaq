@@ -462,10 +462,47 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
             background: var(--bg-card) !important;
             box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
           }
-          [data-theme='dark'] .sticky-col-header,
-          [data-theme='dark'] .sticky-col-cell {
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
-          }
+        .compare-preview-card {
+          background: var(--bg-card);
+          border: var(--border-width, 1px) solid var(--border-subtle);
+          border-radius: 20px;
+          padding: 1.25rem 1.5rem;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+          width: 100%;
+          max-width: 420px;
+          margin: 0 auto;
+        }
+        [data-theme='dark'] .compare-preview-card {
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          box-shadow: 0 12px 36px rgba(0, 0, 0, 0.3);
+        }
+
+        .compare-vs-container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          position: relative;
+        }
+
+        .compare-tool-pill {
+          flex: 1;
+          background: var(--bg-secondary);
+          border: 1px solid var(--border-subtle);
+          border-radius: 16px;
+          padding: 0.9rem 0.65rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          gap: 6px;
+          min-width: 0;
+          transition: transform 0.2s ease;
+        }
+        .compare-tool-pill:hover {
+          transform: translateY(-2px);
+          border-color: var(--accent-primary);
         }
       `}</style>
 
@@ -476,16 +513,16 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
             {/* Left Column: Badge, Headline, Subtitle, CTAs */}
             <div>
               <div className="compare-pill-badge">
-                <span>+ 2-Tool Side-by-Side Comparison</span>
+                <span>+ Side-by-Side Comparison</span>
               </div>
 
               <h1 className="compare-hero-heading">
-                Compare 2 AI tools<br />
-                head-to-head
+                Compare AI Tools<br />
+                Side-by-Side
               </h1>
 
               <p className="compare-hero-sub">
-                Evaluate every single spec, feature, integration, pricing tier, and verdict side-by-side to choose the perfect software for your stack.
+                Evaluate pricing, features, integrations, and technical capabilities side-by-side to choose the right AI software for your stack.
               </p>
 
               {/* Action CTAs */}
@@ -510,58 +547,84 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
               </div>
             </div>
 
-            {/* Right Column: VS Preview */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {/* Right Column: Minimalist VS Visual Showcase Card */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
               {selectedTools.length === 2 ? (
-                <div style={{ position: 'relative', width: '100%', maxWidth: '380px', height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  {/* Tool 1 Card */}
-                  <motion.div
-                    animate={{ y: [0, -4, 0] }}
-                    transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{
-                      position: 'absolute', left: '10px', width: '160px', height: '115px',
-                      borderRadius: '16px', background: 'var(--bg-card)',
-                      border: '1px solid var(--border-subtle)',
-                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-                      padding: '0.85rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                    }}
-                  >
-                    <ToolLogo url={selectedTools[0].url} icon={selectedTools[0].icon} favicon_url={selectedTools[0].favicon_url} size={36} borderRadius={10} />
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-                      {selectedTools[0].tool_name}
-                    </span>
-                  </motion.div>
+                <div className="compare-preview-card" style={{ padding: '1.5rem 1.5rem', maxWidth: '460px' }}>
+                  <div className="compare-vs-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px', width: '100%', flexWrap: 'nowrap' }}>
+                    {/* Tool 1 Box */}
+                    <motion.div
+                      animate={{ y: [0, -5, 0] }}
+                      transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                      className="compare-tool-pill"
+                      style={{ flex: '1 1 0%', minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.25rem 0.75rem' }}
+                    >
+                      <ToolLogo url={selectedTools[0].url} icon={selectedTools[0].icon} favicon_url={selectedTools[0].favicon_url} size={46} borderRadius={12} />
+                      <div style={{
+                        fontSize: '0.76rem',
+                        fontWeight: 500,
+                        color: 'var(--text-primary)',
+                        width: '100%',
+                        lineHeight: 1.3,
+                        marginTop: '8px',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        wordBreak: 'break-word',
+                      }}>
+                        {selectedTools[0].tool_name}
+                      </div>
+                    </motion.div>
 
-                  {/* VS Badge */}
-                  <div style={{
-                    position: 'absolute', zIndex: 5,
-                    width: '40px', height: '40px', borderRadius: '50%',
-                    background: 'var(--accent-primary)', color: '#FFFFFF',
-                    fontWeight: 800, fontSize: '0.78rem', letterSpacing: '0.04em',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: '0 4px 16px rgba(139, 92, 246, 0.4)',
-                    border: '3px solid var(--bg-card)',
-                  }}>
-                    VS
+                    {/* Animated Pulsing VS Circle Badge */}
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1], boxShadow: ['0 4px 14px rgba(139, 92, 246, 0.3)', '0 6px 20px rgba(139, 92, 246, 0.65)', '0 4px 14px rgba(139, 92, 246, 0.3)'] }}
+                      transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                      style={{
+                        zIndex: 5,
+                        width: '36px',
+                        height: '36px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%)',
+                        color: '#FFFFFF',
+                        fontWeight: 800,
+                        fontSize: '0.75rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: '3px solid var(--bg-card)',
+                        flexShrink: 0,
+                      }}
+                    >
+                      VS
+                    </motion.div>
+
+                    {/* Tool 2 Box */}
+                    <motion.div
+                      animate={{ y: [0, 5, 0] }}
+                      transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+                      className="compare-tool-pill"
+                      style={{ flex: '1 1 0%', minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.25rem 0.75rem' }}
+                    >
+                      <ToolLogo url={selectedTools[1].url} icon={selectedTools[1].icon} favicon_url={selectedTools[1].favicon_url} size={46} borderRadius={12} />
+                      <div style={{
+                        fontSize: '0.76rem',
+                        fontWeight: 500,
+                        color: 'var(--text-primary)',
+                        width: '100%',
+                        lineHeight: 1.3,
+                        marginTop: '8px',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        wordBreak: 'break-word',
+                      }}>
+                        {selectedTools[1].tool_name}
+                      </div>
+                    </motion.div>
                   </div>
-
-                  {/* Tool 2 Card */}
-                  <motion.div
-                    animate={{ y: [0, -5, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.3 }}
-                    style={{
-                      position: 'absolute', right: '10px', width: '160px', height: '115px',
-                      borderRadius: '16px', background: 'var(--bg-card)',
-                      border: '1px solid var(--border-subtle)',
-                      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-                      padding: '0.85rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '6px',
-                    }}
-                  >
-                    <ToolLogo url={selectedTools[1].url} icon={selectedTools[1].icon} favicon_url={selectedTools[1].favicon_url} size={36} borderRadius={10} />
-                    <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'center', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-                      {selectedTools[1].tool_name}
-                    </span>
-                  </motion.div>
                 </div>
               ) : (
                 <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
