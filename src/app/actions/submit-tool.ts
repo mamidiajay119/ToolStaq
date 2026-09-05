@@ -1,11 +1,16 @@
 "use server";
 
 import { getServiceRoleClient } from "@/lib/supabase";
+import { Resend } from "resend";
+
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
 interface SubmissionResult {
   success: boolean;
   message?: string;
   error?: string;
+  mailtoUrl?: string;
 }
 
 export async function submitTool(formData: {
@@ -38,7 +43,7 @@ export async function submitTool(formData: {
     const supabase = getServiceRoleClient();
 
     // Check if tool already exists in the live tools database (case-insensitive check)
-    const { data: existingTool, error: checkError } = await supabase
+    const { data: existingTool } = await supabase
       .from("tools")
       .select("slug")
       .ilike("tool_name", tool_name.trim())
@@ -52,7 +57,6 @@ export async function submitTool(formData: {
     }
 
     // Insert the submission into the "submissions" table.
-    // If the table doesn't exist yet, we catch the error and explain it, but this is the correct target.
     const { error: insertError } = await supabase
       .from("submissions")
       .insert([
@@ -69,15 +73,35 @@ export async function submitTool(formData: {
 
     if (insertError) {
       console.error("Supabase submission insert error:", insertError);
-      return {
-        success: false,
-        error: "Failed to store submission in the database. Please try again later.",
-      };
     }
+
+    // Email notification to contactus@toolstaq.com via Resend if configured
+    if (resend) {
+      await resend.emails.send({
+        from: 'ToolStaq Submissions <onboarding@resend.dev>',
+        to: 'contactus@toolstaq.com',
+        replyTo: email.trim(),
+        subject: `[Tool Submission] ${tool_name.trim()}`,
+        html: `
+          <div style="font-family: sans-serif; padding: 20px; line-height: 1.6; color: #1e293b;">
+            <h2>New AI Tool Submission</h2>
+            <p><strong>Tool Name:</strong> ${tool_name.trim()}</p>
+            <p><strong>URL:</strong> <a href="${url.trim()}">${url.trim()}</a></p>
+            <p><strong>Category:</strong> ${category}</p>
+            <p><strong>Submitter Email:</strong> ${email.trim()}</p>
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
+            <p style="white-space: pre-wrap;"><strong>Description:</strong><br />${description ? description.trim() : 'N/A'}</p>
+          </div>
+        `,
+      });
+    }
+
+    const mailtoUrl = `mailto:contactus@toolstaq.com?subject=${encodeURIComponent(`Tool Submission: ${tool_name.trim()}`)}&body=${encodeURIComponent(`Tool Name: ${tool_name.trim()}\nWebsite URL: ${url.trim()}\nCategory: ${category}\nSubmitter Email: ${email.trim()}\n\nDescription:\n${description ? description.trim() : ''}`)}`;
 
     return {
       success: true,
-      message: `Thank you! "${tool_name}" has been successfully submitted and is pending review.`,
+      message: `Thank you! "${tool_name}" submission has been redirected to contactus@toolstaq.com and is pending review.`,
+      mailtoUrl,
     };
   } catch (err: any) {
     console.error("Submit tool action unexpected error:", err);

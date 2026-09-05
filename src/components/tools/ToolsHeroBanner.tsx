@@ -87,8 +87,8 @@ export default function ToolsHeroBanner({ search, setSearch, setPage, totalCount
           overflow: hidden;
         }
         [data-theme='dark'] .tools-hero-card {
-          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
-          border: 1px solid rgba(139, 92, 246, 0.2);
+          background: linear-gradient(135deg, #130f24 0%, #1a1432 50%, #140f26 100%);
+          border: 1px solid rgba(139, 92, 246, 0.25);
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
@@ -197,13 +197,13 @@ export default function ToolsHeroBanner({ search, setSearch, setPage, totalCount
             </p>
 
             {/* Action CTAs */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '1.75rem' }}>
+            <div className="banner-cta-group" style={{ marginBottom: '1.75rem' }}>
               <button
                 onClick={() => {
                   const gridEl = document.getElementById('tools-directory-grid');
                   if (gridEl) gridEl.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="btn-primary"
+                className="btn-primary banner-cta-btn"
                 style={{
                   padding: '9px 18px',
                   borderRadius: '10px',
@@ -211,15 +211,17 @@ export default function ToolsHeroBanner({ search, setSearch, setPage, totalCount
                   fontWeight: 600,
                   display: 'inline-flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: '6px',
                   cursor: 'pointer',
+                  minWidth: '175px',
                 }}
               >
                 Explore tools <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
               </button>
               <a
                 href="/submit"
-                className="btn-secondary"
+                className="btn-secondary banner-cta-btn"
                 style={{
                   padding: '9px 18px',
                   borderRadius: '10px',
@@ -227,7 +229,9 @@ export default function ToolsHeroBanner({ search, setSearch, setPage, totalCount
                   fontWeight: 500,
                   display: 'inline-flex',
                   alignItems: 'center',
+                  justifyContent: 'center',
                   gap: '6px',
+                  minWidth: '175px',
                 }}
               >
                 Submit a tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />

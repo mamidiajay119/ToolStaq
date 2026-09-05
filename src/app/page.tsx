@@ -8,9 +8,19 @@ import HeroSection from '@/components/home/HeroSection';
 import CategoryGrid from '@/components/home/CategoryGrid';
 import type { Metadata } from 'next';
 
+import { siteConfig, getAbsoluteUrl } from '@/lib/siteConfig';
+
 export const metadata: Metadata = {
   title: 'The Intelligent Index for Frontier AI Tools',
-  description: 'Discover the right AI tools to power your workflow. Browse top AI tools across categories including coding, LLMs, design, video, automation and more.',
+  description: siteConfig.description,
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  openGraph: {
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+  },
 };
 
 const TOP_CATEGORIES = [
@@ -43,8 +53,42 @@ export default async function HomePage() {
     count: categoryCounts[cat] || 0,
   }));
 
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteConfig.name,
+    url: siteConfig.url,
+    description: siteConfig.description,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${getAbsoluteUrl('/tools')}?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
+  const organizationJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: getAbsoluteUrl('/icon.png'),
+    sameAs: [],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+
       <style>{`
         .how-card {
           background: var(--bg-card);
@@ -223,12 +267,12 @@ export default async function HomePage() {
                 Reach thousands of developers, tech leads, and founders searching for new AI software daily. Fast 4–48h editorial review SLA.
               </p>
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
-                <Link href="/submit" className="btn-primary" style={{ fontSize: '0.90rem', padding: '10px 22px', borderRadius: '12px' }}>
-                  Submit tool <ChevronRight size={16} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+              <div className="banner-cta-group center">
+                <Link href="/submit" className="btn-primary banner-cta-btn" style={{ fontSize: '0.85rem', padding: '8px 16px', borderRadius: '10px', minWidth: '155px', justifyContent: 'center' }}>
+                  Submit tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </Link>
-                <Link href="/tools" className="btn-secondary" style={{ fontSize: '0.90rem', padding: '10px 22px', borderRadius: '12px' }}>
-                  Browse directory
+                <Link href="/tools" className="btn-secondary banner-cta-btn" style={{ fontSize: '0.85rem', padding: '8px 16px', borderRadius: '10px', minWidth: '155px', justifyContent: 'center' }}>
+                  Browse directory <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </Link>
               </div>
             </div>

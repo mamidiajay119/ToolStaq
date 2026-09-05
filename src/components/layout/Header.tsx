@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, Zap, Mail } from 'lucide-react';
+import { Menu, X, ChevronRight } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 export default function Header() {
@@ -49,15 +49,17 @@ export default function Header() {
         }}
       >
         {/* Left: Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-          <div style={{
-            width: '32px', height: '32px', borderRadius: '8px',
-            background: 'var(--accent-primary)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)',
-          }}>
-            <Zap size={16} color="white" strokeWidth={2.5} />
-          </div>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+          <img
+            src="/logo.png"
+            alt="toolstaq logo"
+            style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '50%',
+              objectFit: 'contain',
+            }}
+          />
           <span className="brand-text" style={{ fontSize: '1.2rem' }}>
             toolstaq
           </span>
@@ -76,8 +78,8 @@ export default function Header() {
         {/* Right: Actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }} className="hidden-mobile">
           <ThemeToggle />
-          <Link href="/newsletter" className="btn-primary" style={{ padding: '6px 18px', borderRadius: '10px', fontSize: '0.825rem' }}>
-            <Mail size={14} style={{ marginRight: '4px' }} /> Subscribe
+          <Link href="/newsletter" className="btn-primary" style={{ padding: '6px 18px', borderRadius: '10px', fontSize: '0.825rem', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+            Subscribe <ChevronRight size={14} strokeWidth={2.5} />
           </Link>
         </div>
 
@@ -115,8 +117,8 @@ export default function Header() {
           <Link href="/news" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>AI News</Link>
           <Link href="/compare" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Compare</Link>
           <Link href="/submit" className="btn-ghost" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'flex-start', borderRadius: '12px' }}>Submit Tool</Link>
-          <Link href="/newsletter" className="btn-primary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'center', marginTop: '6px', gap: '6px', borderRadius: '99px' }}>
-            <Mail size={14} /> Subscribe
+          <Link href="/newsletter" className="btn-primary" onClick={() => setMenuOpen(false)} style={{ justifyContent: 'center', marginTop: '6px', gap: '4px', borderRadius: '99px' }}>
+            Subscribe <ChevronRight size={14} strokeWidth={2.5} />
           </Link>
         </div>
       )}
@@ -130,9 +132,9 @@ export default function Header() {
           --header-shadow-scrolled: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
         [data-theme='dark'] {
-          --header-bg: rgba(23, 15, 46, 0.75);
-          --header-bg-scrolled: rgba(15, 10, 30, 0.92);
-          --header-border: rgba(167, 139, 250, 0.22);
+          --header-bg: rgba(19, 15, 36, 0.75);
+          --header-bg-scrolled: rgba(11, 8, 22, 0.92);
+          --header-border: rgba(139, 92, 246, 0.2);
           --header-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
           --header-shadow-scrolled: 0 12px 40px rgba(0, 0, 0, 0.7);
         }

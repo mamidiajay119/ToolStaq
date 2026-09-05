@@ -256,23 +256,23 @@ export default function ProvidersClient({ providers, toolCounts }: ProvidersClie
               </p>
 
               {/* CTAs */}
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '1.75rem' }}>
+              <div className="banner-cta-group" style={{ marginBottom: '1.75rem' }}>
                 <button
                   onClick={() => {
                     const el = document.getElementById('providers-grid-section');
                     if (el) el.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="btn-primary"
-                  style={{ padding: '9px 18px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}
+                  className="btn-primary banner-cta-btn"
+                  style={{ padding: '9px 18px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', cursor: 'pointer', minWidth: '175px' }}
                 >
-                  Explore Providers <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                  Explore providers <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </button>
                 <Link
                   href="/submit"
-                  className="btn-secondary"
-                  style={{ padding: '9px 18px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                  className="btn-secondary banner-cta-btn"
+                  style={{ padding: '9px 18px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 500, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px', minWidth: '175px' }}
                 >
-                  Submit Tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                  Submit a tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </Link>
               </div>
 

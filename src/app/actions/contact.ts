@@ -1,5 +1,10 @@
 "use server";
 
+import { Resend } from 'resend';
+
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey ? new Resend(resendApiKey) : null;
+
 export async function submitContactForm(prevState: any, formData: FormData) {
   const name = formData.get('name')?.toString().trim();
   const email = formData.get('email')?.toString().trim();
@@ -24,17 +29,34 @@ export async function submitContactForm(prevState: any, formData: FormData) {
   }
 
   try {
-    // Log submission (in production this would send an email or write to a db)
-    console.log("=== NEW CONTACT FORM SUBMISSION ===");
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Subject:", subject);
-    console.log("Message:", message);
-    console.log("====================================");
+    if (resend) {
+      await resend.emails.send({
+        from: 'ToolStaq Contact Form <onboarding@resend.dev>',
+        to: 'contactus@toolstaq.com',
+        replyTo: email,
+        subject: `[ToolStaq Contact] ${subject}`,
+        html: `
+          <div style="font-family: sans-serif; padding: 20px; line-height: 1.6; color: #1e293b;">
+            <h2>New Contact Us Message</h2>
+            <p><strong>From:</strong> ${name} (&lt;${email}&gt;)</p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;" />
+            <p style="white-space: pre-wrap;">${message}</p>
+          </div>
+        `,
+      });
+    }
+
+    console.log("=== NEW CONTACT FORM SUBMISSION TO contactus@toolstaq.com ===");
+    console.log(`From: ${name} (${email}) | Subject: ${subject}`);
+    console.log("==============================================================");
+
+    const mailtoUrl = `mailto:contactus@toolstaq.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name} <${email}>\n\n${message}`)}`;
 
     return {
       success: true,
-      message: "Your message has been received! Our support team will get back to you within 24-48 hours.",
+      message: "Your message has been sent to contactus@toolstaq.com! Our team will respond within 24-48 hours.",
+      mailtoUrl,
     };
   } catch (error) {
     console.error("Contact form error:", error);

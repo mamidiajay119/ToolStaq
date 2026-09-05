@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Search, X, Calendar, Clock, Eye, TrendingUp, Flame, Sparkles, Bot, Code2, Globe, ShieldCheck, Newspaper, ChevronRight, Plus } from 'lucide-react';
 import type { NewsArticle } from './page';
@@ -93,27 +93,94 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
   const [activeCategory, setActiveCategory] = useState('All');
   const [visibleCount, setVisibleCount] = useState(8);
 
-  // 4 visible slots in 2x2 news matrix with Superhuman live rotation
-  const [newsSlots, setNewsSlots] = useState<NewsArticle[]>(() => newsArticles.slice(0, 4));
+  const slotIndexRef = useRef(0);
+  const articlePoolIndexRef = useRef(0);
+
+  // Helper: Get initial 4 slots ensuring 4 unique categories if available
+  const initialSlots = useMemo(() => {
+    const categoriesSeen = new Set<string>();
+    const slots: NewsArticle[] = [];
+
+    // First pass: pick 1 article per distinct category
+    for (const art of newsArticles) {
+      if (!categoriesSeen.has(art.category)) {
+        categoriesSeen.add(art.category);
+        slots.push(art);
+        if (slots.length === 4) break;
+      }
+    }
+
+    // Second pass: if fewer than 4 unique categories exist, fill remaining with unique articles
+    if (slots.length < 4) {
+      const slotIds = new Set(slots.map((s) => s.id));
+      for (const art of newsArticles) {
+        if (!slotIds.has(art.id)) {
+          slots.push(art);
+          slotIds.add(art.id);
+          if (slots.length === 4) break;
+        }
+      }
+    }
+
+    return slots;
+  }, [newsArticles]);
+
+  // 4 visible slots in 2x2 news matrix with Superhuman live Round Robin rotation
+  const [newsSlots, setNewsSlots] = useState<NewsArticle[]>(initialSlots);
   const [isNewsPaused, setIsNewsPaused] = useState(false);
+
+  useEffect(() => {
+    setNewsSlots(initialSlots);
+  }, [initialSlots]);
 
   useEffect(() => {
     if (isNewsPaused || newsArticles.length < 4) return;
 
     const interval = setInterval(() => {
-      const slotToSwap = Math.floor(Math.random() * 4);
-
       setNewsSlots((currentSlots) => {
+        const slotToSwap = slotIndexRef.current % 4;
         const currentIds = new Set(currentSlots.map((s) => s.id));
-        const available = newsArticles.filter((t) => !currentIds.has(t.id));
-        if (available.length === 0) return currentSlots;
 
-        const nextArticle = available[Math.floor(Math.random() * available.length)];
+        // Categories present in the OTHER 3 slots that are NOT being swapped
+        const otherCategories = new Set(
+          currentSlots.filter((_, idx) => idx !== slotToSwap).map((s) => s.category)
+        );
+
+        // Find candidate article that isn't in currentSlots AND introduces a unique category if possible
+        let nextArticle: NewsArticle | undefined;
+
+        // Try to find candidate with a unique category not present in other 3 slots
+        for (let i = 0; i < newsArticles.length; i++) {
+          const candidateIdx = (articlePoolIndexRef.current + i) % newsArticles.length;
+          const candidate = newsArticles[candidateIdx];
+          if (!currentIds.has(candidate.id) && !otherCategories.has(candidate.category)) {
+            nextArticle = candidate;
+            articlePoolIndexRef.current = (candidateIdx + 1) % newsArticles.length;
+            break;
+          }
+        }
+
+        // Fallback: any candidate article not currently visible
+        if (!nextArticle) {
+          for (let i = 0; i < newsArticles.length; i++) {
+            const candidateIdx = (articlePoolIndexRef.current + i) % newsArticles.length;
+            const candidate = newsArticles[candidateIdx];
+            if (!currentIds.has(candidate.id)) {
+              nextArticle = candidate;
+              articlePoolIndexRef.current = (candidateIdx + 1) % newsArticles.length;
+              break;
+            }
+          }
+        }
+
+        if (!nextArticle) return currentSlots;
+
         const nextSlots = [...currentSlots];
         nextSlots[slotToSwap] = nextArticle;
+        slotIndexRef.current = (slotIndexRef.current + 1) % 4;
         return nextSlots;
       });
-    }, 2800);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isNewsPaused, newsArticles]);
@@ -175,8 +242,8 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
           overflow: hidden;
         }
         [data-theme='dark'] .news-hero-card {
-          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
-          border: 1px solid rgba(139, 92, 246, 0.2);
+          background: linear-gradient(135deg, #130f24 0%, #1a1432 50%, #140f26 100%);
+          border: 1px solid rgba(139, 92, 246, 0.25);
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
@@ -447,13 +514,13 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
               </p>
 
               {/* Action CTAs */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+              <div className="banner-cta-group" style={{ marginBottom: '1.5rem' }}>
                 <button
                   onClick={() => {
                     const gridEl = document.getElementById('news-articles-grid');
                     if (gridEl) gridEl.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="btn-primary"
+                  className="btn-primary banner-cta-btn"
                   style={{
                     padding: '9px 18px',
                     borderRadius: '10px',
@@ -461,14 +528,16 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
                     fontWeight: 600,
                     display: 'inline-flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '6px',
+                    minWidth: '175px',
                   }}
                 >
                   Read latest news <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </button>
                 <a
                   href="#newsletter-signup"
-                  className="btn-secondary"
+                  className="btn-secondary banner-cta-btn"
                   style={{
                     padding: '9px 18px',
                     borderRadius: '10px',
@@ -476,7 +545,9 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
                     fontWeight: 500,
                     display: 'inline-flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '6px',
+                    minWidth: '175px',
                   }}
                 >
                   Subscribe to briefings <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
@@ -747,10 +818,8 @@ export default function NewsClient({ newsArticles, topArticles }: NewsClientProp
         )}
 
         {/* ── Newsletter ── */}
-        <section id="newsletter-signup" style={{ marginTop: '5.5rem' }}>
-          <div className="newsletter-card" style={{ textAlign: 'center' }}>
-            <div style={{ position: 'absolute', top: '-50px', left: '-50px', width: '180px', height: '180px', background: 'radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)', filter: 'blur(30px)', pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', bottom: '-50px', right: '-50px', width: '180px', height: '180px', background: 'radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)', filter: 'blur(30px)', pointerEvents: 'none' }} />
+        <section id="newsletter-signup" style={{ marginTop: '5.5rem', marginBottom: '2rem' }}>
+          <div style={{ textAlign: 'center', padding: '2rem 1rem' }}>
             <h2 style={{ fontSize: '1.4rem', fontWeight: 400, marginBottom: '0.75rem', letterSpacing: '-0.01em', textAlign: 'center' }}>Subscribe to AI Updates</h2>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1.75rem', maxWidth: '460px', margin: '0 auto 1.75rem', lineHeight: 1.5, textAlign: 'center' }}>
               Get a weekly summary of the most important AI tool launches and news stories sent straight to your inbox.

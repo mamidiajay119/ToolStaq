@@ -201,17 +201,15 @@ export async function getToolsByNames(names: string[]): Promise<Tool[]> {
   return (data || []).map(normalizeTool);
 }
 
-export async function getToolsByCategory(category: string): Promise<Tool[]> {
-  const { data: dbTools, error } = await supabase
-    .from('tools')
-    .select('*')
-    .contains('category', [category]); // Postgres array contains query
+export async function getToolsByCategory(categoryOrSlug: string): Promise<Tool[]> {
+  const targetSlug = slugifyCategory(categoryOrSlug);
+  const allTools = await getAllTools();
 
-  if (error) {
-    console.error(`Error fetching tools by category ${category} from Supabase:`, error.message);
-    return [];
-  }
-  return (dbTools || []).map(normalizeTool);
+  return allTools.filter((t) => {
+    const primarySlug = slugifyCategory(t.primary_category || '');
+    if (primarySlug === targetSlug) return true;
+    return (t.category || []).some((c) => slugifyCategory(c) === targetSlug);
+  });
 }
 
 export async function getAllCategoriesAsync(): Promise<string[]> {
@@ -223,7 +221,11 @@ export async function getCategoryCounts(): Promise<Record<string, number>> {
   const tools = await getAllTools();
   const counts: Record<string, number> = {};
   tools.forEach((t) => {
-    t.category.forEach((c) => {
+    const categoriesSet = new Set([
+      ...(t.category || []),
+      ...(t.primary_category ? [t.primary_category] : []),
+    ]);
+    categoriesSet.forEach((c) => {
       counts[c] = (counts[c] || 0) + 1;
     });
   });
@@ -295,15 +297,23 @@ export function slugifyCategory(cat: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-export function categoryFromSlug(slug: string): string {
-  const categories = getAllCategories();
-  const normalizedSlug = slug.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  
-  // 1. Match against static categories list
-  const found = categories.find((c) => slugifyCategory(c) === slug || slugifyCategory(c) === normalizedSlug);
+export function categoryFromSlug(slug: string, allTools?: Tool[]): string {
+  const targetSlug = slugifyCategory(slug);
+
+  if (allTools && allTools.length > 0) {
+    for (const t of allTools) {
+      if (t.primary_category && slugifyCategory(t.primary_category) === targetSlug) {
+        return t.primary_category;
+      }
+      const matched = (t.category || []).find((c) => slugifyCategory(c) === targetSlug);
+      if (matched) return matched;
+    }
+  }
+
+  const staticCategories = getAllCategories();
+  const found = staticCategories.find((c) => slugifyCategory(c) === targetSlug);
   if (found) return found;
 
-  // 2. Title Case fallback with proper acronyms handling (AI, API, HR, SEO, UI, UX, 3D)
   return slug
     .replace(/--+/g, '-')
     .split('-')

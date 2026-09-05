@@ -3,41 +3,66 @@ import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollToTop from '@/components/layout/ScrollToTop';
-import { getMeta } from '@/lib/tools';
+import { siteConfig, getOgImageUrl } from '@/lib/siteConfig';
+
+const defaultOgImage = getOgImageUrl({
+  title: siteConfig.title,
+  subtitle: siteConfig.description,
+  type: 'AI Directory',
+});
 
 export const metadata: Metadata = {
   title: {
-    default: 'toolstaq - The Intelligent Index for Frontier AI Tools',
-    template: 'toolstaq - %s',
+    default: siteConfig.title,
+    template: 'toolstaq — %s',
   },
-  description:
-    'The most comprehensive AI tools directory. Discover, compare, and filter AI tools by category, pricing, complexity and more.',
-  keywords: ['AI tools', 'artificial intelligence', 'AI software', 'machine learning tools', 'AI directory'],
-  metadataBase: new URL('https://aitoolsdirectory.com'),
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  metadataBase: new URL(siteConfig.url),
   openGraph: {
     type: 'website',
-    siteName: 'toolstaq',
-    title: 'toolstaq — Find the Best AI Tools',
-    description: 'Find the perfect AI tool for your workflow. Browse top tools across multiple categories.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    images: [
+      {
+        url: defaultOgImage,
+        width: 1200,
+        height: 630,
+        alt: 'toolstaq — The Intelligent Index for Frontier AI Tools',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'toolstaq',
-    description: 'Discover the best AI tools across multiple categories.',
+    title: siteConfig.title,
+    description: siteConfig.description,
+    creator: siteConfig.twitterHandle,
+    images: [defaultOgImage],
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/icon.png', type: 'image/png' },
+      { url: '/favicon.ico', sizes: 'any' },
     ],
-    apple: '/favicon.svg',
-    shortcut: '/favicon.svg',
+    apple: '/apple-icon.png',
+    shortcut: '/icon.png',
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION,
   },
 };
 

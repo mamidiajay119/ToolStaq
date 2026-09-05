@@ -31,6 +31,9 @@ export default function SubmitPage() {
       const result = await submitTool(form);
       if (result.success) {
         setSubmitted(true);
+        if (result.mailtoUrl) {
+          window.location.href = result.mailtoUrl;
+        }
       } else {
         setError(result.error || "An error occurred while submitting.");
       }
@@ -240,13 +243,13 @@ export default function SubmitPage() {
                 Reach thousands of developers, founders, and AI enthusiasts searching for new software daily. Fast editorial review with zero listing fees.
               </p>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <div className="banner-cta-group">
                 <button
                   onClick={() => {
                     const formEl = document.getElementById('submit-form-box');
                     if (formEl) formEl.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="btn-primary"
+                  className="btn-primary banner-cta-btn"
                   style={{
                     padding: '9px 18px',
                     borderRadius: '10px',
@@ -254,10 +257,12 @@ export default function SubmitPage() {
                     fontWeight: 600,
                     display: 'inline-flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '6px',
+                    minWidth: '175px',
                   }}
                 >
-                  Submit your tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                  Submit a tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </button>
               </div>
             </div>
@@ -333,10 +338,10 @@ export default function SubmitPage() {
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
                 {[
-                  { icon: <Clock size={16} color="var(--accent-primary)" />, title: '4–48h Review SLA', desc: 'Manual editorial verification by our team.' },
-                  { icon: <Link2 size={16} color="#0891b2" />, title: 'Dofollow SEO Link', desc: 'Direct backlink to boost your site authority.' },
-                  { icon: <ShieldCheck size={16} color="#059669" />, title: '100% Free Forever', desc: 'No hidden listing fees or subscriptions.' },
-                  { icon: <Zap size={16} color="#d97706" />, title: 'High Discovery', desc: 'Shown to thousands of AI builders daily.' },
+                  { icon: <Clock size={16} color="var(--text-primary)" />, title: '4–48h Review SLA', desc: 'Manual editorial verification by our team.' },
+                  { icon: <Link2 size={16} color="var(--text-primary)" />, title: 'Dofollow SEO Link', desc: 'Direct backlink to boost your site authority.' },
+                  { icon: <ShieldCheck size={16} color="var(--text-primary)" />, title: '100% Free Forever', desc: 'No hidden listing fees or subscriptions.' },
+                  { icon: <Zap size={16} color="var(--text-primary)" />, title: 'High Discovery', desc: 'Shown to thousands of AI builders daily.' },
                 ].map((item) => (
                   <div key={item.title} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                     <div style={{
@@ -472,7 +477,7 @@ export default function SubmitPage() {
                         Submitting...
                       </span>
                     ) : (
-                      <>Submit Tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.8 }} /></>
+                      <>Submit a tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.8 }} /></>
                     )}
                   </button>
                 </div>

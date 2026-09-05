@@ -31,6 +31,9 @@ export default function ContactPage() {
 
       if (result.success) {
         setStatus({ type: 'success', message: result.message || 'Message sent!' });
+        if (result.mailtoUrl) {
+          window.location.href = result.mailtoUrl;
+        }
         setName('');
         setEmail('');
         setSubject('');
@@ -358,8 +361,20 @@ export default function ContactPage() {
                 Contact Info
               </h3>
               
-              {/* Response Time Item */}
+              {/* Direct Support Email */}
+              <div className="info-item">
+                <div className="info-icon">
+                  <Mail size={16} />
+                </div>
+                <div>
+                  <h4 style={{ fontSize: '0.825rem', fontWeight: 600, color: 'var(--text-primary)', margin: '0 0 2px 0' }}>Direct Support Email</h4>
+                  <a href="mailto:contactus@toolstaq.com" style={{ fontSize: '0.825rem', color: 'var(--accent-primary)', fontWeight: 600, textDecoration: 'underline', lineHeight: 1.4 }}>
+                    contactus@toolstaq.com
+                  </a>
+                </div>
+              </div>
 
+              {/* Response Time Item */}
               <div className="info-item">
                 <div className="info-icon">
                   <Clock size={16} />

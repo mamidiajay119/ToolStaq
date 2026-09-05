@@ -67,8 +67,8 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
           transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
         }
         [data-theme='dark'] .cal-hero-card {
-          background: linear-gradient(135deg, #0d091b 0%, #140d28 50%, #0e0a1d 100%);
-          border: 1px solid rgba(139, 92, 246, 0.2);
+          background: linear-gradient(135deg, #130f24 0%, #1a1432 50%, #140f26 100%);
+          border: 1px solid rgba(139, 92, 246, 0.25);
           box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
         @media (max-width: 640px) {
@@ -366,40 +366,44 @@ export default function HeroSection({ totalTools, totalCategories }: HeroSection
 
           {/* Action Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.28 }}
-            className="cal-cta-group"
+            className="cal-cta-group banner-cta-group center"
           >
             <Link
               href="/tools"
-              className="btn-primary"
+              className="btn-primary banner-cta-btn"
               style={{
-                padding: '10px 22px',
-                borderRadius: '12px',
-                fontSize: '0.90rem',
+                padding: '8px 16px',
+                borderRadius: '10px',
+                fontSize: '0.85rem',
                 fontWeight: 600,
                 display: 'inline-flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '6px',
+                minWidth: '155px',
               }}
             >
-              Explore directory <ChevronRight size={16} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+              Explore directory <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
             </Link>
             <Link
               href="/submit"
-              className="btn-secondary"
+              className="btn-secondary banner-cta-btn"
               style={{
-                padding: '10px 22px',
-                borderRadius: '12px',
-                fontSize: '0.90rem',
+                padding: '8px 16px',
+                borderRadius: '10px',
+                fontSize: '0.85rem',
                 fontWeight: 500,
                 display: 'inline-flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '6px',
+                minWidth: '155px',
               }}
             >
-              Submit AI tool <ChevronRight size={16} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+              Submit AI tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
             </Link>
           </motion.div>
         </div>

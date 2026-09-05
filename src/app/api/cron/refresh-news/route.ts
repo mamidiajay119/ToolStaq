@@ -44,10 +44,19 @@ function getDomainName(urlStr: string): string {
 export async function GET(request: NextRequest) {
   // ── Security: verify Vercel Cron secret ──────────────────────────────────
   const authHeader = request.headers.get('authorization');
+  const secretParam = request.nextUrl.searchParams.get('secret');
   const cronSecret = process.env.CRON_SECRET;
 
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  if (process.env.NODE_ENV === 'production' && !cronSecret) {
+    return Response.json({ error: 'CRON_SECRET environment variable is missing' }, { status: 401 });
+  }
+
+  if (cronSecret) {
+    const isHeaderValid = authHeader === `Bearer ${cronSecret}`;
+    const isParamValid = secretParam === cronSecret;
+    if (!isHeaderValid && !isParamValid) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 });
+    }
   }
 
   const currentsKey = process.env.CURRENTS_API_KEY;

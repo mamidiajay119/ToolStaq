@@ -1,10 +1,19 @@
 import type { Metadata } from 'next';
 import { fetchLatestAINews, fetchTopThisWeek } from '@/lib/news';
 import NewsClient from './NewsClient';
+import { getAbsoluteUrl } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
-  title: 'AI News, Simplified',
-  description: 'Stay ahead of the curve with the latest news, releases, and trends in Artificial Intelligence. Curated by toolstaq.',
+  title: 'AI News, Breakthroughs & Trend Analysis — toolstaq',
+  description: 'Stay ahead of the curve with the latest news, releases, and trends in Artificial Intelligence. Curated daily by toolstaq.',
+  alternates: {
+    canonical: getAbsoluteUrl('/news'),
+  },
+  openGraph: {
+    title: 'AI News, Breakthroughs & Trends — toolstaq',
+    description: 'Curated daily AI news covering frontier models, open-source AI, regulations, and agent breakthroughs.',
+    url: getAbsoluteUrl('/news'),
+  },
 };
 
 // ISR: re-render after 24h. /api/cron/refresh-news calls revalidatePath('/news') at midnight UTC.

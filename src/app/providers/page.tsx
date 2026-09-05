@@ -1,10 +1,19 @@
 import type { Metadata } from 'next';
 import { getAllProviders, getToolsByProviderSlug } from '@/lib/providers';
 import ProvidersClient from './ProvidersClient';
+import { getAbsoluteUrl } from '@/lib/siteConfig';
 
 export const metadata: Metadata = {
-  title: 'Frontier AI Model Providers & Research Labs',
+  title: 'Frontier AI Model Providers & Research Labs — Ecosystem Index',
   description: 'Discover the foundation labs, infrastructure engines, and open-weight model providers powering modern AI applications. Compare OpenAI, Anthropic, DeepSeek, Google, Meta, and more.',
+  alternates: {
+    canonical: getAbsoluteUrl('/providers'),
+  },
+  openGraph: {
+    title: 'AI Providers & Model Ecosystem — toolstaq',
+    description: 'Track live AI models, context windows, and tools built on OpenAI, Anthropic, Google DeepMind, Meta, and DeepSeek.',
+    url: getAbsoluteUrl('/providers'),
+  },
 };
 
 export default async function ProvidersPage() {

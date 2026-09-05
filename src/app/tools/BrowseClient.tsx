@@ -275,9 +275,6 @@ export default function BrowseToolsClient({ tools, allCategories }: { tools: Too
               <div className="monochrome-pill-badge-sm" style={{ marginBottom: 0 }}>
                 <span>+ Top Picks</span>
               </div>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                Handpicked top-tier AI tools
-              </span>
             </div>
 
             <div className="top-picks-marquee-container">

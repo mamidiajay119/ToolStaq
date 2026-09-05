@@ -223,13 +223,13 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
               </p>
 
               {/* Action CTAs */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
+              <div className="banner-cta-group" style={{ marginBottom: '1.5rem' }}>
                 <button
                   onClick={() => {
                     const gridEl = document.getElementById('categories-grid');
                     if (gridEl) gridEl.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="btn-primary"
+                  className="btn-primary banner-cta-btn"
                   style={{
                     padding: '9px 18px',
                     borderRadius: '10px',
@@ -237,14 +237,16 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
                     fontWeight: 600,
                     display: 'inline-flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '6px',
+                    minWidth: '175px',
                   }}
                 >
                   Explore categories <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
                 </button>
                 <Link
                   href="/submit"
-                  className="btn-secondary"
+                  className="btn-secondary banner-cta-btn"
                   style={{
                     padding: '9px 18px',
                     borderRadius: '10px',
@@ -252,7 +254,9 @@ export default function CategoriesClient({ categories, counts }: CategoriesClien
                     fontWeight: 500,
                     display: 'inline-flex',
                     alignItems: 'center',
+                    justifyContent: 'center',
                     gap: '6px',
+                    minWidth: '175px',
                   }}
                 >
                   Submit a tool <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />

@@ -92,10 +92,10 @@ export default function NewsletterForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email address"
           style={{
-            flex: '1 1 260px',
-            padding: '10px 14px',
-            fontSize: '0.875rem',
-            borderRadius: '8px',
+            flex: '1 1 240px',
+            padding: '8px 14px',
+            fontSize: '0.85rem',
+            borderRadius: '10px',
             background: 'var(--bg-primary)',
             border: 'var(--border-width, 1px) solid var(--border-subtle)',
             color: 'var(--text-primary)',
@@ -107,16 +107,16 @@ export default function NewsletterForm() {
           disabled={isLoading}
           className="btn-primary" 
           style={{ 
-            padding: '10px 20px', 
-            fontSize: '0.875rem', 
-            borderRadius: '8px',
+            padding: '8px 16px', 
+            fontSize: '0.85rem', 
+            borderRadius: '10px',
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '6px',
             cursor: isLoading ? 'not-allowed' : 'pointer',
             opacity: isLoading ? 0.8 : 1,
             justifyContent: 'center',
-            minWidth: '120px',
+            minWidth: '110px',
           }}
         >
           {isLoading ? (

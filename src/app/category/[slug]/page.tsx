@@ -1,51 +1,107 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllCategories, getToolsByCategory, categoryFromSlug, slugifyCategory } from '@/lib/tools';
+import { getAllCategories, getAllCategoriesAsync, getAllTools, getToolsByCategory, categoryFromSlug, slugifyCategory } from '@/lib/tools';
 import { CATEGORY_LONG_DESCRIPTIONS, CATEGORY_SHORT_DESCRIPTIONS } from '@/lib/category-content';
 import CategoryIcon from '@/components/ui/CategoryIcon';
 import CategoryToolsClient from './CategoryToolsClient';
 
+import { getAbsoluteUrl, getOgImageUrl } from '@/lib/siteConfig';
+
 export async function generateStaticParams() {
-  const categories = getAllCategories();
+  const categories = await getAllCategoriesAsync();
   return categories.map((cat) => ({ slug: slugifyCategory(cat) }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const cat = categoryFromSlug(slug);
-  const tools = await getToolsByCategory(cat);
+  const allTools = await getAllTools();
+  const cat = categoryFromSlug(slug, allTools);
+  const tools = await getToolsByCategory(slug);
   if (!cat || !tools || tools.length === 0) return { title: 'Category Not Found' };
+  const pageUrl = getAbsoluteUrl(`/category/${slug}`);
+  const title = `${cat} Tools — ${tools.length} AI Tools for ${cat.replace('AI ', '')}`;
+  const description = `Browse ${tools.length} ${cat} tools. Compare pricing, features, and find the best ${cat} tool for your workflow.`;
+
+  const ogImage = getOgImageUrl({
+    title: `${cat} Tools`,
+    subtitle: `Discover and compare ${tools.length} top AI tools in ${cat}. Filter by pricing, complexity, and OS.`,
+    category: cat,
+    type: 'Tool Category',
+  });
+
   return {
-    title: `${cat} Tools — ${tools.length} AI Tools for ${cat.replace('AI ', '')}`,
-    description: `Browse ${tools.length} ${cat} tools. Compare pricing, features, and find the best ${cat} tool for your workflow.`,
-    alternates: { canonical: `https://aitoolsdirectory.com/category/${slug}` },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: pageUrl,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${cat} Tools Index — toolstaq`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImage],
+    },
+    alternates: { canonical: pageUrl },
   };
 }
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const cat = categoryFromSlug(slug);
-  const tools = await getToolsByCategory(cat);
+  const allTools = await getAllTools();
+  const cat = categoryFromSlug(slug, allTools);
+  const tools = await getToolsByCategory(slug);
 
   if (!cat || !tools || tools.length === 0) {
     notFound();
   }
   const desc = CATEGORY_SHORT_DESCRIPTIONS[cat] || `Browse ${tools.length} AI tools in the ${cat} category.`;
-  const allCategories = getAllCategories();
+  const allCategories = await getAllCategoriesAsync();
+  const pageUrl = getAbsoluteUrl(`/category/${slug}`);
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${cat} Tools`,
     description: desc,
-    url: `https://aitoolsdirectory.com/category/${slug}`,
+    url: pageUrl,
     numberOfItems: tools.length,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: tools.length,
+      itemListElement: tools.slice(0, 20).map((tool, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        name: tool.tool_name,
+        url: getAbsoluteUrl(`/tools/${tool.slug}`),
+      })),
+    },
+  };
+
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: getAbsoluteUrl('/') },
+      { '@type': 'ListItem', position: 2, name: 'Categories', item: getAbsoluteUrl('/categories') },
+      { '@type': 'ListItem', position: 3, name: `${cat} Tools`, item: pageUrl },
+    ],
   };
 
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <style>{`
         .hide-scroll::-webkit-scrollbar { display: none; }

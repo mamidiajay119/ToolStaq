@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import ToolLogo from '@/components/tools/ToolLogo';
 import UpvoteButton from '@/components/tools/UpvoteButton';
+import ShareButton from '@/components/tools/ShareButton';
 
 interface ToolHeroProps {
   toolName: string;
@@ -41,7 +42,7 @@ export default function ToolHero({
           border-radius: 24px;
           padding: 2.5rem 2.75rem;
           box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-          overflow: hidden;
+          overflow: visible;
           transition: background var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
         }
         [data-theme='dark'] .tool-hero-card {
@@ -203,23 +204,17 @@ export default function ToolHero({
                 </motion.a>,
 
                 <motion.div
-                  key="compare"
-                  variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease } } }}
-                >
-                  <Link
-                    href={`/compare?tool=${toolSlug}`}
-                    className="btn-secondary"
-                    style={{ padding: '8px 18px', fontSize: '0.85rem', height: '38px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '6px' }}
-                  >
-                    Compare Tools <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
-                  </Link>
-                </motion.div>,
-
-                <motion.div
                   key="upvote"
                   variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease } } }}
                 >
                   <UpvoteButton toolSlug={toolSlug} initialUpvotes={baseUpvotes} />
+                </motion.div>,
+
+                <motion.div
+                  key="share"
+                  variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.35, ease } } }}
+                >
+                  <ShareButton toolName={toolName} toolTitle={toolTitle || ''} toolSlug={toolSlug} />
                 </motion.div>,
               ].filter(Boolean)}
             </motion.div>

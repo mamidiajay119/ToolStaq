@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { getAbsoluteUrl } from '@/lib/siteConfig';
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -9,6 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/go/', '/api/'],
       },
     ],
-    sitemap: 'https://aitoolsdirectory.com/sitemap.xml',
+    sitemap: getAbsoluteUrl('/sitemap.xml'),
   };
 }
+

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import Link from 'next/link';
 import ToolLogo from '@/components/tools/ToolLogo';
@@ -33,23 +33,33 @@ export default function RotatingBrandGrid() {
   // 5 visible slots
   const [slots, setSlots] = useState<BrandTool[]>(POOL.slice(0, 5));
   const [isPaused, setIsPaused] = useState(false);
+  const slotIndexRef = useRef(0);
+  const poolPointerRef = useRef(5);
 
   useEffect(() => {
     if (isPaused) return;
 
     const interval = setInterval(() => {
-      const slotIndexToSwap = Math.floor(Math.random() * 5);
-      
       setSlots((currentSlots) => {
+        const slotIndexToSwap = slotIndexRef.current % 5;
         const currentSlugs = new Set(currentSlots.map(s => s.slug));
-        const availablePool = POOL.filter(p => !currentSlugs.has(p.slug));
         
-        if (availablePool.length === 0) return currentSlots;
+        let nextTool: BrandTool | undefined;
+        for (let i = 0; i < POOL.length; i++) {
+          const candidateIdx = (poolPointerRef.current + i) % POOL.length;
+          const candidate = POOL[candidateIdx];
+          if (!currentSlugs.has(candidate.slug)) {
+            nextTool = candidate;
+            poolPointerRef.current = (candidateIdx + 1) % POOL.length;
+            break;
+          }
+        }
         
-        const randomNewTool = availablePool[Math.floor(Math.random() * availablePool.length)];
+        if (!nextTool) return currentSlots;
         
         const nextSlots = [...currentSlots];
-        nextSlots[slotIndexToSwap] = randomNewTool;
+        nextSlots[slotIndexToSwap] = nextTool;
+        slotIndexRef.current = (slotIndexRef.current + 1) % 5;
         return nextSlots;
       });
     }, 2800);

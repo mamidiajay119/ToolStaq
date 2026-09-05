@@ -2,13 +2,16 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
-  Zap, Globe,
+  Zap, Globe, ChevronRight,
   Code2, Lock, Gift, RefreshCw, Users, ArrowRight, Shield
 } from 'lucide-react';
 import { getAllSlugs, getToolBySlug, getPricingLabel, slugifyCategory, getToolDescription, getToolsByNames, getInitialUpvotes } from '@/lib/tools';
 import type { Tool } from '@/types/tool';
 import ToolCard from '@/components/tools/ToolCard';
 import ToolHero from '@/components/tools/ToolHero';
+
+import { getAbsoluteUrl, getOgImageUrl } from '@/lib/siteConfig';
+import { urlToFaviconSrc } from '@/lib/favicon';
 
 export async function generateStaticParams() {
   const slugs = await getAllSlugs();
@@ -22,6 +25,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const pricingLabel = getPricingLabel(tool);
   const desc = tool.decision_summary || getToolDescription(tool);
+  const pageUrl = getAbsoluteUrl(`/tools/${slug}`);
+  const logoSrc = tool.favicon_url || urlToFaviconSrc(tool.url);
+
+  const ogImage = getOgImageUrl({
+    title: tool.tool_name,
+    subtitle: desc.slice(0, 160),
+    category: tool.primary_category,
+    type: 'AI Tool Review',
+    logo: logoSrc,
+  });
 
   return {
     title: `${tool.tool_name} — ${tool.primary_category} Tool Review, Pricing & Alternatives`,
@@ -29,10 +42,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: `${tool.tool_name} | toolstaq`,
       description: desc.slice(0, 160),
-      url: `https://aitoolsdirectory.com/tools/${slug}`,
+      url: pageUrl,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${tool.tool_name} — AI Tool Review & Pricing`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${tool.tool_name} | toolstaq`,
+      description: desc.slice(0, 160),
+      images: [ogImage],
     },
     alternates: {
-      canonical: `https://aitoolsdirectory.com/tools/${slug}`,
+      canonical: pageUrl,
     },
   };
 }
@@ -73,13 +100,13 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
   };
 
   const breadcrumbLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Tools", "item": "https://aitoolsdirectory.com/tools" },
-      { "@type": "ListItem", "position": 2, "name": tool.primary_category, "item": `https://aitoolsdirectory.com/category/${categorySlug}` },
-      { "@type": "ListItem", "position": 3, "name": tool.tool_name, "item": `https://aitoolsdirectory.com/tools/${slug}` }
-    ]
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Tools', item: getAbsoluteUrl('/tools') },
+      { '@type': 'ListItem', position: 2, name: tool.primary_category, item: getAbsoluteUrl(`/category/${categorySlug}`) },
+      { '@type': 'ListItem', position: 3, name: tool.tool_name, item: getAbsoluteUrl(`/tools/${slug}`) },
+    ],
   };
 
   return (
@@ -184,7 +211,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                         {tool.core_features_rich.split('\n').filter(Boolean).map((f, i) => (
                            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                             <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                             <ChevronRight size={14} strokeWidth={2.5} style={{ color: 'var(--accent-primary)', flexShrink: 0, marginTop: '4px' }} />
                              <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
                            </div>
                         ))}
@@ -193,7 +220,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                         {tool.core_features.map((f, i) => (
                           <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                            <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                            <ChevronRight size={14} strokeWidth={2.5} style={{ color: 'var(--accent-primary)', flexShrink: 0, marginTop: '4px' }} />
                             <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f}</span>
                           </div>
                         ))}
@@ -219,7 +246,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: tool.target_user_persona.length > 0 ? '1rem' : 0 }}>
                           {cleanBestFor.map((b, i) => (
                             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                              <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                              <ChevronRight size={14} strokeWidth={2.5} style={{ color: 'var(--accent-primary)', flexShrink: 0, marginTop: '4px' }} />
                               <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{b}</span>
                             </div>
                           ))}
@@ -266,7 +293,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {tool.technical_architecture.split('\n').filter(Boolean).map((f, i) => (
                          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                           <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                           <ChevronRight size={14} strokeWidth={2.5} style={{ color: 'var(--accent-primary)', flexShrink: 0, marginTop: '4px' }} />
                            <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
                          </div>
                       ))}
@@ -286,7 +313,7 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       {tool.pricing_details.split('\n').filter(Boolean).map((f, i) => (
                          <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                           <span style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.4, flexShrink: 0 }}>•</span>
+                           <ChevronRight size={14} strokeWidth={2.5} style={{ color: 'var(--accent-primary)', flexShrink: 0, marginTop: '4px' }} />
                            <span style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{f.replace(/^[•-]\s*/, '')}</span>
                          </div>
                       ))}
@@ -321,6 +348,23 @@ export default async function ToolPage({ params }: { params: Promise<{ slug: str
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Compare Card */}
+            <div className="glass-card" style={{ padding: '1.5rem', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <h3 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                Compare {tool.tool_name}
+              </h3>
+              <p style={{ fontSize: '0.825rem', color: 'var(--text-secondary)', lineHeight: 1.5, margin: 0 }}>
+                Compare features, pricing, and specs side-by-side with top alternatives.
+              </p>
+              <Link
+                href={`/compare?tool=${tool.slug}`}
+                className="btn-secondary"
+                style={{ padding: '9px 16px', fontSize: '0.85rem', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', width: '100%', marginTop: '4px', textDecoration: 'none' }}
+              >
+                Compare Tools <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
+              </Link>
             </div>
 
             {/* Alternatives */}

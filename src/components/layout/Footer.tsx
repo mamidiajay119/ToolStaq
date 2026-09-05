@@ -14,14 +14,17 @@ export default function Footer() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
           {/* Brand */}
           <div>
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '1rem' }}>
-              <div style={{
-                width: '32px', height: '32px', borderRadius: '8px',
-                background: 'var(--accent-primary)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-                <Zap size={16} color="white" strokeWidth={2.5} />
-              </div>
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
+              <img
+                src="/logo.png"
+                alt="toolstaq logo"
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '50%',
+                  objectFit: 'contain',
+                }}
+              />
               <span className="brand-text" style={{ fontSize: '1.15rem' }}>
                 toolstaq
               </span>
@@ -86,6 +89,7 @@ export default function Footer() {
                 { label: 'Privacy Policy', href: '/privacy' },
                 { label: 'Cookie Policy', href: '/cookie-policy' },
                 { label: 'Contact Us', href: '/contact' },
+                { label: 'Sitemap', href: '/html-sitemap' },
               ].map((link) => (
                 <Link key={link.href} href={link.href} style={{
                   color: 'var(--text-muted)', fontSize: '0.875rem',
