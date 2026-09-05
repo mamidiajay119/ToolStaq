@@ -402,6 +402,37 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
             grid-template-columns: 1fr;
           }
         }
+        .compare-cta-group {
+          display: flex;
+          gap: 12px;
+          align-items: center;
+          max-width: 380px;
+        }
+        .compare-cta-btn {
+          flex: 1;
+          min-width: 150px;
+          height: 40px;
+          padding: 0 16px;
+          border-radius: 10px;
+          font-size: 0.85rem;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          box-sizing: border-box;
+          white-space: nowrap;
+        }
+        @media (max-width: 580px) {
+          .compare-cta-group {
+            flex-direction: column;
+            width: 100%;
+            max-width: 100%;
+          }
+          .compare-cta-btn {
+            width: 100%;
+            flex: none;
+          }
+        }
       `}</style>
 
       <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '4rem' }}>
@@ -424,42 +455,23 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
               </p>
 
               {/* Action CTAs */}
-              <div className="banner-cta-group" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              <div className="compare-cta-group">
                 <button
                   onClick={() => {
                     const selectorEl = document.getElementById('compare-table-box');
                     if (selectorEl) selectorEl.scrollIntoView({ behavior: 'smooth' });
                   }}
-                  className="btn-primary banner-cta-btn"
-                  style={{
-                    padding: '9px 18px',
-                    borderRadius: '10px',
-                    fontSize: '0.85rem',
-                    fontWeight: 600,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                  }}
+                  className="btn-primary compare-cta-btn"
+                  style={{ fontWeight: 600 }}
                 >
-                  View full comparison <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                  View comparison <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
                 </button>
                 <Link
                   href="/tools"
-                  className="btn-secondary banner-cta-btn"
-                  style={{
-                    padding: '9px 18px',
-                    borderRadius: '10px',
-                    fontSize: '0.85rem',
-                    fontWeight: 500,
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '6px',
-                    textDecoration: 'none',
-                  }}
+                  className="btn-secondary compare-cta-btn"
+                  style={{ fontWeight: 500, textDecoration: 'none' }}
                 >
-                  Browse all tools <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.75 }} />
+                  Browse tools <ChevronRight size={15} strokeWidth={2.5} style={{ opacity: 0.85 }} />
                 </Link>
               </div>
             </div>
