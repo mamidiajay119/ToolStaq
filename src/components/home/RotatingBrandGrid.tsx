@@ -17,16 +17,16 @@ interface BrandTool {
 const POOL: BrandTool[] = [
   { slug: 'chatgpt', name: 'ChatGPT', category: 'Frontier LLM', url: 'https://chatgpt.com', icon: '🤖' },
   { slug: 'claude-ai-anthropic', name: 'Claude', category: 'AI Agents', url: 'https://claude.ai', icon: '🧠' },
-  { slug: 'midjourney', name: 'Midjourney', category: 'Image Generation', url: 'https://midjourney.com', icon: '🎨' },
+  { slug: 'gemini-google', name: 'Gemini', category: 'Multimodal AI', url: 'https://gemini.google.com', icon: '✨' },
   { slug: 'cursor', name: 'Cursor', category: 'Code Editor', url: 'https://cursor.com', icon: '💻' },
-  { slug: 'perplexity-ai', name: 'Perplexity', category: 'AI Search', url: 'https://perplexity.ai', icon: '🔍' },
+  { slug: 'perplexity', name: 'Perplexity', category: 'AI Search', url: 'https://perplexity.ai', icon: '🔍' },
   { slug: 'runway', name: 'Runway', category: 'Video Generation', url: 'https://runwayml.com', icon: '🎬' },
-  { slug: 'flux-1-black-forest-labs', name: 'Flux', category: 'Image Generation', url: 'https://blackforestlabs.ai', icon: '⚡' },
+  { slug: 'black-forest-labs', name: 'Flux', category: 'Image Generation', url: 'https://blackforestlabs.ai', icon: '⚡' },
   { slug: 'deepseek', name: 'DeepSeek', category: 'Open Models', url: 'https://deepseek.com', icon: '🐋' },
   { slug: 'elevenlabs', name: 'ElevenLabs', category: 'Voice Synthesis', url: 'https://elevenlabs.io', icon: '🎙️' },
-  { slug: 'v0-by-vercel', name: 'v0', category: 'UI Generator', url: 'https://v0.dev', icon: '📐' },
-  { slug: 'lovable', name: 'Lovable', category: 'App Builder', url: 'https://lovable.dev', icon: '✨' },
-  { slug: 'sora-openai', name: 'Sora', category: 'Video Generation', url: 'https://openai.com/sora', icon: '🎥' },
+  { slug: 'v0-vercel', name: 'v0', category: 'UI Generator', url: 'https://v0.dev', icon: '📐' },
+  { slug: 'lovabledev', name: 'Lovable', category: 'App Builder', url: 'https://lovable.dev', icon: '✨' },
+  { slug: 'boltnew', name: 'Bolt.new', category: 'Fullstack AI', url: 'https://bolt.new', icon: '⚡' },
 ];
 
 export default function RotatingBrandGrid() {
