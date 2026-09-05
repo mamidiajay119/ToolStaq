@@ -433,6 +433,40 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
             flex: none;
           }
         }
+
+        .compare-table-wrapper {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+          width: 100%;
+        }
+
+        .compare-table {
+          width: 100%;
+          border-collapse: collapse;
+          table-layout: fixed;
+          min-width: 680px;
+        }
+
+        @media (min-width: 768px) {
+          .compare-table {
+            min-width: 100%;
+          }
+        }
+
+        @media (max-width: 767px) {
+          .sticky-col-header,
+          .sticky-col-cell {
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            background: var(--bg-card) !important;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+          }
+          [data-theme='dark'] .sticky-col-header,
+          [data-theme='dark'] .sticky-col-cell {
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+          }
+        }
       `}</style>
 
       <div className="container-xl" style={{ paddingTop: '1.25rem', paddingBottom: '4rem' }}>
@@ -825,12 +859,13 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
                 </p>
               </div>
             ) : (
-              <div style={{ overflowX: 'auto' }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
+              <div className="compare-table-wrapper">
+                <table className="compare-table">
                   {/* Sticky Header with Tool Cards & CTAs */}
                   <thead>
                     <tr style={{ background: 'var(--bg-elevated)', borderBottom: '2px solid var(--border-subtle)' }}>
                       <th
+                        className="sticky-col-header"
                         style={{
                           width: '24%',
                           padding: '1.25rem 1.5rem',
@@ -924,7 +959,9 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
                             }}
                           >
                             <td
+                              className="sticky-col-cell"
                               style={{
+                                width: '24%',
                                 padding: '1rem 1.5rem',
                                 fontSize: '0.85rem',
                                 color: 'var(--text-muted)',
@@ -939,6 +976,7 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
                               <td
                                 key={tool.slug}
                                 style={{
+                                  width: '38%',
                                   padding: '1rem 1.5rem',
                                   borderLeft: '1px solid var(--border-subtle)',
                                   fontSize: '0.85rem',
@@ -956,7 +994,7 @@ export default function CompareClient({ tools, initialSlugs }: CompareClientProp
 
                     {/* Final Bottom Visit CTA Row */}
                     <tr style={{ background: 'var(--bg-elevated)', borderTop: '2px solid var(--border-subtle)' }}>
-                      <td style={{ padding: '1.25rem 1.5rem', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-primary)' }}>
+                      <td className="sticky-col-cell" style={{ width: '24%', padding: '1.25rem 1.5rem', fontWeight: 700, fontSize: '0.85rem', color: 'var(--text-primary)' }}>
                         Take Action
                       </td>
                       {selectedTools.map((tool) => (
