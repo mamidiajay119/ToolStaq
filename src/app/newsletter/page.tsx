@@ -115,7 +115,7 @@ export default function NewsletterPage() {
         }
       `}</style>
 
-      <div className="container-lg" style={{ paddingTop: '2rem', paddingBottom: '6rem' }}>
+      <div className="container-xl" style={{ paddingTop: '2rem', paddingBottom: '6rem' }}>
         {/* Modern Hero Banner Card */}
         <div className="newsletter-hero-card">
           <div className="newsletter-hero-grid">

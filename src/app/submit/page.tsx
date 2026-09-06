@@ -46,7 +46,7 @@ export default function SubmitPage() {
 
   if (submitted) {
     return (
-      <div className="container-lg" style={{ paddingTop: '5rem', paddingBottom: '6rem' }}>
+      <div className="container-xl" style={{ paddingTop: '5rem', paddingBottom: '6rem' }}>
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
