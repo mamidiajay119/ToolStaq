@@ -31,9 +31,6 @@ export default function SubmitPage() {
       const result = await submitTool(form);
       if (result.success) {
         setSubmitted(true);
-        if (result.mailtoUrl) {
-          window.location.href = result.mailtoUrl;
-        }
       } else {
         setError(result.error || "An error occurred while submitting.");
       }

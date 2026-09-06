@@ -125,18 +125,18 @@ export default function Header() {
 
       <style>{`
         :root {
-          --header-bg: rgba(255, 255, 255, 0.75);
-          --header-bg-scrolled: rgba(255, 255, 255, 0.92);
+          --header-bg: rgba(255, 255, 255, 0.85);
+          --header-bg-scrolled: rgba(255, 255, 255, 0.95);
           --header-border: rgba(139, 92, 246, 0.18);
           --header-shadow: 0 4px 20px rgba(139, 92, 246, 0.08);
           --header-shadow-scrolled: 0 8px 30px rgba(0, 0, 0, 0.12);
         }
         [data-theme='dark'] {
-          --header-bg: rgba(19, 15, 36, 0.75);
-          --header-bg-scrolled: rgba(11, 8, 22, 0.92);
-          --header-border: rgba(139, 92, 246, 0.2);
-          --header-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-          --header-shadow-scrolled: 0 12px 40px rgba(0, 0, 0, 0.7);
+          --header-bg: linear-gradient(135deg, #150f29 0%, #1c1538 50%, #160f2c 100%);
+          --header-bg-scrolled: linear-gradient(135deg, #150f29 0%, #1c1538 50%, #160f2c 100%);
+          --header-border: rgba(167, 139, 250, 0.22);
+          --header-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+          --header-shadow-scrolled: 0 12px 40px rgba(0, 0, 0, 0.6);
         }
         .center-nav {
           display: flex;

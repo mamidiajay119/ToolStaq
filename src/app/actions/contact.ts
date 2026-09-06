@@ -51,12 +51,9 @@ export async function submitContactForm(prevState: any, formData: FormData) {
     console.log(`From: ${name} (${email}) | Subject: ${subject}`);
     console.log("==============================================================");
 
-    const mailtoUrl = `mailto:contactus@toolstaq.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name} <${email}>\n\n${message}`)}`;
-
     return {
       success: true,
       message: "Your message has been sent to contactus@toolstaq.com! Our team will respond within 24-48 hours.",
-      mailtoUrl,
     };
   } catch (error) {
     console.error("Contact form error:", error);

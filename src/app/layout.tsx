@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import ScrollToTop from '@/components/layout/ScrollToTop';
 import { siteConfig, getOgImageUrl } from '@/lib/siteConfig';
+import { PostHogProvider } from '@/components/providers/PostHogProvider';
 
 const defaultOgImage = getOgImageUrl({
   title: siteConfig.title,
@@ -90,15 +91,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
-        <ScrollToTop />
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <Header />
-          <main style={{ flex: '1 0 auto', paddingTop: '76px' }}>
-            {children}
-          </main>
-          <Footer />
-        </div>
-        <Analytics />
+        <PostHogProvider>
+          <ScrollToTop />
+          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+            <Header />
+            <main style={{ flex: '1 0 auto', paddingTop: '76px' }}>
+              {children}
+            </main>
+            <Footer />
+          </div>
+          <Analytics />
+        </PostHogProvider>
       </body>
     </html>
   );

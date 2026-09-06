@@ -96,12 +96,9 @@ export async function submitTool(formData: {
       });
     }
 
-    const mailtoUrl = `mailto:contactus@toolstaq.com?subject=${encodeURIComponent(`Tool Submission: ${tool_name.trim()}`)}&body=${encodeURIComponent(`Tool Name: ${tool_name.trim()}\nWebsite URL: ${url.trim()}\nCategory: ${category}\nSubmitter Email: ${email.trim()}\n\nDescription:\n${description ? description.trim() : ''}`)}`;
-
     return {
       success: true,
-      message: `Thank you! "${tool_name}" submission has been redirected to contactus@toolstaq.com and is pending review.`,
-      mailtoUrl,
+      message: `Thank you! "${tool_name.trim()}" submission has been received and is pending review.`,
     };
   } catch (err: any) {
     console.error("Submit tool action unexpected error:", err);

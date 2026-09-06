@@ -31,9 +31,6 @@ export default function ContactPage() {
 
       if (result.success) {
         setStatus({ type: 'success', message: result.message || 'Message sent!' });
-        if (result.mailtoUrl) {
-          window.location.href = result.mailtoUrl;
-        }
         setName('');
         setEmail('');
         setSubject('');
